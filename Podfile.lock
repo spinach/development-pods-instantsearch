@@ -1,0 +1,29 @@
+PODS:
+  - InstantSearchClient (6.1.1)
+  - InstantSearchCore (4.0.0):
+    - InstantSearchClient (~> 6.0)
+    - Signals (~> 6.0)
+  - Signals (6.0.0)
+
+DEPENDENCIES:
+  - InstantSearchClient (from `/Users/guydaher/Developer/Algolia/iOS/algoliasearch-client-swift`)
+  - InstantSearchCore (from `/Users/guydaher/Developer/Algolia/iOS/instantsearch-core-swift`)
+
+SPEC REPOS:
+  https://github.com/cocoapods/specs.git:
+    - Signals
+
+EXTERNAL SOURCES:
+  InstantSearchClient:
+    :path: "/Users/guydaher/Developer/Algolia/iOS/algoliasearch-client-swift"
+  InstantSearchCore:
+    :path: "/Users/guydaher/Developer/Algolia/iOS/instantsearch-core-swift"
+
+SPEC CHECKSUMS:
+  InstantSearchClient: 8e3754ff154e2d65b0a391671a2a36f045a9bf5a
+  InstantSearchCore: 3bf3d14e15ed9f5f72c61080e27165204860a03e
+  Signals: eca6a9098b40ed5f8d8b60498d0e91168fa7c0cc
+
+PODFILE CHECKSUM: db18fb87db0fce325fea01de310caff4ea476576
+
+COCOAPODS: 1.6.0.beta.2
