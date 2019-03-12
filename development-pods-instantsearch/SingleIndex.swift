@@ -10,10 +10,7 @@ import UIKit
 import InstantSearchCore
 import InstantSearchClient
 
-class MasterViewController: UIViewController, UITableViewDataSource {
-
-  var detailViewController: DetailViewController? = nil
-  var objects = [Any]()
+class SingleIndexController: UIViewController, UITableViewDataSource {
 
   private let ALGOLIA_APP_ID = "latency"
   private let ALGOLIA_INDEX_NAME = "bestbuy_promo"
@@ -39,6 +36,8 @@ class MasterViewController: UIViewController, UITableViewDataSource {
     self.view.addSubview(tableView)
     self.view.addSubview(textField)
 
+    textField.backgroundColor = .gray
+
     textField.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 0).isActive = true
     textField.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 0).isActive = true
     textField.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 0).isActive = true
@@ -51,11 +50,13 @@ class MasterViewController: UIViewController, UITableViewDataSource {
 
     tableView.register(UITableViewCell.self, forCellReuseIdentifier: "CellId")
 
-
     textFieldWidget = TextFieldWidget(textField: textField)
     client = Client(appID: ALGOLIA_APP_ID, apiKey: ALGOLIA_API_KEY)
     index = client.index(withName: ALGOLIA_INDEX_NAME)
     searcher = SingleIndexSearcher(index: index, query: query)
+
+    searcher.search()
+
 
     textFieldWidget.subscribeToTextChangeHandler { (text) in
       self.searcher.setQuery(text: text)
@@ -78,42 +79,6 @@ class MasterViewController: UIViewController, UITableViewDataSource {
       self?.searcher.query.page = UInt(page)
       self?.searcher.search()
     }
-
-    // Do any additional setup after loading the view, typically from a nib.
-    navigationItem.leftBarButtonItem = editButtonItem
-
-    let addButton = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(insertNewObject(_:)))
-    navigationItem.rightBarButtonItem = addButton
-    if let split = splitViewController {
-        let controllers = split.viewControllers
-        detailViewController = (controllers[controllers.count-1] as! UINavigationController).topViewController as? DetailViewController
-    }
-  }
-
-  override func viewWillAppear(_ animated: Bool) {
-//    clearsSelectionOnViewWillAppear = splitViewController!.isCollapsed
-    super.viewWillAppear(animated)
-  }
-
-  @objc
-  func insertNewObject(_ sender: Any) {
-    objects.insert(NSDate(), at: 0)
-    let indexPath = IndexPath(row: 0, section: 0)
-    tableView.insertRows(at: [indexPath], with: .automatic)
-  }
-
-  // MARK: - Segues
-
-  override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-    if segue.identifier == "showDetail" {
-        if let indexPath = tableView.indexPathForSelectedRow {
-            let object = objects[indexPath.row] as! NSDate
-            let controller = (segue.destination as! UINavigationController).topViewController as! DetailViewController
-            controller.detailItem = object
-            controller.navigationItem.leftBarButtonItem = splitViewController?.displayModeButtonItem
-            controller.navigationItem.leftItemsSupplementBackButton = true
-        }
-    }
   }
 
   // MARK: - Table View
@@ -130,25 +95,9 @@ class MasterViewController: UIViewController, UITableViewDataSource {
     let cell = tableView.dequeueReusableCell(withIdentifier: "CellId", for: indexPath)
 
     let hit = hitsViewModel.hitForRow(indexPath.row)
+    // TODO: the below should be done better
     let rawHit = [String: Any](hit!)
     cell.textLabel!.text = rawHit?["name"] as? String
     return cell
   }
-
-  func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-    // Return false if you do not want the specified item to be editable.
-    return true
-  }
-
-  func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
-    if editingStyle == .delete {
-        objects.remove(at: indexPath.row)
-        tableView.deleteRows(at: [indexPath], with: .fade)
-    } else if editingStyle == .insert {
-        // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view.
-    }
-  }
-
-
 }
-
