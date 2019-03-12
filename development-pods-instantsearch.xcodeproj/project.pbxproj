@@ -482,7 +482,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = K3DV6EU9CV;
+				DEVELOPMENT_TEAM = 6T2VU67VTL;
 				INFOPLIST_FILE = "development-pods-instantsearch/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -501,7 +501,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = K3DV6EU9CV;
+				DEVELOPMENT_TEAM = 6T2VU67VTL;
 				INFOPLIST_FILE = "development-pods-instantsearch/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",

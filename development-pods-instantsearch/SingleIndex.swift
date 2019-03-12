@@ -54,7 +54,7 @@ class SingleIndexController: UIViewController, UITableViewDataSource {
     client = Client(appID: ALGOLIA_APP_ID, apiKey: ALGOLIA_API_KEY)
     index = client.index(withName: ALGOLIA_INDEX_NAME)
     searcher = SingleIndexSearcher(index: index, query: query)
-
+    query.facets = ["category"]
     searcher.search()
 
 
@@ -100,4 +100,13 @@ class SingleIndexController: UIViewController, UITableViewDataSource {
     cell.textLabel!.text = rawHit?["name"] as? String
     return cell
   }
+
+  override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+    if (segue.identifier == "refinementListSegue") {
+      let refinementListController = segue.destination as! RefinementListController
+      refinementListController.searcher = searcher
+      refinementListController.query = query
+    }
+  }
+
 }

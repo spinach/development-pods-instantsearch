@@ -44,7 +44,7 @@
                         </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" title="Refinement List" id="VXY-cG-x03">
                             <connections>
-                                <segue destination="TPk-Tz-61V" kind="show" id="Wes-ec-7Gm"/>
+                                <segue destination="TPk-Tz-61V" kind="show" identifier="refinementListSegue" id="Wes-ec-7Gm"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
