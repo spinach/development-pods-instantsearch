@@ -20,6 +20,7 @@ class SingleIndexController: UIViewController, UITableViewDataSource {
 
   var tableView = UITableView()
   var textFieldWidget: TextFieldWidget!
+  var activityIndicator = UIActivityIndicatorView()
   let textField = UITextField()
   var searcher: SingleIndexSearcher<JSON>!
   var client: Client!
@@ -33,10 +34,16 @@ class SingleIndexController: UIViewController, UITableViewDataSource {
 
     tableView.translatesAutoresizingMaskIntoConstraints = false
     textField.translatesAutoresizingMaskIntoConstraints = false
+    activityIndicator.translatesAutoresizingMaskIntoConstraints = false
     self.view.addSubview(tableView)
     self.view.addSubview(textField)
+    self.view.addSubview(activityIndicator)
 
-    textField.backgroundColor = .gray
+    textField.backgroundColor = .white
+    activityIndicator.style = .gray
+
+    activityIndicator.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 8).isActive = true
+    activityIndicator.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20).isActive = true
 
     textField.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 0).isActive = true
     textField.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 0).isActive = true
@@ -57,12 +64,20 @@ class SingleIndexController: UIViewController, UITableViewDataSource {
     query.facets = ["category"]
     searcher.search()
 
-
     textFieldWidget.subscribeToTextChangeHandler { (text) in
       self.searcher.setQuery(text: text)
+      self.query.page = 0
       self.searcher.search()
     }
 
+    self.searcher.isLoading.subscribe(with: self) { (isLoading) in
+      if isLoading {
+        self.activityIndicator.startAnimating()
+      } else {
+        self.activityIndicator.stopAnimating()
+      }
+
+    }.onQueue(.main)
 
     self.searcher.onSearchResults.subscribe(with: self) { [weak self] (queryMetada, result) in
       switch result {
