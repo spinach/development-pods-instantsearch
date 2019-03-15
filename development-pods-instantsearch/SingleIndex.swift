@@ -16,7 +16,7 @@ class SingleIndexController: UIViewController, UITableViewDataSource {
   private let ALGOLIA_INDEX_NAME = "bestbuy_promo"
   private let ALGOLIA_API_KEY = "1f6fd3a6fb973cb08419fe7d288fa4db"
 
-  let hitsViewModel = HitsViewModel<JSON>(hitsSettings: HitsViewModel.Settings())
+  let hitsViewModel = HitsViewModel<JSON>()
 
   var tableView = UITableView()
   var textFieldWidget: TextFieldWidget!
@@ -26,6 +26,7 @@ class SingleIndexController: UIViewController, UITableViewDataSource {
   var client: Client!
   var index: Index!
   let query = Query()
+  let filterBuilder = FilterBuilder()
 
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -60,7 +61,7 @@ class SingleIndexController: UIViewController, UITableViewDataSource {
     textFieldWidget = TextFieldWidget(textField: textField)
     client = Client(appID: ALGOLIA_APP_ID, apiKey: ALGOLIA_API_KEY)
     index = client.index(withName: ALGOLIA_INDEX_NAME)
-    searcher = SingleIndexSearcher(index: index, query: query)
+    searcher = SingleIndexSearcher(index: index, query: query, filterBuilder: filterBuilder)
     query.facets = ["category"]
     searcher.search()
 
@@ -81,7 +82,7 @@ class SingleIndexController: UIViewController, UITableViewDataSource {
 
     self.searcher.onSearchResults.subscribe(with: self) { [weak self] (queryMetada, result) in
       switch result {
-      case .success(let result): self?.hitsViewModel.update(with: queryMetada, and: result)
+      case .success(let result): self?.hitsViewModel.update(result, with: queryMetada)
       case .fail(let error):
         print(error)
         break
@@ -120,6 +121,7 @@ class SingleIndexController: UIViewController, UITableViewDataSource {
     if (segue.identifier == "refinementListSegue") {
       let refinementListController = segue.destination as! RefinementListController
       refinementListController.searcher = searcher
+      refinementListController.filterBuilder = filterBuilder
       refinementListController.query = query
     }
   }

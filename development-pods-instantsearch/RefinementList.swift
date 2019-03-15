@@ -24,6 +24,7 @@ class RefinementListController: UIViewController, UITableViewDataSource, UITable
   var searcherSFFV: SearchForFacetValueSearcher!
   var client: Client!
   var index: Index!
+  var filterBuilder: FilterBuilder!
   var query: Query!
 
   override func viewDidLoad() {
@@ -54,10 +55,13 @@ class RefinementListController: UIViewController, UITableViewDataSource, UITable
     textFieldWidget = TextFieldWidget(textField: textField)
     client = Client(appID: ALGOLIA_APP_ID, apiKey: ALGOLIA_API_KEY)
     index = client.index(withName: ALGOLIA_INDEX_NAME)
-    refinementListViewModel = RefinementListViewModel(attribute: Attribute("category"), query: query)
-    searcherSFFV = SearchForFacetValueSearcher(index: index, query: query, facetName: "category", text: "")
+    refinementListViewModel = RefinementListViewModel(attribute: Attribute("category"), filterBuilder: filterBuilder)
+    refinementListViewModel.settings.operator = .and
+    refinementListViewModel.settings.areMultipleSelectionsAllowed = true
+    searcherSFFV = SearchForFacetValueSearcher(index: index, query: query, filterBuilder: filterBuilder, facetName: "category", text: "")
 
     textFieldWidget.subscribeToTextChangeHandler { (text) in
+      self.query.page = 0
       self.searcherSFFV.setQuery(text: text)
       self.searcherSFFV.search()
     }
@@ -86,6 +90,7 @@ class RefinementListController: UIViewController, UITableViewDataSource, UITable
     }
 
     self.refinementListViewModel.onParamChange.subscribe(with: self) { [weak self] in
+      self?.query.page = 0
       self?.searcher.search()
     }
   }

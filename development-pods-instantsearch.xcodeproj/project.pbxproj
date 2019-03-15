@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		9BE878203D48991B58641B3C /* Pods_development_pods_instantsearchTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A3124C071D3F19C1B835884C /* Pods_development_pods_instantsearchTests.framework */; };
 		A174DB7FFFE740D94F373ED6 /* Pods_development_pods_instantsearch.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BE4725361587DFDC81F01BCB /* Pods_development_pods_instantsearch.framework */; };
+		E24233DF223AAD1D008F24FB /* PotentialInstantSearch.swift in Sources */ = {isa = PBXBuildFile; fileRef = E24233DE223AAD1D008F24FB /* PotentialInstantSearch.swift */; };
 		E24DC9D1222EB72B006F1EED /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E24DC9D0222EB72B006F1EED /* AppDelegate.swift */; };
 		E24DC9D3222EB72B006F1EED /* SingleIndex.swift in Sources */ = {isa = PBXBuildFile; fileRef = E24DC9D2222EB72B006F1EED /* SingleIndex.swift */; };
 		E24DC9D5222EB72B006F1EED /* MultiIndex.swift in Sources */ = {isa = PBXBuildFile; fileRef = E24DC9D4222EB72B006F1EED /* MultiIndex.swift */; };
@@ -36,6 +37,7 @@
 		A3124C071D3F19C1B835884C /* Pods_development_pods_instantsearchTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_development_pods_instantsearchTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		BE4725361587DFDC81F01BCB /* Pods_development_pods_instantsearch.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_development_pods_instantsearch.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C9A5A80DB939697E9B6CE6D3 /* Pods-development-pods-instantsearch.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-development-pods-instantsearch.debug.xcconfig"; path = "Target Support Files/Pods-development-pods-instantsearch/Pods-development-pods-instantsearch.debug.xcconfig"; sourceTree = "<group>"; };
+		E24233DE223AAD1D008F24FB /* PotentialInstantSearch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PotentialInstantSearch.swift; sourceTree = "<group>"; };
 		E24DC9CD222EB72B006F1EED /* development-pods-instantsearch.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "development-pods-instantsearch.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		E24DC9D0222EB72B006F1EED /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		E24DC9D2222EB72B006F1EED /* SingleIndex.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SingleIndex.swift; sourceTree = "<group>"; };
@@ -111,6 +113,7 @@
 				E24DC9D4222EB72B006F1EED /* MultiIndex.swift */,
 				E28C38F12236A78A0070BE3D /* RefinementList.swift */,
 				E2E09E3C223276C800F3056D /* Helpers.swift */,
+				E24233DE223AAD1D008F24FB /* PotentialInstantSearch.swift */,
 				E24DC9D6222EB72B006F1EED /* Main.storyboard */,
 				E24DC9D9222EB72C006F1EED /* Assets.xcassets */,
 				E24DC9DB222EB72C006F1EED /* LaunchScreen.storyboard */,
@@ -316,6 +319,7 @@
 			files = (
 				E24DC9D5222EB72B006F1EED /* MultiIndex.swift in Sources */,
 				E28C38F22236A78A0070BE3D /* RefinementList.swift in Sources */,
+				E24233DF223AAD1D008F24FB /* PotentialInstantSearch.swift in Sources */,
 				E24DC9D3222EB72B006F1EED /* SingleIndex.swift in Sources */,
 				E24DC9D1222EB72B006F1EED /* AppDelegate.swift in Sources */,
 				E2E09E3D223276C800F3056D /* Helpers.swift in Sources */,

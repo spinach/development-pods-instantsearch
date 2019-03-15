@@ -15,8 +15,8 @@ class MultindexController: UIViewController, UITableViewDataSource {
   private let ALGOLIA_APP_ID = "latency"
   private let ALGOLIA_API_KEY = "1f6fd3a6fb973cb08419fe7d288fa4db"
 
-  let actorViewModel = HitsViewModel<JSON>(infiniteScrolling: false)
-  let movieViewModel = HitsViewModel<JSON>(infiniteScrolling: false)
+  let actorViewModel = HitsViewModel<JSON>(infiniteScrolling: .off)
+  let movieViewModel = HitsViewModel<JSON>(infiniteScrolling: .off)
   var hitsViewModels: [HitsViewModel<JSON>] = []
 
   var tableView = UITableView()
@@ -26,6 +26,7 @@ class MultindexController: UIViewController, UITableViewDataSource {
   var client: Client!
   var index: Index!
   let query = Query()
+  let filterBuilder = FilterBuilder()
 
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -56,7 +57,7 @@ class MultindexController: UIViewController, UITableViewDataSource {
     let actorsIndex = client.index(withName: "actors")
     let moviesIndex = client.index(withName: "movies")
     let indices = [actorsIndex, moviesIndex]
-    searcher = MultiIndexSearcher(client: client, indices: indices, query: query)
+    searcher = MultiIndexSearcher(client: client, indices: indices, query: query, filterBuilder: filterBuilder)
     hitsViewModels = [actorViewModel, movieViewModel]
 
     searcher.search()
@@ -72,7 +73,7 @@ class MultindexController: UIViewController, UITableViewDataSource {
       for (searchResults, hitsViewModel) in zip(results, strongSelf.hitsViewModels) {
         // TODO: searchresults here also has queryMetadata, so need to re-introduce a new type
         switch searchResults.1 {
-        case .success(let result): hitsViewModel.update(with: searchResults.0, and: result)
+        case .success(let result): hitsViewModel.update(result, with: searchResults.0)
         case .fail:
           break
         }
