@@ -1,14 +1,14 @@
+////
+////  PotentialInstantSearch.swift
+////  development-pods-instantsearch
+////
+////  Created by Guy Daher on 14/03/2019.
+////  Copyright © 2019 Algolia. All rights reserved.
+////
 //
-//  PotentialInstantSearch.swift
-//  development-pods-instantsearch
+//import Foundation
+//import InstantSearchCore
 //
-//  Created by Guy Daher on 14/03/2019.
-//  Copyright © 2019 Algolia. All rights reserved.
-//
-
-import Foundation
-import InstantSearchCore
-
 //extension HitsViewModel {
 //
 //  func connectTo(_ searcher: SingleIndexSearcher<RecordType>) {

@@ -56,8 +56,11 @@ class RefinementListController: UIViewController, UITableViewDataSource, UITable
     client = Client(appID: ALGOLIA_APP_ID, apiKey: ALGOLIA_API_KEY)
     index = client.index(withName: ALGOLIA_INDEX_NAME)
     refinementListViewModel = RefinementListViewModel(attribute: Attribute("category"), filterBuilder: filterBuilder)
-    //refinementListViewModel.settings.operator = .and(areMultipleSelectionsAllowed: true)
-    refinementListViewModel.settings.operator = .or
+    // when "and" + "true", we get a bug in result list, page offset by 1?
+    // When we use "and" + "true", it's the only time we are actually doing a .search() and not .searchDisjunctiveFaceting()
+    refinementListViewModel.settings.operator = .and(selection: .single)
+    // refinementListViewModel.settings.operator = .or
+
     searcherSFFV = SearchForFacetValueSearcher(index: index, query: query, filterBuilder: filterBuilder, facetName: "category", text: "")
 
     textFieldWidget.subscribeToTextChangeHandler { (text) in
