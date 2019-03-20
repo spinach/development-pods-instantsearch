@@ -15,9 +15,7 @@ class MultindexController: UIViewController, UITableViewDataSource {
   private let ALGOLIA_APP_ID = "latency"
   private let ALGOLIA_API_KEY = "1f6fd3a6fb973cb08419fe7d288fa4db"
 
-  let actorViewModel = HitsViewModel<JSON>(infiniteScrolling: .off)
-  let movieViewModel = HitsViewModel<JSON>(infiniteScrolling: .off)
-  var hitsViewModels: [HitsViewModel<JSON>] = []
+  let hitsViewModel = MultiHitsViewModel()
 
   var tableView = UITableView()
   var textFieldWidget: TextFieldWidget!
@@ -57,8 +55,12 @@ class MultindexController: UIViewController, UITableViewDataSource {
     let actorsIndex = client.index(withName: "actors")
     let moviesIndex = client.index(withName: "movies")
     let indices = [actorsIndex, moviesIndex]
+    
     searcher = MultiIndexSearcher(client: client, indices: indices, query: query, filterBuilder: filterBuilder)
-    hitsViewModels = [actorViewModel, movieViewModel]
+    let actorViewModel = HitsViewModel<Actor>(infiniteScrolling: .off)
+    let movieViewModel = HitsViewModel<Movie>(infiniteScrolling: .off)
+    hitsViewModel.append(actorViewModel)
+    hitsViewModel.append(movieViewModel)
 
     searcher.search()
 
@@ -67,17 +69,22 @@ class MultindexController: UIViewController, UITableViewDataSource {
       self.searcher.search()
     }
 
-
-    self.searcher.onSearchResults.subscribe(with: self) { [weak self] (results) in
+    self.searcher.onSearchResults.subscribe(with: self) { [weak self] result in
+      
       guard let strongSelf = self else { return }
-      for (searchResults, hitsViewModel) in zip(results, strongSelf.hitsViewModels) {
-        // TODO: searchresults here also has queryMetadata, so need to re-introduce a new type
-        switch searchResults.1 {
-        case .success(let result): hitsViewModel.update(result, with: searchResults.0)
-        case .fail:
-          break
+      
+      switch result {
+      case .success(let searchResults):
+        do {
+          try strongSelf.hitsViewModel.update(searchResults)
+        } catch let error {
+          print(error)
         }
+        
+      case .fail(let error):
+        print(error)
       }
+
       strongSelf.tableView.reloadData()
     }
   }
@@ -85,23 +92,33 @@ class MultindexController: UIViewController, UITableViewDataSource {
   // MARK: - Table View
 
   func numberOfSections(in tableView: UITableView) -> Int {
-    return 2
+    return hitsViewModel.numberOfSections()
   }
 
   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    return hitsViewModels[section].numberOfRows()
+    return hitsViewModel.numberOfRows(inSection: section)
   }
 
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    
     let cell = tableView.dequeueReusableCell(withIdentifier: "CellId", for: indexPath)
 
-    let hit = hitsViewModels[indexPath.section].hitForRow(indexPath.row)
-    let rawHit = [String: Any](hit!)
-    if indexPath.section == 0 { // actor
-      cell.textLabel!.text = rawHit?["name"] as? String
-    } else { // movie
-      cell.textLabel!.text = rawHit?["title"] as? String
+    let cellText: String?
+    
+    switch indexPath.section {
+    case 0:
+      let actor: Actor? = try! hitsViewModel.hitForRow(at: indexPath)
+      cellText = actor?.name
+      
+    case 1:
+      let movie: Movie? = try! hitsViewModel.hitForRow(at: indexPath)
+      cellText = movie?.title
+      
+    default:
+      cellText = ""
     }
+    
+    cell.textLabel?.text = cellText
 
     return cell
   }
@@ -113,4 +130,16 @@ class MultindexController: UIViewController, UITableViewDataSource {
       return "Movies"
     }
   }
+}
+
+extension MultindexController {
+  
+  struct Actor: Codable {
+    let name: String
+  }
+  
+  struct Movie: Codable {
+    let title: String
+  }
+  
 }
