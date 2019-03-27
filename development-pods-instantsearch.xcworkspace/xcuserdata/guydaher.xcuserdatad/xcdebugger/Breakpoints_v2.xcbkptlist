@@ -10,11 +10,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "../instantsearch-core-swift/Sources/RefinementListViewModel.swift"
-            timestampString = "574783007.481786"
+            timestampString = "575399583.266169"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "48"
-            endingLineNumber = "48"
+            startingLineNumber = "47"
+            endingLineNumber = "47"
             landmarkName = "update(with:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -26,13 +26,13 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "../instantsearch-core-swift/Sources/RefinementListViewModel.swift"
-            timestampString = "574783007.4818569"
+            timestampString = "575399583.266256"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "50"
-            endingLineNumber = "50"
-            landmarkName = "update(with:)"
-            landmarkType = "7">
+            startingLineNumber = "49"
+            endingLineNumber = "49"
+            landmarkName = "RefinementListViewModel"
+            landmarkType = "3">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -89,72 +89,8 @@
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "development-pods-instantsearch/SingleIndex.swift"
-            timestampString = "574783007.4819601"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "85"
-            endingLineNumber = "85"
-            landmarkName = "viewDidLoad()"
-            landmarkType = "7">
-            <Locations>
-               <Location
-                  shouldBeEnabled = "No"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "closure #3 (InstantSearchCore.QueryMetadata, InstantSearchCore.Result&lt;InstantSearchCore.SearchResults&lt;InstantSearchCore.JSON&gt;&gt;) -&gt; () in development_pods_instantsearch.SingleIndexController.viewDidLoad() -&gt; ()"
-                  moduleName = "development-pods-instantsearch"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/guydaher/Developer/Algolia/iOS/development-pods-instantsearch/development-pods-instantsearch/SingleIndex.swift"
-                  timestampString = "574359344.237376"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "85"
-                  endingLineNumber = "85"
-                  offsetFromSymbolStart = "107">
-               </Location>
-               <Location
-                  shouldBeEnabled = "No"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "closure #3 (InstantSearchCore.QueryMetadata, InstantSearchCore.Result&lt;InstantSearchCore.SearchResults&lt;InstantSearchCore.JSON&gt;&gt;) -&gt; () in development_pods_instantsearch.SingleIndexController.viewDidLoad() -&gt; ()"
-                  moduleName = "development-pods-instantsearch"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/guydaher/Developer/Algolia/iOS/development-pods-instantsearch/development-pods-instantsearch/SingleIndex.swift"
-                  timestampString = "574359344.239383"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "85"
-                  endingLineNumber = "85"
-                  offsetFromSymbolStart = "185">
-               </Location>
-            </Locations>
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "development-pods-instantsearch/SingleIndex.swift"
-            timestampString = "574783007.4820189"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "91"
-            endingLineNumber = "91"
-            landmarkName = "viewDidLoad()"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
             filePath = "development-pods-instantsearch/RefinementList.swift"
-            timestampString = "574783007.482072"
+            timestampString = "575399583.266385"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "96"
@@ -170,7 +106,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "development-pods-instantsearch/SingleIndex.swift"
-            timestampString = "574783007.482731"
+            timestampString = "575399583.266446"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "95"

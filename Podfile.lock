@@ -1,5 +1,5 @@
 PODS:
-  - InstantSearchClient (6.1.1)
+  - InstantSearchClient (6.3.0)
   - InstantSearchCore (4.0.0):
     - InstantSearchClient (~> 6.0)
     - Signals (~> 6.0)
@@ -20,7 +20,7 @@ EXTERNAL SOURCES:
     :path: "/Users/guydaher/Developer/Algolia/iOS/instantsearch-core-swift"
 
 SPEC CHECKSUMS:
-  InstantSearchClient: 8e3754ff154e2d65b0a391671a2a36f045a9bf5a
+  InstantSearchClient: fa633b6c723c2e8e7f709b51164cd8a83cf906d5
   InstantSearchCore: 0c21e6f540cbf9850f37c79b8fa2d9100349f85b
   Signals: eca6a9098b40ed5f8d8b60498d0e91168fa7c0cc
 

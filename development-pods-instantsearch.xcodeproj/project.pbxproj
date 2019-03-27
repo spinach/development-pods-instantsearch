@@ -50,6 +50,7 @@
 		E24DC9E7222EB72C006F1EED /* development_pods_instantsearchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = development_pods_instantsearchTests.swift; sourceTree = "<group>"; };
 		E24DC9E9222EB72C006F1EED /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		E28C38F12236A78A0070BE3D /* RefinementList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RefinementList.swift; sourceTree = "<group>"; };
+		E29E45712243FAAE005B358D /* SingleIndex.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = SingleIndex.playground; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		E2E09E3C223276C800F3056D /* Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Helpers.swift; sourceTree = "<group>"; };
 		F2062212BAF0883D11154F15 /* Pods-development-pods-instantsearchTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-development-pods-instantsearchTests.debug.xcconfig"; path = "Target Support Files/Pods-development-pods-instantsearchTests/Pods-development-pods-instantsearchTests.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -108,6 +109,7 @@
 		E24DC9CF222EB72B006F1EED /* development-pods-instantsearch */ = {
 			isa = PBXGroup;
 			children = (
+				E29E45712243FAAE005B358D /* SingleIndex.playground */,
 				E24DC9D0222EB72B006F1EED /* AppDelegate.swift */,
 				E24DC9D2222EB72B006F1EED /* SingleIndex.swift */,
 				E24DC9D4222EB72B006F1EED /* MultiIndex.swift */,
@@ -494,7 +496,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "com.algolia.development-pods-instantsearch";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -513,7 +515,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "com.algolia.development-pods-instantsearch";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
@@ -534,7 +536,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "com.algolia.development-pods-instantsearchTests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/development-pods-instantsearch.app/development-pods-instantsearch";
 			};
@@ -556,7 +558,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "com.algolia.development-pods-instantsearchTests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/development-pods-instantsearch.app/development-pods-instantsearch";
 			};

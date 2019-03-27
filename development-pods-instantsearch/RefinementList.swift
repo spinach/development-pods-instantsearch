@@ -58,7 +58,7 @@ class RefinementListController: UIViewController, UITableViewDataSource, UITable
     refinementListViewModel = RefinementListViewModel(attribute: Attribute("category"), filterBuilder: filterBuilder)
     // when "and" + "true", we get a bug in result list, page offset by 1?
     // When we use "and" + "true", it's the only time we are actually doing a .search() and not .searchDisjunctiveFaceting()
-    refinementListViewModel.settings.operator = .and(selection: .single)
+    refinementListViewModel.settings.operator = .and(selection: .multiple)
     // refinementListViewModel.settings.operator = .or
 
     searcherSFFV = SearchForFacetValueSearcher(index: index, query: query, filterBuilder: filterBuilder, facetName: "category", text: "")
@@ -72,7 +72,7 @@ class RefinementListController: UIViewController, UITableViewDataSource, UITable
     self.searcherSFFV.onSearchResults.subscribe(with: self) { [weak self] (result) in
       switch result {
       case .success(let result): self?.refinementListViewModel.update(with: result)
-      case .fail(let error):
+      case .failure(let error):
         print(error)
         break
       }
@@ -84,7 +84,7 @@ class RefinementListController: UIViewController, UITableViewDataSource, UITable
     self.searcher.onSearchResults.subscribePast(with: self) { [weak self] (queryMetada, result) in
       switch result {
       case .success(let result): self?.refinementListViewModel.update(with: result)
-      case .fail(let error):
+      case .failure(let error):
         print(error)
         break
       }

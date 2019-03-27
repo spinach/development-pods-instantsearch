@@ -83,7 +83,7 @@ class SingleIndexController: UIViewController, UITableViewDataSource {
     self.searcher.onSearchResults.subscribe(with: self) { [weak self] (queryMetada, result) in
       switch result {
       case .success(let result): self?.hitsViewModel.update(result, with: queryMetada)
-      case .fail(let error):
+      case .failure(let error):
         print(error)
         break
       }
@@ -110,7 +110,7 @@ class SingleIndexController: UIViewController, UITableViewDataSource {
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     let cell = tableView.dequeueReusableCell(withIdentifier: "CellId", for: indexPath)
 
-    let hit = hitsViewModel.hitForRow(indexPath.row)
+    let hit = hitsViewModel.hitForRow(atIndex: indexPath.row)
     // TODO: the below should be done better
     let rawHit = [String: Any](hit!)
     cell.textLabel!.text = rawHit?["name"] as? String

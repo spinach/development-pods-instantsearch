@@ -81,7 +81,7 @@ class MultindexController: UIViewController, UITableViewDataSource {
           print(error)
         }
         
-      case .fail(let error):
+      case .failure(let error):
         print(error)
       }
 
