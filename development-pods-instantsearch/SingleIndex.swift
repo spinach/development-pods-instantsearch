@@ -35,6 +35,10 @@ class SingleIndexController: UIViewController {
     self.client = Client(appID: ALGOLIA_APP_ID, apiKey: ALGOLIA_API_KEY)
     self.tableWidget = TableViewHitsWidget<Item>(tableView: tableView)
     self.textFieldWidget = TextFieldWidget(textField: textField)
+    
+    self.tableWidget.dataSource = SITableViewDataSource()
+    self.tableWidget.delegate = SITableViewDelegate()
+    
     self.hitsController = HitsController(index: client.index(withName: ALGOLIA_INDEX_NAME), widget: tableWidget)
     
     configureLayout()
@@ -58,16 +62,6 @@ class SingleIndexController: UIViewController {
       }
     }.onQueue(.main)
     
-    tableWidget.dataSource = .init { (tableView, hit, indexPath) -> UITableViewCell in
-      let cell = tableView.dequeueReusableCell(withIdentifier: "CellId", for: indexPath)
-      cell.textLabel?.text = hit.name
-      return cell
-    }
-    
-    tableWidget.delegate = .init { (tableView, hit, indexPath) in
-      print("Did click \(hit.name)")
-    }
-    
     textFieldWidget.subscribeToTextChangeHandler(using: hitsController.searchWithQueryText)
     
     hitsController.searcher.search()
@@ -83,6 +77,38 @@ class SingleIndexController: UIViewController {
     }
   }
   
+}
+
+class SITableViewDataSource<DS: HitsSource>: TableViewHitsDataSource<DS> where DS.Record == Item {
+
+  init() {
+    super.init { _,_,_ in return UITableViewCell() }
+  }
+
+  override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    return hitsSource?.numberOfHits() ?? 0
+  }
+
+  override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    let hit = hitsSource?.hit(atIndex: indexPath.row)
+    let cell = tableView.dequeueReusableCell(withIdentifier: "CellId", for: indexPath)
+    cell.textLabel?.text = hit?.name
+    return cell
+  }
+
+}
+
+class SITableViewDelegate<DS: HitsSource>: TableViewHitsDelegate<DS> where DS.Record == Item {
+
+  init() {
+    super.init { _, _, _ in }
+  }
+
+  override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    guard let hit = hitsSource?.hit(atIndex: indexPath.row) else { return }
+    print("Did click \(hit.name)")
+  }
+
 }
 
 private extension SingleIndexController {

@@ -7,29 +7,25 @@
 //
 
 import UIKit
-import InstantSearchCore
 import InstantSearchClient
+import InstantSearch
+import InstantSearchCore
 
-class MultindexController: UIViewController, UITableViewDataSource {
+class MultindexController: UIViewController {
 
   private let ALGOLIA_APP_ID = "latency"
   private let ALGOLIA_API_KEY = "1f6fd3a6fb973cb08419fe7d288fa4db"
 
-  let hitsViewModel = MultiHitsViewModel()
-
   var tableView = UITableView()
-  var textFieldWidget: TextFieldWidget!
   let textField = UITextField()
-  var searcher: MultiIndexSearcher!
   var client: Client!
   var index: Index!
-  let query = Query()
-  let filterBuilder = FilterBuilder()
+  var multiHitsController: MultiHitsController<TableViewMultiHitsWidget>!
+  var tableViewHitsWidget: TableViewMultiHitsWidget!
+  var textFieldWidget: TextFieldWidget!
 
   override func viewDidLoad() {
     super.viewDidLoad()
-
-    tableView.dataSource = self
 
     tableView.translatesAutoresizingMaskIntoConstraints = false
     textField.translatesAutoresizingMaskIntoConstraints = false
@@ -52,94 +48,112 @@ class MultindexController: UIViewController, UITableViewDataSource {
 
     textFieldWidget = TextFieldWidget(textField: textField)
     client = Client(appID: ALGOLIA_APP_ID, apiKey: ALGOLIA_API_KEY)
+    tableViewHitsWidget = TableViewMultiHitsWidget(tableView: tableView)
     let actorsIndex = client.index(withName: "actors")
     let moviesIndex = client.index(withName: "movies")
-    let indices = [actorsIndex, moviesIndex]
     
-    searcher = MultiIndexSearcher(client: client, indices: indices, query: query, filterBuilder: filterBuilder)
-    let actorViewModel = HitsViewModel<Actor>(infiniteScrolling: .off)
-    let movieViewModel = HitsViewModel<Movie>(infiniteScrolling: .off)
-    hitsViewModel.append(actorViewModel)
-    hitsViewModel.append(movieViewModel)
-
-    searcher.search()
-
+    let dataSource = MITableViewMultiHitsDataSource()
+    
+    tableViewHitsWidget.dataSource = dataSource
+    tableViewHitsWidget.delegate = MITableViewMultiHitsDelegate()
+    
+    multiHitsController = MultiHitsController(client: client, widget: tableViewHitsWidget)
+    multiHitsController.register(IndexSearchData(index: actorsIndex), with: Actor.self)
+    multiHitsController.register(IndexSearchData(index: moviesIndex), with: Movie.self)
+    
+    multiHitsController.searcher.search()
+    
     textFieldWidget.subscribeToTextChangeHandler { (text) in
-      self.searcher.setQuery(text: text)
-      self.searcher.search()
+      self.multiHitsController.searcher.setQuery(text: text)
+      self.multiHitsController.searcher.search()
     }
 
-    self.searcher.onSearchResults.subscribe(with: self) { [weak self] result in
-      
-      guard let strongSelf = self else { return }
-      
-      switch result {
-      case .success(let searchResults):
-        do {
-          try strongSelf.hitsViewModel.update(searchResults)
-        } catch let error {
-          print(error)
-        }
-        
-      case .failure(let error):
-        print(error)
-      }
-
-      strongSelf.tableView.reloadData()
-    }
   }
 
-  // MARK: - Table View
+}
 
-  func numberOfSections(in tableView: UITableView) -> Int {
-    return hitsViewModel.numberOfSections()
+class MITableViewMultiHitsDataSource: TableViewMultiHitsDataSource {
+  
+  override func numberOfSections(in tableView: UITableView) -> Int {
+    return hitsSource?.numberOfSections() ?? 0
   }
-
-  func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    return hitsViewModel.numberOfRows(inSection: section)
+  
+  override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    return hitsSource?.numberOfHits(inSection: section) ?? 0
   }
-
-  func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-    
+  
+  override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     let cell = tableView.dequeueReusableCell(withIdentifier: "CellId", for: indexPath)
 
-    let cellText: String?
+    guard let hitsSource = hitsSource else {
+      return cell
+    }
     
     switch indexPath.section {
     case 0:
-      let actor: Actor? = try! hitsViewModel.hitForRow(at: indexPath)
-      cellText = actor?.name
+      if let actor = try? hitsSource.hit(atIndex: indexPath.row, inSection: indexPath.section) as Actor? {
+        cell.textLabel?.text = actor.name
+      }
       
     case 1:
-      let movie: Movie? = try! hitsViewModel.hitForRow(at: indexPath)
-      cellText = movie?.title
+      if let movie = try? hitsSource.hit(atIndex: indexPath.row, inSection: indexPath.section) as Movie? {
+        cell.textLabel?.text = movie.title
+      }
       
     default:
-      cellText = ""
+      break
     }
-    
-    cell.textLabel?.text = cellText
-
     return cell
-  }
 
+  }
+  
   func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-    if section == 0 {
+    
+    switch section {
+    case 0:
       return "Actors"
-    } else {
+      
+    case 1:
       return "Movies"
+      
+    default:
+      return nil
     }
   }
+  
 }
 
-extension MultindexController {
-  
-  struct Actor: Codable {
-    let name: String
+class MITableViewMultiHitsDelegate: TableViewMultiHitsDelegate {
+
+  override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    
+    guard let hitsSource = hitsSource else {
+      return
+    }
+    
+    switch indexPath.section {
+    case 0:
+      if let actor = try? hitsSource.hit(atIndex: indexPath.row, inSection: indexPath.section) as Actor? {
+        print("Did select actor: \(actor.name)")
+      }
+      
+    case 1:
+      if let movie = try? hitsSource.hit(atIndex: indexPath.row, inSection: indexPath.section) as Movie? {
+        print("Did select movie: \(movie.title)")
+      }
+      
+    default:
+      break
+    }
+
   }
-  
-  struct Movie: Codable {
-    let title: String
-  }
-  
+
+}
+
+struct Actor: Codable {
+  let name: String
+}
+
+struct Movie: Codable {
+  let title: String
 }
