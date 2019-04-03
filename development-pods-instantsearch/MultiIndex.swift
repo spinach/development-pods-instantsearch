@@ -96,7 +96,7 @@ class MultindexController: UIViewController, UITableViewDataSource {
   }
 
   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    return hitsViewModel.numberOfRows(inSection: section)
+    return hitsViewModel.numberOfHits(inSection: section)
   }
 
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -107,11 +107,11 @@ class MultindexController: UIViewController, UITableViewDataSource {
     
     switch indexPath.section {
     case 0:
-      let actor: Actor? = try! hitsViewModel.hitForRow(at: indexPath)
+      let actor: Actor? = try! hitsViewModel.hit(at: indexPath)
       cellText = actor?.name
       
     case 1:
-      let movie: Movie? = try! hitsViewModel.hitForRow(at: indexPath)
+      let movie: Movie? = try! hitsViewModel.hit(at: indexPath)
       cellText = movie?.title
       
     default:

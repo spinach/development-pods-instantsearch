@@ -92,7 +92,7 @@ class SingleIndexController: UIViewController, UITableViewDataSource {
     }
 
     self.hitsViewModel.onNewPage.subscribe(with: self) { [weak self] (page) in
-      self?.searcher.query.page = UInt(page)
+      self?.searcher.indexSearchData.query.page = UInt(page)
       self?.searcher.search()
     }
   }
@@ -104,15 +104,13 @@ class SingleIndexController: UIViewController, UITableViewDataSource {
   }
 
   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    return hitsViewModel.numberOfRows()
+    return hitsViewModel.numberOfHits()
   }
 
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     let cell = tableView.dequeueReusableCell(withIdentifier: "CellId", for: indexPath)
 
-    let hit = hitsViewModel.hitForRow(atIndex: indexPath.row)
-    // TODO: the below should be done better
-    let rawHit = [String: Any](hit!)
+    let rawHit = hitsViewModel.rawHitAtIndex(indexPath.row)
     cell.textLabel!.text = rawHit?["name"] as? String
     return cell
   }

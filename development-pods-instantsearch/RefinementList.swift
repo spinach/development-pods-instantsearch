@@ -21,7 +21,7 @@ class RefinementListController: UIViewController, UITableViewDataSource, UITable
   var textFieldWidget: TextFieldWidget!
   let textField = UITextField()
   var searcher: SingleIndexSearcher<JSON>!
-  var searcherSFFV: SearchForFacetValueSearcher!
+  var searcherSFFV: FacetSearcher!
   var client: Client!
   var index: Index!
   var filterBuilder: FilterBuilder!
@@ -61,7 +61,7 @@ class RefinementListController: UIViewController, UITableViewDataSource, UITable
     refinementListViewModel.settings.operator = .and(selection: .multiple)
     // refinementListViewModel.settings.operator = .or
 
-    searcherSFFV = SearchForFacetValueSearcher(index: index, query: query, filterBuilder: filterBuilder, facetName: "category", text: "")
+    searcherSFFV = FacetSearcher(index: index, query: query, filterBuilder: filterBuilder, facetName: "category", text: "")
 
     textFieldWidget.subscribeToTextChangeHandler { (text) in
       self.query.page = 0
@@ -69,9 +69,14 @@ class RefinementListController: UIViewController, UITableViewDataSource, UITable
       self.searcherSFFV.search()
     }
 
-    self.searcherSFFV.onSearchResults.subscribe(with: self) { [weak self] (result) in
+    self.searcherSFFV.onSearchResults.subscribe(with: self) { [weak self] arg in
+      
+      let (_, result) = arg
+      
       switch result {
-      case .success(let result): self?.refinementListViewModel.update(with: result)
+      case .success(let result):
+        self?.refinementListViewModel.update(with: result)
+        
       case .failure(let error):
         print(error)
         break
