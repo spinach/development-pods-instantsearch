@@ -19,7 +19,7 @@ class MyViewController : UIViewController, UITableViewDataSource {
   var client: Client!
   var index: Index!
   let query = Query()
-  let filterBuilder = FilterBuilder()
+  let filterState = FilterState()
 
 
     override func loadView() {
@@ -56,7 +56,7 @@ class MyViewController : UIViewController, UITableViewDataSource {
       textFieldWidget = UITextField()
       client = Client(appID: ALGOLIA_APP_ID, apiKey: ALGOLIA_API_KEY)
       index = client.index(withName: ALGOLIA_INDEX_NAME)
-      searcher = SingleIndexSearcher(index: index, query: query, filterBuilder: filterBuilder)
+      searcher = SingleIndexSearcher(index: index, query: query, filterState: filterState)
       query.facets = ["category"]
       searcher.search()
 

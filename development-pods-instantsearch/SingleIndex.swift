@@ -26,42 +26,19 @@ class SingleIndexController: UIViewController, UITableViewDataSource {
   var client: Client!
   var index: Index!
   let query = Query()
-  let filterBuilder = FilterBuilder()
+  let filterState = FilterState()
 
   override func viewDidLoad() {
     super.viewDidLoad()
 
     tableView.dataSource = self
 
-    tableView.translatesAutoresizingMaskIntoConstraints = false
-    textField.translatesAutoresizingMaskIntoConstraints = false
-    activityIndicator.translatesAutoresizingMaskIntoConstraints = false
-    self.view.addSubview(tableView)
-    self.view.addSubview(textField)
-    self.view.addSubview(activityIndicator)
-
-    textField.backgroundColor = .white
-    activityIndicator.style = .gray
-
-    activityIndicator.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 8).isActive = true
-    activityIndicator.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20).isActive = true
-
-    textField.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 0).isActive = true
-    textField.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 0).isActive = true
-    textField.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 0).isActive = true
-    textField.bottomAnchor.constraint(equalTo: tableView.topAnchor, constant: 0).isActive = true
-    textField.heightAnchor.constraint(equalToConstant: 40).isActive = true
-
-    tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 0).isActive = true
-    tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 0).isActive = true
-    tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 0).isActive = true
-
-    tableView.register(UITableViewCell.self, forCellReuseIdentifier: "CellId")
+    setupUI()
 
     textFieldWidget = TextFieldWidget(textField: textField)
     client = Client(appID: ALGOLIA_APP_ID, apiKey: ALGOLIA_API_KEY)
     index = client.index(withName: ALGOLIA_INDEX_NAME)
-    searcher = SingleIndexSearcher(index: index, query: query, filterBuilder: filterBuilder)
+    searcher = SingleIndexSearcher(index: index, query: query, filterState: filterState)
     query.facets = ["category"]
     searcher.search()
 
@@ -92,7 +69,8 @@ class SingleIndexController: UIViewController, UITableViewDataSource {
     }
 
     self.hitsViewModel.onNewPage.subscribe(with: self) { [weak self] (page) in
-      self?.searcher.indexSearchData.query.page = UInt(page)
+      //self?.searcher.indexSearchData.query.page = UInt(page)
+      self?.query.page = UInt(page)
       self?.searcher.search()
     }
   }
@@ -119,9 +97,38 @@ class SingleIndexController: UIViewController, UITableViewDataSource {
     if (segue.identifier == "refinementListSegue") {
       let refinementListController = segue.destination as! RefinementListController
       refinementListController.searcher = searcher
-      refinementListController.filterBuilder = filterBuilder
+      refinementListController.filterState = filterState
       refinementListController.query = query
     }
   }
 
+}
+
+extension SingleIndexController {
+  fileprivate func setupUI() {
+    tableView.translatesAutoresizingMaskIntoConstraints = false
+    textField.translatesAutoresizingMaskIntoConstraints = false
+    activityIndicator.translatesAutoresizingMaskIntoConstraints = false
+    self.view.addSubview(tableView)
+    self.view.addSubview(textField)
+    self.view.addSubview(activityIndicator)
+
+    textField.backgroundColor = .white
+    activityIndicator.style = .gray
+
+    activityIndicator.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 8).isActive = true
+    activityIndicator.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20).isActive = true
+
+    textField.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 0).isActive = true
+    textField.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 0).isActive = true
+    textField.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 0).isActive = true
+    textField.bottomAnchor.constraint(equalTo: tableView.topAnchor, constant: 0).isActive = true
+    textField.heightAnchor.constraint(equalToConstant: 40).isActive = true
+
+    tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 0).isActive = true
+    tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 0).isActive = true
+    tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 0).isActive = true
+
+    tableView.register(UITableViewCell.self, forCellReuseIdentifier: "CellId")
+  }
 }

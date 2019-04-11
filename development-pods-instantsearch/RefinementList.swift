@@ -19,12 +19,13 @@ class RefinementListController: UIViewController, UITableViewDataSource, UITable
   var refinementListViewModel: RefinementListViewModel!
   var tableView = UITableView()
   var textFieldWidget: TextFieldWidget!
+  var toggle = UISwitch()
   let textField = UITextField()
   var searcher: SingleIndexSearcher<JSON>!
   var searcherSFFV: FacetSearcher!
   var client: Client!
   var index: Index!
-  var filterBuilder: FilterBuilder!
+  var filterState: FilterState!
   var query: Query!
 
   override func viewDidLoad() {
@@ -35,8 +36,10 @@ class RefinementListController: UIViewController, UITableViewDataSource, UITable
 
     tableView.translatesAutoresizingMaskIntoConstraints = false
     textField.translatesAutoresizingMaskIntoConstraints = false
+    toggle.translatesAutoresizingMaskIntoConstraints = false
     self.view.addSubview(tableView)
     self.view.addSubview(textField)
+    self.view.addSubview(toggle)
 
     textField.backgroundColor = .gray
 
@@ -50,18 +53,23 @@ class RefinementListController: UIViewController, UITableViewDataSource, UITable
     tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 0).isActive = true
     tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 0).isActive = true
 
+    toggle.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -8).isActive = true
+    toggle.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 8).isActive = true
+
     tableView.register(UITableViewCell.self, forCellReuseIdentifier: "CellId")
 
     textFieldWidget = TextFieldWidget(textField: textField)
     client = Client(appID: ALGOLIA_APP_ID, apiKey: ALGOLIA_API_KEY)
     index = client.index(withName: ALGOLIA_INDEX_NAME)
-    refinementListViewModel = RefinementListViewModel(attribute: Attribute("category"), filterBuilder: filterBuilder)
+    refinementListViewModel = RefinementListViewModel(attribute: Attribute("category"), filterState: filterState)
     // when "and" + "true", we get a bug in result list, page offset by 1?
     // When we use "and" + "true", it's the only time we are actually doing a .search() and not .searchDisjunctiveFaceting()
-    refinementListViewModel.settings.operator = .and(selection: .multiple)
-    // refinementListViewModel.settings.operator = .or
+    //refinementListViewModel.settings.operator = .and(selection: .multiple)
+    refinementListViewModel.settings.operator = .or
+    refinementListViewModel.settings.sortBy = [.isRefined, .count(order: .descending), .alphabetical(order: .ascending)]
 
-    searcherSFFV = FacetSearcher(index: index, query: query, filterBuilder: filterBuilder, facetName: "category", text: "")
+
+    searcherSFFV = FacetSearcher(index: index, query: query, filterState: filterState, facetName: "category", text: "")
 
     textFieldWidget.subscribeToTextChangeHandler { (text) in
       self.query.page = 0
@@ -70,13 +78,13 @@ class RefinementListController: UIViewController, UITableViewDataSource, UITable
     }
 
     self.searcherSFFV.onSearchResults.subscribe(with: self) { [weak self] arg in
-      
+
       let (_, result) = arg
-      
+
       switch result {
       case .success(let result):
         self?.refinementListViewModel.update(with: result)
-        
+
       case .failure(let error):
         print(error)
         break
@@ -110,20 +118,20 @@ class RefinementListController: UIViewController, UITableViewDataSource, UITable
   }
 
   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    return refinementListViewModel.numberOfRows()
+    return refinementListViewModel.numberOfFacets()
   }
 
   func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-    refinementListViewModel.didSelectRow(indexPath.row)
+    refinementListViewModel.didSelectFacet(atIndex: indexPath.row)
   }
 
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     let cell = tableView.dequeueReusableCell(withIdentifier: "CellId", for: indexPath)
 
-    let facetValue = refinementListViewModel.facetForRow(indexPath.row)
+    let facetValue = refinementListViewModel.facet(atIndex: indexPath.row)
     if let facetValue = facetValue {
       cell.textLabel?.text = "\(facetValue.value) (\(facetValue.count))"
-      cell.accessoryType = refinementListViewModel.isRefined(indexPath.row) ? .checkmark : .none
+      cell.accessoryType = refinementListViewModel.isFacetRefined(atIndex: indexPath.row) ? .checkmark : .none
     }
     return cell
   }

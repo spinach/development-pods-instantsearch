@@ -24,7 +24,7 @@ class MultindexController: UIViewController, UITableViewDataSource {
   var client: Client!
   var index: Index!
   let query = Query()
-  let filterBuilder = FilterBuilder()
+  let filterState = FilterState()
 
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -56,7 +56,7 @@ class MultindexController: UIViewController, UITableViewDataSource {
     let moviesIndex = client.index(withName: "movies")
     let indices = [actorsIndex, moviesIndex]
     
-    searcher = MultiIndexSearcher(client: client, indices: indices, query: query, filterBuilder: filterBuilder)
+    searcher = MultiIndexSearcher(client: client, indices: indices, query: query, filterState: filterState)
     let actorViewModel = HitsViewModel<Actor>(infiniteScrolling: .off)
     let movieViewModel = HitsViewModel<Movie>(infiniteScrolling: .off)
     hitsViewModel.append(actorViewModel)
