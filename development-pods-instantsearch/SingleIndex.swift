@@ -93,14 +93,14 @@ class SingleIndexController: UIViewController, UITableViewDataSource {
     return cell
   }
 
-  override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-    if (segue.identifier == "refinementListSegue") {
-      let refinementListController = segue.destination as! RefinementListController
-      refinementListController.searcher = searcher
-      refinementListController.filterState = filterState
-      refinementListController.query = query
-    }
-  }
+//  override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+//    if (segue.identifier == "refinementListSegue") {
+//      let refinementListController = segue.destination as! RefinementListController
+//      refinementListController.searcher = searcher
+//      refinementListController.filterState = filterState
+//      refinementListController.query = query
+//    }
+//  }
 
 }
 
