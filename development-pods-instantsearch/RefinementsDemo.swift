@@ -16,10 +16,10 @@ class RefinementsDemo: UIViewController, UITableViewDataSource, UITableViewDeleg
   private let ALGOLIA_INDEX_NAME = "mobile_demo_refinement_facet"
   private let ALGOLIA_API_KEY = "1f6fd3a6fb973cb08419fe7d288fa4db"
 
-  var topLeftViewModel: RefinementFacetsViewModel!
-  var topRightViewModel: RefinementFacetsViewModel!
-  var bottomRightViewModel: RefinementFacetsViewModel!
-  var bottomLeftViewModel: RefinementFacetsViewModel!
+  var topLeftViewModel: SelectableFacetsViewModel!
+  var topRightViewModel: SelectableFacetsViewModel!
+  var bottomRightViewModel: SelectableFacetsViewModel!
+  var bottomLeftViewModel: SelectableFacetsViewModel!
 
   var searcher: SingleIndexSearcher<JSON>!
   var searcherSFFV: FacetSearcher!
@@ -54,67 +54,63 @@ class RefinementsDemo: UIViewController, UITableViewDataSource, UITableViewDeleg
     query.facets = ["color", "promotion", "category"]
     searcher.search()
 
-    topLeftViewModel = RefinementFacetsViewModel(selectionMode: .single)
+    topLeftViewModel = MenuFacetsViewModel()
     topLeftViewModel.connect(attribute: Attribute("color"), searcher: searcher, operator: .and)
 //    let refinementListPresenter = RefinementListPresenter(sortBy: [.isRefined, .alphabetical(order: .ascending)], limit: 5)
 //    topLeftViewModel.connect(refinementPresenter: RefinementListPresenter(), refinementFacetsView: topLeftTableView) { (selectableRefinements) in
 //      self.topLeftSortedFacetValues = selectableRefinements
 //    }
 
-    topRightViewModel = RefinementFacetsViewModel(selectionMode: .single)
+    topRightViewModel = MenuFacetsViewModel()
     topRightViewModel.connect(attribute: Attribute("color"), searcher: searcher, operator: .and)
 
-    bottomLeftViewModel = RefinementFacetsViewModel(selectionMode: .multiple)
+    bottomLeftViewModel = RefinementFacetsViewModel()
     bottomLeftViewModel.connect(attribute: Attribute("promotion"), searcher: searcher, operator: .and)
 
-    bottomRightViewModel = RefinementFacetsViewModel(selectionMode: .multiple)
+    bottomRightViewModel = RefinementFacetsViewModel()
     bottomRightViewModel.connect(attribute: Attribute("category"), searcher: searcher, operator: .or)
 
 
 
     topLeftViewModel.onItemsChanged.subscribe(with: self) { [weak self] (facetValues) in
-      let refinementListPresenter = RefinementListPresenter()
+      let refinementListPresenter = RefinementListPresenter(sortBy: [.isRefined, .alphabetical(order: .ascending)],
+                                                            limit: 5)
       self?.topLeftSortedFacetValues =
         refinementListPresenter.processFacetValues(
           selectedValues: Array(self?.topLeftViewModel.selections ?? Set()),
-          resultValues: facetValues,
-          sortBy: [.isRefined, .alphabetical(order: .ascending)],
-          limit: 5)
+          resultValues: facetValues)
 
       self?.topLeftTableView.reloadData()
     }
 
     topRightViewModel.onItemsChanged.subscribe(with: self) { [weak self] (facetValues) in
-      let refinementListPresenter = RefinementListPresenter()
+      let refinementListPresenter = RefinementListPresenter(sortBy: [.alphabetical(order: .descending)],
+                                                            limit: 3)
       self?.topRightSortedFacetValues =
         refinementListPresenter.processFacetValues(
           selectedValues: Array(self?.topRightViewModel.selections ?? Set()),
-          resultValues: facetValues,
-          sortBy: [.alphabetical(order: .descending)],
-          limit: 3)
+          resultValues: facetValues)
 
       self?.topRightTableView.reloadData()
     }
 
     bottomLeftViewModel.onItemsChanged.subscribe(with: self) { [weak self] (facetValues) in
-      let refinementListPresenter = RefinementListPresenter()
+      let refinementListPresenter = RefinementListPresenter(sortBy: [.count(order: .descending)],
+                                                            limit: 5)
       self?.bottomLeftSortedFacetValues =
         refinementListPresenter.processFacetValues(
           selectedValues: Array(self?.bottomLeftViewModel.selections ?? Set()),
-          resultValues: facetValues,
-          sortBy: [.count(order: .descending)],
-          limit: 5)
+          resultValues: facetValues)
 
       self?.bottomLeftTableView.reloadData()
     }
 
     bottomRightViewModel.onItemsChanged.subscribe(with: self) { [weak self] (facetValues) in
-      let refinementListPresenter = RefinementListPresenter()
+      let refinementListPresenter = RefinementListPresenter(sortBy: [.count(order: .descending), .alphabetical(order: .ascending)])
       self?.bottomRightSortedFacetValues =
         refinementListPresenter.processFacetValues(
           selectedValues: Array(self?.bottomRightViewModel.selections ?? Set()),
-          resultValues: facetValues,
-          sortBy: [.count(order: .descending), .alphabetical(order: .ascending)])
+          resultValues: facetValues)
 
       self?.bottomRightTableView.reloadData()
     }
@@ -202,7 +198,7 @@ class RefinementsDemo: UIViewController, UITableViewDataSource, UITableViewDeleg
     }
   }
 
-  func getViewModel(for tableView: UITableView) -> RefinementFacetsViewModel? {
+  func getViewModel(for tableView: UITableView) -> SelectableFacetsViewModel? {
     switch tableView {
     case topLeftTableView: return topLeftViewModel
     case topRightTableView: return topRightViewModel
