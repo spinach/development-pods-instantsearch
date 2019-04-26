@@ -71,48 +71,34 @@ class RefinementsDemo: UIViewController, UITableViewDataSource, UITableViewDeleg
     bottomRightViewModel.connect(attribute: Attribute("category"), searcher: searcher, operator: .or)
 
 
+    let topLeftRefinementListPresenter =
+      RefinementFacetsPresenter(sortBy: [.isRefined, .alphabetical(order: .ascending)],
+                                limit: 5)
 
-    topLeftViewModel.onItemsChanged.subscribe(with: self) { [weak self] (facetValues) in
-      let refinementListPresenter = RefinementListPresenter(sortBy: [.isRefined, .alphabetical(order: .ascending)],
-                                                            limit: 5)
-      self?.topLeftSortedFacetValues =
-        refinementListPresenter.processFacetValues(
-          selectedValues: Array(self?.topLeftViewModel.selections ?? Set()),
-          resultValues: facetValues)
-
-      self?.topLeftTableView.reloadData()
+    topLeftViewModel.connect(view: topLeftTableView, refinementPresenter: topLeftRefinementListPresenter) { (tableView, refinementFacets) in
+      self.topLeftSortedFacetValues = refinementFacets
+      tableView.reloadData()
     }
 
-    topRightViewModel.onItemsChanged.subscribe(with: self) { [weak self] (facetValues) in
-      let refinementListPresenter = RefinementListPresenter(sortBy: [.alphabetical(order: .descending)],
-                                                            limit: 3)
-      self?.topRightSortedFacetValues =
-        refinementListPresenter.processFacetValues(
-          selectedValues: Array(self?.topRightViewModel.selections ?? Set()),
-          resultValues: facetValues)
+    let topRightRefinementListPresenter = RefinementFacetsPresenter(sortBy: [.alphabetical(order: .descending)],
+                                                                  limit: 3)
+    topRightViewModel.connect(view: topRightTableView, refinementPresenter: topRightRefinementListPresenter) { (tableView, refinementFacets) in
+      self.topRightSortedFacetValues = refinementFacets
 
-      self?.topRightTableView.reloadData()
+      tableView.reloadData()
     }
 
-    bottomLeftViewModel.onItemsChanged.subscribe(with: self) { [weak self] (facetValues) in
-      let refinementListPresenter = RefinementListPresenter(sortBy: [.count(order: .descending)],
-                                                            limit: 5)
-      self?.bottomLeftSortedFacetValues =
-        refinementListPresenter.processFacetValues(
-          selectedValues: Array(self?.bottomLeftViewModel.selections ?? Set()),
-          resultValues: facetValues)
-
-      self?.bottomLeftTableView.reloadData()
+    let bottomLeftRefinementListPresenter = RefinementFacetsPresenter(sortBy: [.count(order: .descending)],
+                                                          limit: 5)
+    bottomLeftViewModel.connect(view: bottomLeftTableView, refinementPresenter: bottomLeftRefinementListPresenter) { (tableView, refinementFacets) in
+      self.bottomLeftSortedFacetValues = refinementFacets
+      tableView.reloadData()
     }
 
-    bottomRightViewModel.onItemsChanged.subscribe(with: self) { [weak self] (facetValues) in
-      let refinementListPresenter = RefinementListPresenter(sortBy: [.count(order: .descending), .alphabetical(order: .ascending)])
-      self?.bottomRightSortedFacetValues =
-        refinementListPresenter.processFacetValues(
-          selectedValues: Array(self?.bottomRightViewModel.selections ?? Set()),
-          resultValues: facetValues)
-
-      self?.bottomRightTableView.reloadData()
+    let bottomRightRefinementListPresenter = RefinementFacetsPresenter(sortBy: [.count(order: .descending), .alphabetical(order: .ascending)])
+    bottomRightViewModel.connect(view: bottomRightTableView, refinementPresenter: bottomRightRefinementListPresenter) { (tableView, refinementFacets) in
+      self.bottomRightSortedFacetValues = refinementFacets
+      tableView.reloadData()
     }
   }
 
@@ -291,4 +277,20 @@ extension RefinementsDemo {
       $0.backgroundColor =  UIColor(hexString: "#f7f8fa")
     }
   }
+}
+
+extension UITableView: RefinementFacetsView {
+  public func setSelectableItems(selectableItems: [(item: SelectableItem<FacetValue>, isSelected: Bool)]) {
+
+  }
+
+  public func onClickItem(onClick: (SelectableItem<FacetValue>) -> Void) {
+
+  }
+
+  public func reload() {
+    
+  }
+
+
 }
