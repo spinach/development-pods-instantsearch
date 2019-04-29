@@ -10,16 +10,16 @@ import Foundation
 import UIKit
 import InstantSearchCore
 
-class RefinementsDemo: UIViewController, UITableViewDataSource, UITableViewDelegate {
+class RefinementsDemo: UIViewController {
 
   private let ALGOLIA_APP_ID = "latency"
   private let ALGOLIA_INDEX_NAME = "mobile_demo_refinement_facet"
   private let ALGOLIA_API_KEY = "1f6fd3a6fb973cb08419fe7d288fa4db"
 
-  var topLeftViewModel: SelectableFacetsViewModel!
-  var topRightViewModel: SelectableFacetsViewModel!
+  var colorAViewModel: SelectableFacetsViewModel!
+  var colorBViewModel: SelectableFacetsViewModel!
   var bottomRightViewModel: SelectableFacetsViewModel!
-  var bottomLeftViewModel: SelectableFacetsViewModel!
+  var promotionViewModel: SelectableFacetsViewModel!
 
   var searcher: SingleIndexSearcher<JSON>!
   var searcherSFFV: FacetSearcher!
@@ -54,144 +54,44 @@ class RefinementsDemo: UIViewController, UITableViewDataSource, UITableViewDeleg
     query.facets = ["color", "promotion", "category"]
     searcher.search()
 
-    topLeftViewModel = MenuFacetsViewModel()
-    topLeftViewModel.connect(attribute: Attribute("color"), searcher: searcher, operator: .and)
-//    let refinementListPresenter = RefinementListPresenter(sortBy: [.isRefined, .alphabetical(order: .ascending)], limit: 5)
-//    topLeftViewModel.connect(refinementPresenter: RefinementListPresenter(), refinementFacetsView: topLeftTableView) { (selectableRefinements) in
-//      self.topLeftSortedFacetValues = selectableRefinements
-//    }
 
-    topRightViewModel = MenuFacetsViewModel()
-    topRightViewModel.connect(attribute: Attribute("color"), searcher: searcher, operator: .and)
-
-    bottomLeftViewModel = RefinementFacetsViewModel()
-    bottomLeftViewModel.connect(attribute: Attribute("promotion"), searcher: searcher, operator: .and)
-
-    bottomRightViewModel = RefinementFacetsViewModel()
-    bottomRightViewModel.connect(attribute: Attribute("category"), searcher: searcher, operator: .or)
-
-
-    let topLeftRefinementListPresenter =
+    // Top Left - Color A
+    colorAViewModel = MenuFacetsViewModel()
+    let colorAPresenter =
       RefinementFacetsPresenter(sortBy: [.isRefined, .alphabetical(order: .ascending)],
                                 limit: 5)
+    let colorAController = FacetsController(tableView: topLeftTableView, identifier: "topLeft")
+    colorAViewModel.connectController(colorAController, with: colorAPresenter)
+    colorAViewModel.connectSearcher(searcher, with: Attribute("color"), operator: .and)
 
-    topLeftViewModel.connect(view: topLeftTableView, refinementPresenter: topLeftRefinementListPresenter) { (tableView, refinementFacets) in
-      self.topLeftSortedFacetValues = refinementFacets
-      tableView.reloadData()
-    }
+    // Top right - Color B
+    colorBViewModel = MenuFacetsViewModel()
+    let colorBPresenter = RefinementFacetsPresenter(sortBy: [.alphabetical(order: .descending)],
+                                                                    limit: 3)
+    let colorBController = FacetsController(tableView: topRightTableView, identifier: "topRight")
+    colorBViewModel.connectController(colorBController, with: colorBPresenter)
+    colorBViewModel.connectSearcher(searcher, with: Attribute("color"), operator: .and)
 
-    let topRightRefinementListPresenter = RefinementFacetsPresenter(sortBy: [.alphabetical(order: .descending)],
-                                                                  limit: 3)
-    topRightViewModel.connect(view: topRightTableView, refinementPresenter: topRightRefinementListPresenter) { (tableView, refinementFacets) in
-      self.topRightSortedFacetValues = refinementFacets
+    // Bottom Left - Promotion
+    promotionViewModel = RefinementFacetsViewModel()
+    let promotionPresenter = RefinementFacetsPresenter(sortBy: [.count(order: .descending)],
+                                                                      limit: 5)
+    let promotionController = FacetsController(tableView: bottomLeftTableView, identifier: "bottomLeft")
+    promotionViewModel.connectController(promotionController, with: promotionPresenter)
+    promotionViewModel.connectSearcher(searcher, with: Attribute("promotion"), operator: .and)
 
-      tableView.reloadData()
-    }
+    // Bottom Right - Category
+    bottomRightViewModel = RefinementFacetsViewModel()
+    let categoryRefinementListPresenter = RefinementFacetsPresenter(sortBy: [.count(order: .descending), .alphabetical(order: .ascending)])
+    let categoryController = FacetsController(tableView: bottomRightTableView, identifier: "bottomRight")
+    bottomRightViewModel.connectController(categoryController, with: categoryRefinementListPresenter)
+    bottomRightViewModel.connectSearcher(searcher, with: Attribute("category"), operator: .or)
 
-    let bottomLeftRefinementListPresenter = RefinementFacetsPresenter(sortBy: [.count(order: .descending)],
-                                                          limit: 5)
-    bottomLeftViewModel.connect(view: bottomLeftTableView, refinementPresenter: bottomLeftRefinementListPresenter) { (tableView, refinementFacets) in
-      self.bottomLeftSortedFacetValues = refinementFacets
-      tableView.reloadData()
-    }
+    searcher.indexSearchData.filterState.onChange.subscribe(with: self) { filterState in
+      self.filterValueLabel.text = self.searcher.indexSearchData.filterState.toFilterGroups().compactMap({ $0 as? FilterGroupType & SQLSyntaxConvertible }).sqlForm.replacingOccurrences(of: "\"", with: "")
 
-    let bottomRightRefinementListPresenter = RefinementFacetsPresenter(sortBy: [.count(order: .descending), .alphabetical(order: .ascending)])
-    bottomRightViewModel.connect(view: bottomRightTableView, refinementPresenter: bottomRightRefinementListPresenter) { (tableView, refinementFacets) in
-      self.bottomRightSortedFacetValues = refinementFacets
-      tableView.reloadData()
-    }
-  }
-
-  // MARK: - Table View
-
-  func numberOfSections(in tableView: UITableView) -> Int {
-    return 1
-  }
-
-  func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    let sortedFacetValues = getSortedFacetValues(for: tableView)
-    return sortedFacetValues.count
-  }
-
-  func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-    let sortedFacetValues = getSortedFacetValues(for: tableView)
-    let viewModel = getViewModel(for: tableView)
-    viewModel?.selectItem(forKey: sortedFacetValues[indexPath.row].item.value)
-
-    filterValueLabel.text = searcher.indexSearchData.filterState.toFilterGroups().compactMap({ $0 as? FilterGroupType & SQLSyntaxConvertible }).sqlForm.replacingOccurrences(of: "\"", with: "")
-  }
-
-  func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-    let cell = tableView.dequeueReusableCell(withIdentifier: "CellId", for: indexPath)
-
-    let sortedFacetValues = getSortedFacetValues(for: tableView)
-    let selectableRefinement: RefinementFacet = sortedFacetValues[indexPath.row]
-
-    let facetAttributedString = NSMutableAttributedString(string: selectableRefinement.item.value)
-    let facetCountStringColor = [NSAttributedString.Key.foregroundColor: UIColor.gray, .font: UIFont.systemFont(ofSize: 14)]
-    let facetCountString = NSAttributedString(string: " (\(selectableRefinement.item.count))", attributes: facetCountStringColor)
-    facetAttributedString.append(facetCountString)
-
-    cell.textLabel?.attributedText = facetAttributedString
-
-    cell.accessoryType = selectableRefinement.isSelected ? .checkmark : .none
-
-    return cell
-  }
-
-  func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-
-    let view = UIView(frame: CGRect(x: 0, y: 0, width: 20, height: 3 * px16))
-    let label = UILabel(frame: CGRect(x: 5, y: px16, width: tableView.frame.width, height: px16))
-    label.font = .systemFont(ofSize: 12)
-    label.numberOfLines = 2
-    label.textAlignment = .center
-    view.addSubview(label)
-    view.backgroundColor = UIColor(hexString: "#f7f8fa")
-    label.textColor = .gray
-    switch tableView {
-    case topLeftTableView:
-      label.text = "And, IsRefined-AphaAsc, I=5"
-      label.textColor = UIColor(hexString: "#ffcc0000")
-    case topRightTableView:
-      label.text = "And, Alphadesc, I=3"
-      label.textColor = UIColor(hexString: "#ffcc0000")
-    case bottomLeftTableView:
-      label.text = "And, CountDesc, I=5"
-      label.textColor = UIColor(hexString: "#ff669900")
-    case bottomRightTableView:
-      label.text = "Or, CountDesc-AlphaAsc, I=5"
-      label.textColor = UIColor(hexString: "#ff0099cc")
-    default:
-      break
-    }
-
-    return view
-  }
-
-  func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-    return 3 * px16
-  }
-
-  func getSortedFacetValues(for tableView: UITableView) -> [RefinementFacet] {
-    switch tableView {
-    case topLeftTableView: return topLeftSortedFacetValues
-    case topRightTableView: return topRightSortedFacetValues
-    case bottomLeftTableView: return bottomLeftSortedFacetValues
-    case bottomRightTableView: return bottomRightSortedFacetValues
-    default:
-      return []
-    }
-  }
-
-  func getViewModel(for tableView: UITableView) -> SelectableFacetsViewModel? {
-    switch tableView {
-    case topLeftTableView: return topLeftViewModel
-    case topRightTableView: return topRightViewModel
-    case bottomLeftTableView: return bottomLeftViewModel
-    case bottomRightTableView: return bottomRightViewModel
-    default:
-      return nil
+      // TODO: Should be able to do this, but Getting FilterReadable error due to api protection.
+      //filterValueLabel.text = filterState.toFilterGroups().compactMap({ $0 as? FilterGroupType & SQLSyntaxConvertible }).sqlForm.replacingOccurrences(of: "\"", with: "")
     }
   }
 }
@@ -269,8 +169,6 @@ extension RefinementsDemo {
     allTableViews.append(contentsOf: [topLeftTableView, topRightTableView, bottomLeftTableView, bottomRightTableView])
 
     allTableViews.forEach {
-      $0.delegate = self
-      $0.dataSource = self
       $0.register(UITableViewCell.self, forCellReuseIdentifier: "CellId")
       $0.alwaysBounceVertical = false
       $0.tableFooterView = UIView(frame: .zero)
@@ -279,18 +177,18 @@ extension RefinementsDemo {
   }
 }
 
-extension UITableView: RefinementFacetsView {
-  public func setSelectableItems(selectableItems: [(item: SelectableItem<FacetValue>, isSelected: Bool)]) {
-
-  }
-
-  public func onClickItem(onClick: (SelectableItem<FacetValue>) -> Void) {
-
-  }
-
-  public func reload() {
-    
-  }
-
-
-}
+//extension UITableView: RefinementFacetsView {
+//  public func setSelectableItems(selectableItems: [(item: SelectableItem<FacetValue>, isSelected: Bool)]) {
+//
+//  }
+//
+//  public func onClickItem(onClick: (SelectableItem<FacetValue>) -> Void) {
+//
+//  }
+//
+//  public func reload() {
+//
+//  }
+//
+//
+//}
