@@ -57,7 +57,7 @@ class SingleIndexController: UIViewController, UITableViewDataSource {
 
     }.onQueue(.main)
 
-    self.searcher.onSearchResults.subscribe(with: self) { [weak self] (queryMetada, result) in
+    self.searcher.onResultsChanged.subscribe(with: self) { [weak self] (queryMetada, result) in
       switch result {
       case .success(let result): self?.hitsViewModel.update(result, with: queryMetada)
       case .failure(let error):

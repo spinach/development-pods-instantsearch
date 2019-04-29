@@ -69,9 +69,9 @@
 //    refinementFacetsViewModel = RefinementFacetsViewModel(selectionMode: .multiple)
 //    refinementFacetsViewModel.connect(attribute: Attribute("category"), searcher: searcher, operator: .or)
 //
-//    refinementFacetsViewModel.onValuesChanged.subscribe(with: self) { [weak self] (facetValues) in
+//    refinementFacetsViewModel.onValuesChanged.subscribe(with: self) { [weak self] (facets) in
 //      let refinementListPresenter = RefinementListPresenter()
-//      self?.sortedFacetValues = refinementListPresenter.processFacetValues(selectedValues: Array(self?.refinementFacetsViewModel.selections ?? Set()), resultValues: facetValues, sortBy: [.isRefined, .count(order: .descending), .alphabetical(order: .ascending)])
+//      self?.sortedFacetValues = refinementListPresenter.processFacetValues(selections: Array(self?.refinementFacetsViewModel.selections ?? Set()), resultValues: facets, sortBy: [.isRefined, .count(order: .descending), .alphabetical(order: .ascending)])
 //      self?.tableView.reloadData()
 //    }
 //

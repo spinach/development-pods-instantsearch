@@ -69,7 +69,7 @@ class MultindexController: UIViewController, UITableViewDataSource {
       self.searcher.search()
     }
 
-    self.searcher.onSearchResults.subscribe(with: self) { [weak self] result in
+    self.searcher.onResultsChanged.subscribe(with: self) { [weak self] result in
       
       guard let strongSelf = self else { return }
       

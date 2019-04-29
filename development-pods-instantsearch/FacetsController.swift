@@ -12,7 +12,7 @@ import UIKit
 
 class FacetsController: NSObject, UITableViewDataSource, UITableViewDelegate, RefinementFacetsViewController {
 
-  var onClick: ((FacetValue) -> Void)?
+  var onClick: ((Facet) -> Void)?
 
   var tableView: UITableView
 
