@@ -62,9 +62,9 @@ class RefinementsDemo: UIViewController {
 
       self.filterValueLabel.attributedText = self.searcher.indexSearchData.filterState.toFilterGroups().compactMap({ $0 as? FilterGroupType & SQLSyntaxConvertible }).sqlFormWithSyntaxHighlighting(
         colorMap: [
-          self.colorAttribute: .red,
-          self.promotionAttribute: .blue,
-          self.categoryAttribute: .green
+          self.colorAttribute.name: .red,
+          self.promotionAttribute.name: .blue,
+          self.categoryAttribute.name: .green
         ])
     }
 
@@ -106,6 +106,16 @@ class RefinementsDemo: UIViewController {
     }
 
     searcher.search()
+
+    searcher.onResultsChanged.subscribe(with: self) { (queryMetadata, result) in
+      switch result {
+      case .failure:
+        self.filterValueLabel.text = "Network error"
+      default:
+        break
+      }
+
+    }
   }
 }
 
@@ -187,6 +197,23 @@ extension RefinementsDemo {
       $0.tableFooterView = UIView(frame: .zero)
       $0.backgroundColor =  UIColor(hexString: "#f7f8fa")
     }
+
+    // clear button
+    let clearButton = UIButton(type: .custom)
+    clearButton.setTitleColor(.black, for: .normal)
+    clearButton.setTitle("Clear", for: .normal)
+    clearButton.translatesAutoresizingMaskIntoConstraints = false
+    self.view.addSubview(clearButton)
+
+    clearButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 10).isActive = true
+    clearButton.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -25).isActive = true
+    clearButton.addTarget(self, action: #selector(clearButtonTapped), for: .touchUpInside)
+  }
+
+  @objc func clearButtonTapped() {
+    filterState.notify { (filterState) in
+      filterState.removeAll()
+    }
   }
 }
 
@@ -209,10 +236,10 @@ extension RefinementsDemo {
 extension Collection where Element == FilterGroupType & SQLSyntaxConvertible {
 
 
-  public func sqlFormWithSyntaxHighlighting(colorMap: [Attribute: UIColor]) -> NSAttributedString {
+  public func sqlFormWithSyntaxHighlighting(colorMap: [String: UIColor]) -> NSAttributedString {
     return map { element in
       var color: UIColor = .darkText
-      if let attribute = element.filters.first?.attribute, let specifiedColor = colorMap[attribute] {
+      if let groupName = element.name, let specifiedColor = colorMap[groupName] {
         color = specifiedColor
       }
 
