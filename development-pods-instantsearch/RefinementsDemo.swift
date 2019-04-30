@@ -21,6 +21,10 @@ class RefinementsDemo: UIViewController {
   var bottomRightViewModel: SelectableFacetsViewModel!
   var promotionViewModel: SelectableFacetsViewModel!
 
+  let colorAttribute = Attribute("color")
+  let promotionAttribute = Attribute("promotion")
+  let categoryAttribute = Attribute("category")
+
   var searcher: SingleIndexSearcher<JSON>!
   var searcherSFFV: FacetSearcher!
   var client: Client!
@@ -51,9 +55,18 @@ class RefinementsDemo: UIViewController {
     client = Client(appID: ALGOLIA_APP_ID, apiKey: ALGOLIA_API_KEY)
     index = client.index(withName: ALGOLIA_INDEX_NAME)
     searcher = SingleIndexSearcher(index: index, query: query, filterState: filterState)
-    query.facets = ["color", "promotion", "category"]
-    searcher.search()
 
+    searcher.indexSearchData.filterState.onChange.subscribe(with: self) { filterState in
+      // TODO: Fix the "FilterGroupType & SQLSyntaxConvertible" problem
+      //      self.filterValueLabel.text = self.searcher.indexSearchData.filterState.toFilterGroups().compactMap({ $0 as? FilterGroupType & SQLSyntaxConvertible }).sqlForm.replacingOccurrences(of: "\"", with: "")
+
+      self.filterValueLabel.attributedText = self.searcher.indexSearchData.filterState.toFilterGroups().compactMap({ $0 as? FilterGroupType & SQLSyntaxConvertible }).sqlFormWithSyntaxHighlighting(
+        colorMap: [
+          self.colorAttribute: .red,
+          self.promotionAttribute: .blue,
+          self.categoryAttribute: .green
+        ])
+    }
 
     // Top Left - Color A
     colorAViewModel = MenuFacetsViewModel()
@@ -62,37 +75,37 @@ class RefinementsDemo: UIViewController {
                                 limit: 5)
     let colorAController = FacetsController(tableView: topLeftTableView, identifier: "topLeft")
     colorAViewModel.connectController(colorAController, with: colorAPresenter)
-    colorAViewModel.connectSearcher(searcher, with: Attribute("color"), operator: .and)
+    colorAViewModel.connectSearcher(searcher, with: colorAttribute, operator: .and)
 
     // Top right - Color B
     colorBViewModel = MenuFacetsViewModel()
     let colorBPresenter = RefinementFacetsPresenter(sortBy: [.alphabetical(order: .descending)],
-                                                                    limit: 3)
+                                                    limit: 3)
     let colorBController = FacetsController(tableView: topRightTableView, identifier: "topRight")
     colorBViewModel.connectController(colorBController, with: colorBPresenter)
-    colorBViewModel.connectSearcher(searcher, with: Attribute("color"), operator: .and)
+    colorBViewModel.connectSearcher(searcher, with: colorAttribute, operator: .and)
 
     // Bottom Left - Promotion
     promotionViewModel = RefinementFacetsViewModel()
     let promotionPresenter = RefinementFacetsPresenter(sortBy: [.count(order: .descending)],
-                                                                      limit: 5)
+                                                       limit: 5)
     let promotionController = FacetsController(tableView: bottomLeftTableView, identifier: "bottomLeft")
     promotionViewModel.connectController(promotionController, with: promotionPresenter)
-    promotionViewModel.connectSearcher(searcher, with: Attribute("promotion"), operator: .and)
+    promotionViewModel.connectSearcher(searcher, with: promotionAttribute, operator: .and)
 
     // Bottom Right - Category
     bottomRightViewModel = RefinementFacetsViewModel()
     let categoryRefinementListPresenter = RefinementFacetsPresenter(sortBy: [.count(order: .descending), .alphabetical(order: .ascending)])
     let categoryController = FacetsController(tableView: bottomRightTableView, identifier: "bottomRight")
     bottomRightViewModel.connectController(categoryController, with: categoryRefinementListPresenter)
-    bottomRightViewModel.connectSearcher(searcher, with: Attribute("category"), operator: .or)
+    bottomRightViewModel.connectSearcher(searcher, with: categoryAttribute, operator: .or)
 
-    searcher.indexSearchData.filterState.onChange.subscribe(with: self) { filterState in
-      self.filterValueLabel.text = self.searcher.indexSearchData.filterState.toFilterGroups().compactMap({ $0 as? FilterGroupType & SQLSyntaxConvertible }).sqlForm.replacingOccurrences(of: "\"", with: "")
-
-      // TODO: Should be able to do this, but Getting FilterReadable error due to api protection.
-      //filterValueLabel.text = filterState.toFilterGroups().compactMap({ $0 as? FilterGroupType & SQLSyntaxConvertible }).sqlForm.replacingOccurrences(of: "\"", with: "")
+    // predefined filter
+    filterState.notify { (filterState) in
+      filterState.add(Filter.Facet(attribute: colorAttribute, stringValue: "green"), toGroupWithID: FilterGroup.ID.and(name: colorAttribute.name))
     }
+
+    searcher.search()
   }
 }
 
@@ -192,3 +205,65 @@ extension RefinementsDemo {
 //
 //
 //}
+
+extension Collection where Element == FilterGroupType & SQLSyntaxConvertible {
+
+
+  public func sqlFormWithSyntaxHighlighting(colorMap: [Attribute: UIColor]) -> NSAttributedString {
+    return map { element in
+      var color: UIColor = .darkText
+      if let attribute = element.filters.first?.attribute, let specifiedColor = colorMap[attribute] {
+        color = specifiedColor
+      }
+
+      return NSMutableAttributedString()
+        .appendWith(color: color, weight: .regular, ofSize: 18.0, element.sqlForm.replacingOccurrences(of: "\"", with: ""))
+      }.joined(separator: NSMutableAttributedString()
+        .appendWith(weight: .semibold, ofSize: 18.0, " AND "))
+  }
+
+}
+
+extension NSMutableAttributedString {
+
+  @discardableResult func appendWith(color: UIColor = UIColor.darkText, weight: UIFont.Weight = .regular, ofSize: CGFloat = 12.0, _ text: String) -> NSMutableAttributedString{
+    let attrText = NSAttributedString.makeWith(color: color, weight: weight, ofSize:ofSize, text)
+    self.append(attrText)
+    return self
+  }
+
+}
+extension NSAttributedString {
+
+  public static func makeWith(color: UIColor = UIColor.darkText, weight: UIFont.Weight = .regular, ofSize: CGFloat = 12.0, _ text: String) -> NSMutableAttributedString {
+
+    let attrs = [NSAttributedString.Key.font: UIFont.systemFont(ofSize: ofSize, weight: weight), NSAttributedString.Key.foregroundColor: color]
+    return NSMutableAttributedString(string: text, attributes:attrs)
+  }
+}
+
+extension Sequence where Iterator.Element: NSAttributedString {
+  /// Returns a new attributed string by concatenating the elements of the sequence, adding the given separator between each element.
+  /// - parameters:
+  ///     - separator: A string to insert between each of the elements in this sequence. The default separator is an empty string.
+  func joined(separator: NSAttributedString = NSAttributedString(string: "")) -> NSAttributedString {
+    var isFirst = true
+    return self.reduce(NSMutableAttributedString()) {
+      (r, e) in
+      if isFirst {
+        isFirst = false
+      } else {
+        r.append(separator)
+      }
+      r.append(e)
+      return r
+    }
+  }
+
+  /// Returns a new attributed string by concatenating the elements of the sequence, adding the given separator between each element.
+  /// - parameters:
+  ///     - separator: A string to insert between each of the elements in this sequence. The default separator is an empty string.
+  func joined(separator: String = "") -> NSAttributedString {
+    return joined(separator: NSAttributedString(string: separator))
+  }
+}
