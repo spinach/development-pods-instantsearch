@@ -69,7 +69,7 @@ class RefinementsDemo: UIViewController {
     }
 
     // Top Left - Color A
-    colorAViewModel = MenuFacetsViewModel()
+    colorAViewModel = RefinementFacetsViewModel(selectionMode: .single)
     let colorAPresenter =
       RefinementFacetsPresenter(sortBy: [.isRefined, .alphabetical(order: .ascending)],
                                 limit: 5)
@@ -78,7 +78,7 @@ class RefinementsDemo: UIViewController {
     colorAViewModel.connectSearcher(searcher, with: colorAttribute, operator: .and)
 
     // Top right - Color B
-    colorBViewModel = MenuFacetsViewModel()
+    colorBViewModel = RefinementFacetsViewModel(selectionMode: .single)
     let colorBPresenter = RefinementFacetsPresenter(sortBy: [.alphabetical(order: .descending)],
                                                     limit: 3)
     let colorBController = FacetsController(tableView: topRightTableView, identifier: "topRight")
