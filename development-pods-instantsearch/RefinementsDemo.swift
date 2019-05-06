@@ -10,19 +10,31 @@ import Foundation
 import UIKit
 import InstantSearchCore
 
+struct DemoDescriptor {
+  
+  let appID: String
+  let indexName: String
+  let apiKey: String
+  let controller: UIViewController & SearcherPluggable
+  
+  static let refinementList = DemoDescriptor(
+    appID: "latency",
+    indexName: "mobile_demo_refinement_facets",
+    apiKey: "1f6fd3a6fb973cb08419fe7d288fa4db",
+    controller: RefinementListDemo())
+  
+  static let toggle = DemoDescriptor(
+    appID: "latency",
+    indexName: "mobile_demo_refinement_filter",
+    apiKey: "1f6fd3a6fb973cb08419fe7d288fa4db",
+    controller: ToggleDemo())
+  
+}
+
 class RefinementsDemo: UIViewController {
 
-  private let ALGOLIA_APP_ID = "latency"
-  private let ALGOLIA_INDEX_NAME = "mobile_demo_refinement_facet"
-  private let ALGOLIA_API_KEY = "1f6fd3a6fb973cb08419fe7d288fa4db"
-
-  var colorAViewModel: SelectableFacetsViewModel!
-  var colorBViewModel: SelectableFacetsViewModel!
-  var bottomRightViewModel: SelectableFacetsViewModel!
-  var promotionViewModel: SelectableFacetsViewModel!
-
   let colorAttribute = Attribute("color")
-  let promotionAttribute = Attribute("promotion")
+  let promotionsAttribute = Attribute("promotions")
   let categoryAttribute = Attribute("category")
 
   var searcher: SingleIndexSearcher<JSON>!
@@ -31,30 +43,28 @@ class RefinementsDemo: UIViewController {
   var index: Index!
   var filterState: FilterState = FilterState()
   var query: Query = Query()
-  var topLeftSortedFacetValues: [RefinementFacet] = []
-  var topRightSortedFacetValues: [RefinementFacet] = []
-  var bottomLeftSortedFacetValues: [RefinementFacet] = []
-  var bottomRightSortedFacetValues: [RefinementFacet] = []
+  
+  var demo: DemoDescriptor = .refinementList
 
-  let topLeftTableView = UITableView()
-  let topRightTableView = UITableView()
-  let bottomLeftTableView = UITableView()
-  let bottomRightTableView = UITableView()
-  var allTableViews: [UITableView] = []
-  var filterValueLabel: UILabel!
+  let mainStackView = UIStackView()
+  let headerStackView = UIStackView()
+  let titleLabel = UILabel()
+  let filterValueLabel = UILabel()
+  let clearButton = UIButton(type: .custom)
 
+  
   let px16: CGFloat = 16
-
+  
   override func viewDidLoad() {
     super.viewDidLoad()
 
     view.backgroundColor =  UIColor(hexString: "#f7f8fa")
-
-    setupUI()
-
-    client = Client(appID: ALGOLIA_APP_ID, apiKey: ALGOLIA_API_KEY)
-    index = client.index(withName: ALGOLIA_INDEX_NAME)
+    
+    client = Client(appID: demo.appID, apiKey: demo.apiKey)
+    index = client.index(withName: demo.indexName)
     searcher = SingleIndexSearcher(index: index, query: query, filterState: filterState)
+    
+    setupUI()
 
     searcher.indexSearchData.filterState.onChange.subscribe(with: self) { filterState in
       // TODO: Fix the "FilterGroupType & SQLSyntaxConvertible" problem
@@ -63,47 +73,11 @@ class RefinementsDemo: UIViewController {
       self.filterValueLabel.attributedText = self.searcher.indexSearchData.filterState.toFilterGroups().compactMap({ $0 as? FilterGroupType & SQLSyntaxConvertible }).sqlFormWithSyntaxHighlighting(
         colorMap: [
           self.colorAttribute.name: .red,
-          self.promotionAttribute.name: .blue,
+          self.promotionsAttribute.name: .blue,
           self.categoryAttribute.name: .green
         ])
     }
-
-    // Top Left - Color A
-    colorAViewModel = RefinementFacetsViewModel(selectionMode: .single)
-    let colorAPresenter =
-      RefinementFacetsPresenter(sortBy: [.isRefined, .alphabetical(order: .ascending)],
-                                limit: 5)
-    let colorAController = FacetsController(tableView: topLeftTableView, identifier: "topLeft")
-    colorAViewModel.connectController(colorAController, with: colorAPresenter)
-    colorAViewModel.connectSearcher(searcher, with: colorAttribute, operator: .and)
-
-    // Top right - Color B
-    colorBViewModel = RefinementFacetsViewModel(selectionMode: .single)
-    let colorBPresenter = RefinementFacetsPresenter(sortBy: [.alphabetical(order: .descending)],
-                                                    limit: 3)
-    let colorBController = FacetsController(tableView: topRightTableView, identifier: "topRight")
-    colorBViewModel.connectController(colorBController, with: colorBPresenter)
-    colorBViewModel.connectSearcher(searcher, with: colorAttribute, operator: .and)
-
-    // Bottom Left - Promotion
-    promotionViewModel = RefinementFacetsViewModel()
-    let promotionPresenter = RefinementFacetsPresenter(sortBy: [.count(order: .descending)],
-                                                       limit: 5)
-    let promotionController = FacetsController(tableView: bottomLeftTableView, identifier: "bottomLeft")
-    promotionViewModel.connectController(promotionController, with: promotionPresenter)
-    promotionViewModel.connectSearcher(searcher, with: promotionAttribute, operator: .and)
-
-    // Bottom Right - Category
-    bottomRightViewModel = RefinementFacetsViewModel()
-    let categoryRefinementListPresenter = RefinementFacetsPresenter(sortBy: [.count(order: .descending), .alphabetical(order: .ascending)])
-    let categoryController = FacetsController(tableView: bottomRightTableView, identifier: "bottomRight")
-    bottomRightViewModel.connectController(categoryController, with: categoryRefinementListPresenter)
-    bottomRightViewModel.connectSearcher(searcher, with: categoryAttribute, operator: .or)
-
-    // predefined filter
-    filterState.notify { (filterState) in
-      filterState.add(Filter.Facet(attribute: colorAttribute, stringValue: "green"), toGroupWithID: FilterGroup.ID.and(name: colorAttribute.name))
-    }
+    
 
     searcher.search()
 
@@ -120,94 +94,82 @@ class RefinementsDemo: UIViewController {
 }
 
 extension RefinementsDemo {
+  
   fileprivate func setupUI() {
-    // Top Stack View
-
-    let titleLabel = UILabel()
-    titleLabel.font = .boldSystemFont(ofSize: 25)
-    filterValueLabel = UILabel()
-    filterValueLabel.font = .systemFont(ofSize: 16)
-    filterValueLabel.numberOfLines = 0
-    titleLabel.text = "Filters"
-
-    let topFilterStringStackView   = UIStackView()
-    topFilterStringStackView.axis  = .vertical
-    topFilterStringStackView.spacing = 10
-    topFilterStringStackView.layoutMargins = UIEdgeInsets(top: 8, left: 15, bottom: 20, right: 15)
-    topFilterStringStackView.isLayoutMarginsRelativeArrangement = true
-    topFilterStringStackView.distribution = .equalSpacing
-
-    topFilterStringStackView.translatesAutoresizingMaskIntoConstraints = false
-
-    topFilterStringStackView.addArrangedSubview(titleLabel)
-    topFilterStringStackView.addArrangedSubview(filterValueLabel)
-
-
-    let allTableViewsStackView = UIStackView()
-    allTableViewsStackView.axis  = .vertical
-    allTableViewsStackView.spacing = px16
-    allTableViewsStackView.distribution = .fillEqually
-
-    allTableViewsStackView.translatesAutoresizingMaskIntoConstraints = false
-
-    let topTableViewsStackView = UIStackView()
-    topTableViewsStackView.axis = .horizontal
-    topTableViewsStackView.spacing = px16
-    topTableViewsStackView.distribution = .fillEqually
-
-    topTableViewsStackView.addArrangedSubview(topLeftTableView)
-    topTableViewsStackView.addArrangedSubview(topRightTableView)
-
-    let bottomTableViewsStackView = UIStackView()
-    bottomTableViewsStackView.axis = .horizontal
-    bottomTableViewsStackView.spacing = px16
-    bottomTableViewsStackView.distribution = .fillEqually
-
-    bottomTableViewsStackView.addArrangedSubview(bottomLeftTableView)
-    bottomTableViewsStackView.addArrangedSubview(bottomRightTableView)
-
-
-    allTableViewsStackView.addArrangedSubview(topTableViewsStackView)
-    allTableViewsStackView.addArrangedSubview(bottomTableViewsStackView)
-
-
-    view.addSubview(topFilterStringStackView)
-    view.addSubview(allTableViewsStackView)
-
-
-
-    topFilterStringStackView.addBackground(color: .white)
-
-    topFilterStringStackView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: px16).isActive = true
-    topFilterStringStackView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -px16).isActive = true
-    topFilterStringStackView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 10).isActive = true
-    topFilterStringStackView.heightAnchor.constraint(equalToConstant: 150).isActive = true
-
-    topFilterStringStackView.bottomAnchor.constraint(equalTo: allTableViewsStackView.topAnchor, constant: 0).isActive = true
-
-    allTableViewsStackView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: px16).isActive = true
-    allTableViewsStackView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -px16).isActive = true
-    allTableViewsStackView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -10).isActive = true
-
-    allTableViews.append(contentsOf: [topLeftTableView, topRightTableView, bottomLeftTableView, bottomRightTableView])
-
-    allTableViews.forEach {
-      $0.register(UITableViewCell.self, forCellReuseIdentifier: "CellId")
-      $0.alwaysBounceVertical = false
-      $0.tableFooterView = UIView(frame: .zero)
-      $0.backgroundColor =  UIColor(hexString: "#f7f8fa")
-    }
-
-    // clear button
-    let clearButton = UIButton(type: .custom)
+    
+    // Main stack view
+    
+    configureMainStackView()
+    configureHeaderStackView()
+    configureTitleLabel()
+    configureFilterValueLabel()
+    configureClearButton()
+    configureLayout()    
+  }
+  
+  func configureMainStackView() {
+    mainStackView.axis = .vertical
+    mainStackView.spacing = px16
+    mainStackView.distribution = .fill
+    mainStackView.translatesAutoresizingMaskIntoConstraints = false
+  }
+  
+  func configureClearButton() {
     clearButton.setTitleColor(.black, for: .normal)
     clearButton.setTitle("Clear", for: .normal)
     clearButton.translatesAutoresizingMaskIntoConstraints = false
-    self.view.addSubview(clearButton)
-
-    clearButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 10).isActive = true
-    clearButton.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -25).isActive = true
     clearButton.addTarget(self, action: #selector(clearButtonTapped), for: .touchUpInside)
+  }
+  
+  func configureTitleLabel() {
+    titleLabel.font = .boldSystemFont(ofSize: 25)
+    titleLabel.text = "Filters"
+  }
+  
+  func configureFilterValueLabel() {
+    filterValueLabel.font = .systemFont(ofSize: 16)
+    filterValueLabel.numberOfLines = 0
+  }
+  
+  func configureHeaderStackView() {
+    headerStackView.axis = .vertical
+    headerStackView.spacing = 10
+    headerStackView.layoutMargins = UIEdgeInsets(top: 8, left: 15, bottom: 20, right: 15)
+    headerStackView.isLayoutMarginsRelativeArrangement = true
+    headerStackView.distribution = .equalSpacing
+    headerStackView.translatesAutoresizingMaskIntoConstraints = false
+    headerStackView.addBackground(color: .white)
+  }
+  
+  func configureLayout() {
+    headerStackView.heightAnchor.constraint(equalToConstant: 150).isActive = true
+    
+    headerStackView.addArrangedSubview(titleLabel)
+    headerStackView.addArrangedSubview(filterValueLabel)
+    
+    mainStackView.addArrangedSubview(headerStackView)
+    
+    view.addSubview(mainStackView)
+    
+    NSLayoutConstraint.activate([
+      mainStackView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: px16),
+      mainStackView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -px16),
+      mainStackView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 10),
+      mainStackView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: 10),
+      ])
+    
+    addChild(demo.controller)
+    demo.controller.didMove(toParent: self)
+    mainStackView.addArrangedSubview(demo.controller.view)
+    
+    demo.controller.plug(searcher)
+    
+    view.addSubview(clearButton)
+    
+    NSLayoutConstraint.activate([
+      clearButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 10),
+      clearButton.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -25),
+      ])
   }
 
   @objc func clearButtonTapped() {
@@ -216,22 +178,6 @@ extension RefinementsDemo {
     }
   }
 }
-
-//extension UITableView: RefinementFacetsView {
-//  public func setSelectableItems(selectableItems: [(item: SelectableItem<FacetValue>, isSelected: Bool)]) {
-//
-//  }
-//
-//  public func onClickItem(onClick: (SelectableItem<FacetValue>) -> Void) {
-//
-//  }
-//
-//  public func reload() {
-//
-//  }
-//
-//
-//}
 
 extension Collection where Element == FilterGroupType & SQLSyntaxConvertible {
 
