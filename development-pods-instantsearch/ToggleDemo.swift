@@ -14,14 +14,23 @@ class ToggleDemo: UIViewController {
   
   let promotionsAttribute = Attribute("promotions")
   var freeShippingViewModel: SelectableViewModel<Filter.Facet>!
+  var sizeConstraintViewModel: SelectableViewModel<Filter.Numeric>!
+  var vintageViewModel: SelectableViewModel<Filter.Tag>!
   var couponViewModel: SelectableViewModel<Filter.Facet>!
   var promotionsViewModel: SelectableFacetsViewModel!
   
-  let freeShippingButton = UIButton(frame: .zero)
-  let couponSwitch = UISwitch(frame: .zero)
-  let promotionsTableView = UITableView(frame: .zero, style: .plain)
+  let mainStackView = UIStackView()
+  let togglesStackView = UIStackView()
+  let couponStackView = UIStackView()
   
-  let px16: CGFloat = 16
+  let freeShippingButton = UIButton(frame: .zero)
+  let couponLabel = UILabel()
+  let couponSwitch = UISwitch(frame: .zero)
+  
+  let sizeButton = UIButton(frame: .zero)
+  let vintageButton = UIButton(frame: .zero)
+  
+  let promotionsTableView = UITableView(frame: .zero, style: .plain)
   
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -29,14 +38,19 @@ class ToggleDemo: UIViewController {
     setupUI()
     
     let freeShipingFacet = Filter.Facet(attribute: promotionsAttribute, stringValue: "free shipping")
-    freeShippingViewModel = SelectableViewModel<Filter.Facet>(item: freeShipingFacet)
+    freeShippingViewModel = SelectableViewModel(item: freeShipingFacet)
+    let freeShippingButtonController = RefinementFilterButtonController<Filter.Facet>(button: freeShippingButton)
+    freeShippingViewModel.connectViewController(freeShippingButtonController)
     
-    freeShippingButton.setTitle("Free shipping", for: .normal)
-    freeShippingButton.setTitleColor(.gray, for: .normal)
-    freeShippingButton.setTitleColor(.black, for: .selected)
-    let buttonController = RefinementFilterButtonController<Filter.Facet>(button: freeShippingButton)
+    let sizeConstraintFilter = Filter.Numeric(attribute: "size", operator: .greaterThan, value: 40)
+    sizeConstraintViewModel = SelectableViewModel(item: sizeConstraintFilter)
+    let sizeConstraintButtonController = RefinementFilterButtonController<Filter.Numeric>(button: sizeButton)
+    sizeConstraintViewModel.connectViewController(sizeConstraintButtonController)
     
-    freeShippingViewModel.connectViewController(buttonController)
+    let vintageFilter = Filter.Tag(value: "vintage")
+    vintageViewModel = SelectableViewModel(item: vintageFilter)
+    let vintageButtonController = RefinementFilterButtonController<Filter.Tag>(button: vintageButton)
+    vintageViewModel.connectViewController(vintageButtonController)
     
     let couponFacet = Filter.Facet(attribute: promotionsAttribute, stringValue: "coupon")
     couponViewModel = SelectableViewModel<Filter.Facet>(item: couponFacet)
@@ -49,7 +63,6 @@ class ToggleDemo: UIViewController {
     let promotionsController = FacetsController(tableView: promotionsTableView)
     
     promotionsViewModel.connectController(promotionsController)
-    
   }
   
 }
@@ -59,70 +72,117 @@ extension ToggleDemo: SearcherPluggable {
   func plug<R: Codable>(_ searcher: SingleIndexSearcher<R>) {
     freeShippingViewModel.connectSearcher(searcher, operator: .or)
     couponViewModel.connectSearcher(searcher, operator: .or)
+    sizeConstraintViewModel.connectSearcher(searcher, operator: .or)
+    vintageViewModel.connectSearcher(searcher, operator: .or)
     promotionsViewModel.connectSearcher(searcher, with: promotionsAttribute, operator: .or)
   }
   
 }
 
-extension ToggleDemo {
+fileprivate extension ToggleDemo {
   
   func setupUI() {
+    configureFreeShippingButton()
+    configureSizeButton()
+    configureVintageButton()
+    configureCouponLabel()
+    configureCouponSwitch()
+    configureCouponStackView()
+    configurePromotionsTableView()
+    configureTogglesStackView()
+    configureMainStackView()
+    configureLayout()
+  }
+  
+  func configureLayout() {
+    view.addSubview(mainStackView)
     
-    freeShippingButton.translatesAutoresizingMaskIntoConstraints = false
-    couponSwitch.translatesAutoresizingMaskIntoConstraints = false
+    freeShippingButton.heightAnchor.constraint(equalToConstant: 44).isActive = true
+    sizeButton.heightAnchor.constraint(equalToConstant: 44).isActive = true
+    vintageButton.heightAnchor.constraint(equalToConstant: 44).isActive = true
     
-    let allWidgetsStackView = UIStackView()
-    allWidgetsStackView.axis = .horizontal
-    allWidgetsStackView.spacing = px16
-    allWidgetsStackView.distribution = .fillEqually
-    allWidgetsStackView.alignment = .top
-    allWidgetsStackView.translatesAutoresizingMaskIntoConstraints = false
+    couponStackView.addArrangedSubview(couponLabel)
+    couponStackView.addArrangedSubview(couponSwitch)
+    couponStackView.heightAnchor.constraint(equalToConstant: 44).isActive = true
     
-    view.addSubview(allWidgetsStackView)
+    togglesStackView.addArrangedSubview(freeShippingButton)
+    togglesStackView.addArrangedSubview(couponStackView)
+    togglesStackView.addArrangedSubview(sizeButton)
+    togglesStackView.addArrangedSubview(vintageButton)
+
+    mainStackView.addArrangedSubview(togglesStackView)
+    mainStackView.addArrangedSubview(promotionsTableView)
     
-    let togglesStackView = UIStackView()
+    promotionsTableView.heightAnchor.constraint(equalTo: mainStackView.heightAnchor).isActive = true
+
+    NSLayoutConstraint.activate([
+      mainStackView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+      mainStackView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
+      mainStackView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
+      mainStackView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+    ])
+  }
+  
+  func configureMainStackView() {
+    mainStackView.axis = .horizontal
+    mainStackView.spacing = .px16
+    mainStackView.distribution = .fillEqually
+    mainStackView.alignment = .top
+    mainStackView.translatesAutoresizingMaskIntoConstraints = false
+  }
+  
+  func configureTogglesStackView() {
     togglesStackView.axis = .vertical
-    togglesStackView.spacing = px16
+    togglesStackView.spacing = .px16
     togglesStackView.distribution = .equalCentering
     togglesStackView.alignment = .leading
     togglesStackView.translatesAutoresizingMaskIntoConstraints = false
-    
-    freeShippingButton.heightAnchor.constraint(equalToConstant: 44).isActive = true
-    togglesStackView.addArrangedSubview(freeShippingButton)
-    
-    let couponStackView = UIStackView()
-    couponStackView.translatesAutoresizingMaskIntoConstraints = false
-    couponStackView.axis = .horizontal
-    couponStackView.spacing = px16
-    couponStackView.distribution = .fill
-    let couponLabel = UILabel()
+  }
+  
+  func configureCheckBoxButton(_ button: UIButton, withTitle title: String) {
+    button.translatesAutoresizingMaskIntoConstraints = false
+    button.setTitle(title, for: .normal)
+    button.titleEdgeInsets = UIEdgeInsets(top: 0, left: 5, bottom: 0, right: -5)
+    button.setTitleColor(.black, for: .normal)
+    button.setImage(UIImage(named: "square"), for: .normal)
+    button.setImage(UIImage(named: "check-square"), for: .selected)
+  }
+  
+  func configureFreeShippingButton() {
+    configureCheckBoxButton(freeShippingButton, withTitle: "free shipping")
+  }
+  
+  func configureSizeButton() {
+    configureCheckBoxButton(sizeButton, withTitle: "size > 40")
+  }
+  
+  func configureVintageButton() {
+    configureCheckBoxButton(vintageButton, withTitle: "vintage")
+  }
+  
+  func configureCouponSwitch() {
+    couponSwitch.translatesAutoresizingMaskIntoConstraints = false
+  }
+  
+  func configureCouponLabel() {
     couponLabel.text = "Coupon"
     couponLabel.translatesAutoresizingMaskIntoConstraints = false
-    couponStackView.addArrangedSubview(couponLabel)
-    couponStackView.addArrangedSubview(couponSwitch)
+  }
+  
+  func configureCouponStackView() {
+    couponStackView.translatesAutoresizingMaskIntoConstraints = false
+    couponStackView.axis = .horizontal
+    couponStackView.spacing = .px16
     couponStackView.alignment = .center
-    couponStackView.heightAnchor.constraint(equalToConstant: 44).isActive = true
-    
-    togglesStackView.addArrangedSubview(couponStackView)
-    
-    allWidgetsStackView.addArrangedSubview(togglesStackView)
-    allWidgetsStackView.addArrangedSubview(promotionsTableView)
-    
-    NSLayoutConstraint.activate([
-      allWidgetsStackView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-      allWidgetsStackView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
-      allWidgetsStackView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
-      allWidgetsStackView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
-    ])
-    
-    
-    promotionsTableView.heightAnchor.constraint(equalTo: allWidgetsStackView.heightAnchor).isActive = true
+    couponStackView.distribution = .fill
+  }
+  
+  func configurePromotionsTableView() {
     promotionsTableView.register(UITableViewCell.self, forCellReuseIdentifier: "CellId")
     promotionsTableView.alwaysBounceVertical = false
     promotionsTableView.tableHeaderView = UIView(frame: .zero)
     promotionsTableView.tableFooterView = UIView(frame: .zero)
     promotionsTableView.backgroundColor =  UIColor(hexString: "#f7f8fa")
-    
   }
   
 }

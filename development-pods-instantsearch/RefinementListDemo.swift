@@ -14,6 +14,10 @@ protocol SearcherPluggable {
   func plug<R: Codable>(_ searcher: SingleIndexSearcher<R>)
 }
 
+extension CGFloat {
+  static let px16: CGFloat = 16
+}
+
 class RefinementListDemo: UIViewController {
   
   var colorAViewModel: SelectableFacetsViewModel!
@@ -35,8 +39,6 @@ class RefinementListDemo: UIViewController {
   let bottomLeftTableView = UITableView()
   let bottomRightTableView = UITableView()
   var allTableViews: [UITableView] = []
-  
-  let px16: CGFloat = 16
   
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -105,14 +107,14 @@ extension RefinementListDemo {
     
     let allTableViewsStackView = UIStackView()
     allTableViewsStackView.axis  = .vertical
-    allTableViewsStackView.spacing = px16
+    allTableViewsStackView.spacing = .px16
     allTableViewsStackView.distribution = .fillEqually
     
     allTableViewsStackView.translatesAutoresizingMaskIntoConstraints = false
     
     let topTableViewsStackView = UIStackView()
     topTableViewsStackView.axis = .horizontal
-    topTableViewsStackView.spacing = px16
+    topTableViewsStackView.spacing = .px16
     topTableViewsStackView.distribution = .fillEqually
     
     topTableViewsStackView.addArrangedSubview(topLeftTableView)
@@ -120,7 +122,7 @@ extension RefinementListDemo {
     
     let bottomTableViewsStackView = UIStackView()
     bottomTableViewsStackView.axis = .horizontal
-    bottomTableViewsStackView.spacing = px16
+    bottomTableViewsStackView.spacing = .px16
     bottomTableViewsStackView.distribution = .fillEqually
     
     bottomTableViewsStackView.addArrangedSubview(bottomLeftTableView)
@@ -128,7 +130,6 @@ extension RefinementListDemo {
     
     allTableViewsStackView.addArrangedSubview(topTableViewsStackView)
     allTableViewsStackView.addArrangedSubview(bottomTableViewsStackView)
-    
     
     view.addSubview(allTableViewsStackView)
     

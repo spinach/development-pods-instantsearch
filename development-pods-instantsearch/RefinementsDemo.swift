@@ -10,27 +10,6 @@ import Foundation
 import UIKit
 import InstantSearchCore
 
-struct DemoDescriptor {
-  
-  let appID: String
-  let indexName: String
-  let apiKey: String
-  let controller: UIViewController & SearcherPluggable
-  
-  static let refinementList = DemoDescriptor(
-    appID: "latency",
-    indexName: "mobile_demo_refinement_facets",
-    apiKey: "1f6fd3a6fb973cb08419fe7d288fa4db",
-    controller: RefinementListDemo())
-  
-  static let toggle = DemoDescriptor(
-    appID: "latency",
-    indexName: "mobile_demo_refinement_filter",
-    apiKey: "1f6fd3a6fb973cb08419fe7d288fa4db",
-    controller: ToggleDemo())
-  
-}
-
 class RefinementsDemo: UIViewController {
 
   let colorAttribute = Attribute("color")
@@ -44,16 +23,13 @@ class RefinementsDemo: UIViewController {
   var filterState: FilterState = FilterState()
   var query: Query = Query()
   
-  var demo: DemoDescriptor = .refinementList
+  var demo: DemoDescriptor = .toggle
 
   let mainStackView = UIStackView()
   let headerStackView = UIStackView()
   let titleLabel = UILabel()
   let filterValueLabel = UILabel()
   let clearButton = UIButton(type: .custom)
-
-  
-  let px16: CGFloat = 16
   
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -67,18 +43,16 @@ class RefinementsDemo: UIViewController {
     setupUI()
 
     searcher.indexSearchData.filterState.onChange.subscribe(with: self) { filterState in
-      // TODO: Fix the "FilterGroupType & SQLSyntaxConvertible" problem
-      //      self.filterValueLabel.text = self.searcher.indexSearchData.filterState.toFilterGroups().compactMap({ $0 as? FilterGroupType & SQLSyntaxConvertible }).sqlForm.replacingOccurrences(of: "\"", with: "")
-
       self.filterValueLabel.attributedText = self.searcher.indexSearchData.filterState.toFilterGroups().compactMap({ $0 as? FilterGroupType & SQLSyntaxConvertible }).sqlFormWithSyntaxHighlighting(
         colorMap: [
+          "_tags": UIColor(hexString: "#9673b4"),
+          "size": UIColor(hexString: "#698c28"),
           self.colorAttribute.name: .red,
           self.promotionsAttribute.name: .blue,
           self.categoryAttribute.name: .green
         ])
     }
     
-
     searcher.search()
 
     searcher.onResultsChanged.subscribe(with: self) { (queryMetadata, result) in
@@ -96,9 +70,6 @@ class RefinementsDemo: UIViewController {
 extension RefinementsDemo {
   
   fileprivate func setupUI() {
-    
-    // Main stack view
-    
     configureMainStackView()
     configureHeaderStackView()
     configureTitleLabel()
@@ -109,7 +80,7 @@ extension RefinementsDemo {
   
   func configureMainStackView() {
     mainStackView.axis = .vertical
-    mainStackView.spacing = px16
+    mainStackView.spacing = .px16
     mainStackView.distribution = .fill
     mainStackView.translatesAutoresizingMaskIntoConstraints = false
   }
@@ -134,11 +105,17 @@ extension RefinementsDemo {
   func configureHeaderStackView() {
     headerStackView.axis = .vertical
     headerStackView.spacing = 10
-    headerStackView.layoutMargins = UIEdgeInsets(top: 8, left: 15, bottom: 20, right: 15)
+    headerStackView.layoutMargins = UIEdgeInsets(top: 8, left: 10, bottom: 20, right: 10)
     headerStackView.isLayoutMarginsRelativeArrangement = true
     headerStackView.distribution = .equalSpacing
     headerStackView.translatesAutoresizingMaskIntoConstraints = false
     headerStackView.addBackground(color: .white)
+    headerStackView.subviews.first.flatMap {
+      $0.layer.borderWidth = 0.5
+      $0.layer.borderColor = UIColor.black.cgColor
+      $0.layer.masksToBounds = true
+      $0.layer.cornerRadius = 10
+    }
   }
   
   func configureLayout() {
@@ -152,11 +129,11 @@ extension RefinementsDemo {
     view.addSubview(mainStackView)
     
     NSLayoutConstraint.activate([
-      mainStackView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: px16),
-      mainStackView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -px16),
+      mainStackView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: .px16),
+      mainStackView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -.px16),
       mainStackView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 10),
       mainStackView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: 10),
-      ])
+    ])
     
     addChild(demo.controller)
     demo.controller.didMove(toParent: self)
@@ -180,7 +157,6 @@ extension RefinementsDemo {
 }
 
 extension Collection where Element == FilterGroupType & SQLSyntaxConvertible {
-
 
   public func sqlFormWithSyntaxHighlighting(colorMap: [String: UIColor]) -> NSAttributedString {
     return map { element in

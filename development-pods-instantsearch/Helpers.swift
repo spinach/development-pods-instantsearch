@@ -27,6 +27,7 @@ public class TextFieldWidget {
   public func subscribeToTextChangeHandler(using closure: @escaping TextChangeHandler) {
     textChangeObservations.append(closure)
   }
+  
 }
 
 extension UIColor {
