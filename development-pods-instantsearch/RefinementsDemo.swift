@@ -29,6 +29,7 @@ class RefinementsDemo: UIViewController {
   let headerStackView = UIStackView()
   let titleLabel = UILabel()
   let filterValueLabel = UILabel()
+  let hitsCountLabel = UILabel()
   let clearButton = UIButton(type: .custom)
   
   override func viewDidLoad() {
@@ -59,8 +60,8 @@ class RefinementsDemo: UIViewController {
       switch result {
       case .failure:
         self.filterValueLabel.text = "Network error"
-      default:
-        break
+      case .success(let results):
+        self.hitsCountLabel.text = "hits: \(results.totalHitsCount)"
       }
 
     }
@@ -74,6 +75,7 @@ extension RefinementsDemo {
     configureHeaderStackView()
     configureTitleLabel()
     configureFilterValueLabel()
+    configureHitsCountLabel()
     configureClearButton()
     configureLayout()    
   }
@@ -102,10 +104,15 @@ extension RefinementsDemo {
     filterValueLabel.numberOfLines = 0
   }
   
+  func configureHitsCountLabel() {
+    hitsCountLabel.textColor = .black
+    hitsCountLabel.font = .systemFont(ofSize: 12)
+  }
+  
   func configureHeaderStackView() {
     headerStackView.axis = .vertical
     headerStackView.spacing = 10
-    headerStackView.layoutMargins = UIEdgeInsets(top: 8, left: 10, bottom: 20, right: 10)
+    headerStackView.layoutMargins = UIEdgeInsets(top: 8, left: 10, bottom: 8, right: 10)
     headerStackView.isLayoutMarginsRelativeArrangement = true
     headerStackView.distribution = .equalSpacing
     headerStackView.translatesAutoresizingMaskIntoConstraints = false
@@ -123,6 +130,7 @@ extension RefinementsDemo {
     
     headerStackView.addArrangedSubview(titleLabel)
     headerStackView.addArrangedSubview(filterValueLabel)
+    headerStackView.addArrangedSubview(hitsCountLabel)
     
     mainStackView.addArrangedSubview(headerStackView)
     
@@ -154,6 +162,7 @@ extension RefinementsDemo {
       filterState.removeAll()
     }
   }
+  
 }
 
 extension Collection where Element == FilterGroupType & SQLSyntaxConvertible {
@@ -215,4 +224,5 @@ extension Sequence where Iterator.Element: NSAttributedString {
   func joined(separator: String = "") -> NSAttributedString {
     return joined(separator: NSAttributedString(string: separator))
   }
+  
 }
