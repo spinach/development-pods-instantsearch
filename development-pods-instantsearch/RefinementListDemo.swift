@@ -10,16 +10,13 @@ import Foundation
 import UIKit
 import InstantSearchCore
 
-protocol SearcherPluggable {
-  func plug<R: Codable>(_ searcher: SingleIndexSearcher<R>)
-}
-
 extension CGFloat {
   static let px16: CGFloat = 16
 }
 
 class RefinementListDemo: UIViewController {
   
+  var segmentedControlVM: RefinementFacetsViewModel!
   var colorAViewModel: SelectableFacetsViewModel!
   var colorBViewModel: SelectableFacetsViewModel!
   var bottomRightViewModel: SelectableFacetsViewModel!
@@ -29,16 +26,11 @@ class RefinementListDemo: UIViewController {
   let promotionAttribute = Attribute("promotions")
   let categoryAttribute = Attribute("category")
   
-  var topLeftSortedFacetValues: [RefinementFacet] = []
-  var topRightSortedFacetValues: [RefinementFacet] = []
-  var bottomLeftSortedFacetValues: [RefinementFacet] = []
-  var bottomRightSortedFacetValues: [RefinementFacet] = []
-  
+  let segmentedControl = UISegmentedControl(frame: .zero)
   let topLeftTableView = UITableView()
   let topRightTableView = UITableView()
   let bottomLeftTableView = UITableView()
   let bottomRightTableView = UITableView()
-  var allTableViews: [UITableView] = []
   
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -47,36 +39,34 @@ class RefinementListDemo: UIViewController {
     
     // Top Left - Color A
     colorAViewModel = RefinementFacetsViewModel(selectionMode: .single)
-    let colorAPresenter =
-      RefinementFacetsPresenter(sortBy: [.isRefined, .alphabetical(order: .ascending)],
-                                limit: 5)
-    
-    let colorATitleDescriptor = TitleDescriptor(text: "And, IsRefined-AlphaAsc, I=5", color: UIColor(hexString: "#ffcc0000"))
+    let colorAPresenter = RefinementFacetsPresenter(sortBy: [.isRefined, .alphabetical(order: .ascending)], limit: 5)
+    let colorATitleDescriptor = TitleDescriptor(text: "And, IsRefined-AlphaAsc, I=5", color: .init(hexString: "#ffcc0000"))
     let colorAController = FacetsController(tableView: topLeftTableView, titleDescriptor: colorATitleDescriptor)
     colorAViewModel.connectController(colorAController, with: colorAPresenter)
     
+    segmentedControlVM = RefinementFacetsViewModel(selectionMode: .single)
+    let segmentedController = SegmentedController(segmentedControl: segmentedControl)
+    colorAViewModel.connectController(segmentedController)
+
+    
     // Top right - Color B
     colorBViewModel = RefinementFacetsViewModel(selectionMode: .single)
-    let colorBPresenter = RefinementFacetsPresenter(sortBy: [.alphabetical(order: .descending)],
-                                                    limit: 3)
-    let colorBTitleDescriptor = TitleDescriptor(text: "And, AlphaDesc, I=3", color: UIColor(hexString: "#ffcc0000"))
+    let colorBPresenter = RefinementFacetsPresenter(sortBy: [.alphabetical(order: .descending)], limit: 3)
+    let colorBTitleDescriptor = TitleDescriptor(text: "And, AlphaDesc, I=3", color: .init(hexString: "#ffcc0000"))
     let colorBController = FacetsController(tableView: topRightTableView, titleDescriptor: colorBTitleDescriptor)
     colorBViewModel.connectController(colorBController, with: colorBPresenter)
     
     // Bottom Left - Promotion
     promotionViewModel = RefinementFacetsViewModel()
-    let promotionPresenter = RefinementFacetsPresenter(sortBy: [.count(order: .descending)],
-                                                       limit: 5)
-    
-    let promotionTitleDescriptor = TitleDescriptor(text: "And, CountDesc, I=5", color: UIColor(hexString: "#ff669900"))
+    let promotionPresenter = RefinementFacetsPresenter(sortBy: [.count(order: .descending)], limit: 5)
+    let promotionTitleDescriptor = TitleDescriptor(text: "And, CountDesc, I=5", color: .init(hexString: "#ff669900"))
     let promotionController = FacetsController(tableView: bottomLeftTableView, titleDescriptor: promotionTitleDescriptor)
     promotionViewModel.connectController(promotionController, with: promotionPresenter)
     
     // Bottom Right - Category
     bottomRightViewModel = RefinementFacetsViewModel()
     let categoryRefinementListPresenter = RefinementFacetsPresenter(sortBy: [.count(order: .descending), .alphabetical(order: .ascending)])
-    
-    let categoryTitleDescriptor = TitleDescriptor(text: "Or, CountDesc-AlphaAsc, I=5", color: UIColor(hexString: "#ff0099cc"))
+    let categoryTitleDescriptor = TitleDescriptor(text: "Or, CountDesc-AlphaAsc, I=5", color: .init(hexString: "#ff0099cc"))
     let categoryController = FacetsController(tableView: bottomRightTableView, titleDescriptor: categoryTitleDescriptor)
     bottomRightViewModel.connectController(categoryController, with: categoryRefinementListPresenter)
 
@@ -105,51 +95,61 @@ extension RefinementListDemo {
   
   func setupUI() {
     
-    let allTableViewsStackView = UIStackView()
-    allTableViewsStackView.axis  = .vertical
-    allTableViewsStackView.spacing = .px16
-    allTableViewsStackView.distribution = .fillEqually
+    let mainStackView = UIStackView()
+    mainStackView.axis = .vertical
+    mainStackView.distribution = .fill
+    mainStackView.translatesAutoresizingMaskIntoConstraints = false
+    mainStackView.spacing = 5
     
-    allTableViewsStackView.translatesAutoresizingMaskIntoConstraints = false
+    segmentedControl.heightAnchor.constraint(equalToConstant: 40).isActive = true
     
-    let topTableViewsStackView = UIStackView()
-    topTableViewsStackView.axis = .horizontal
-    topTableViewsStackView.spacing = .px16
-    topTableViewsStackView.distribution = .fillEqually
+    mainStackView.addArrangedSubview(segmentedControl)
     
-    topTableViewsStackView.addArrangedSubview(topLeftTableView)
-    topTableViewsStackView.addArrangedSubview(topRightTableView)
+    let gridStackView = UIStackView()
+    gridStackView.axis = .vertical
+    gridStackView.spacing = .px16
+    gridStackView.distribution = .fillEqually
     
-    let bottomTableViewsStackView = UIStackView()
-    bottomTableViewsStackView.axis = .horizontal
-    bottomTableViewsStackView.spacing = .px16
-    bottomTableViewsStackView.distribution = .fillEqually
+    gridStackView.translatesAutoresizingMaskIntoConstraints = false
     
-    bottomTableViewsStackView.addArrangedSubview(bottomLeftTableView)
-    bottomTableViewsStackView.addArrangedSubview(bottomRightTableView)
+    let firstRow = UIStackView()
+    firstRow.axis = .horizontal
+    firstRow.spacing = .px16
+    firstRow.distribution = .fillEqually
     
-    allTableViewsStackView.addArrangedSubview(topTableViewsStackView)
-    allTableViewsStackView.addArrangedSubview(bottomTableViewsStackView)
+    firstRow.addArrangedSubview(topLeftTableView)
+    firstRow.addArrangedSubview(topRightTableView)
     
-    view.addSubview(allTableViewsStackView)
+    let secondRowStackView = UIStackView()
+    secondRowStackView.axis = .horizontal
+    secondRowStackView.spacing = .px16
+    secondRowStackView.distribution = .fillEqually
+    
+    secondRowStackView.addArrangedSubview(bottomLeftTableView)
+    secondRowStackView.addArrangedSubview(bottomRightTableView)
+    
+    gridStackView.addArrangedSubview(firstRow)
+    gridStackView.addArrangedSubview(secondRowStackView)
+    
+    mainStackView.addArrangedSubview(gridStackView)
+    
+    view.addSubview(mainStackView)
     
     NSLayoutConstraint.activate([
-      allTableViewsStackView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-      allTableViewsStackView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
-      allTableViewsStackView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
-      allTableViewsStackView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+      mainStackView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+      mainStackView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
+      mainStackView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
+      mainStackView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
     ])
-
-    allTableViews.append(contentsOf: [topLeftTableView, topRightTableView, bottomLeftTableView, bottomRightTableView])
     
-    allTableViews.forEach {
+    [topLeftTableView, topRightTableView, bottomLeftTableView, bottomRightTableView].forEach {
       $0.register(UITableViewCell.self, forCellReuseIdentifier: "CellId")
       $0.alwaysBounceVertical = false
       $0.tableFooterView = UIView(frame: .zero)
-      $0.backgroundColor =  UIColor(hexString: "#f7f8fa")
+      $0.backgroundColor = UIColor(hexString: "#f7f8fa")
     }
     
-    allTableViewsStackView.addBackground(color: .white)
+    gridStackView.addBackground(color: .white)
     
   }
   

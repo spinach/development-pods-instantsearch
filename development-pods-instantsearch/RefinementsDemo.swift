@@ -10,6 +10,10 @@ import Foundation
 import UIKit
 import InstantSearchCore
 
+protocol SearcherPluggable {
+  func plug<R: Codable>(_ searcher: SingleIndexSearcher<R>)
+}
+
 class RefinementsDemo: UIViewController {
 
   let colorAttribute = Attribute("color")
@@ -158,9 +162,7 @@ extension RefinementsDemo {
   }
 
   @objc func clearButtonTapped() {
-    filterState.notify { (filterState) in
-      filterState.removeAll()
-    }
+    filterState.notify(.removeAll)
   }
   
 }

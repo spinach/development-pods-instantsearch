@@ -8,71 +8,23 @@
 
 import UIKit
 import InstantSearchCore
-import InstantSearchClient
 
 class SingleIndexController: UIViewController, UITableViewDataSource {
 
-  private let ALGOLIA_APP_ID = "latency"
-  private let ALGOLIA_INDEX_NAME = "bestbuy_promo"
-  private let ALGOLIA_API_KEY = "1f6fd3a6fb973cb08419fe7d288fa4db"
-
+  var searchBarWidget: SearchBarWidget!
   let hitsViewModel = HitsViewModel<JSON>()
 
   var tableView = UITableView()
-  var textFieldWidget: TextFieldWidget!
   var activityIndicator = UIActivityIndicatorView()
-  let textField = UITextField()
-  var searcher: SingleIndexSearcher<JSON>!
-  var client: Client!
-  var index: Index!
-  let query = Query()
-  let filterState = FilterState()
+  let searchBar = UISearchBar()
 
   override func viewDidLoad() {
     super.viewDidLoad()
 
     tableView.dataSource = self
-
     setupUI()
+    searchBarWidget = SearchBarWidget(searchBar: searchBar)
 
-    textFieldWidget = TextFieldWidget(textField: textField)
-    client = Client(appID: ALGOLIA_APP_ID, apiKey: ALGOLIA_API_KEY)
-    index = client.index(withName: ALGOLIA_INDEX_NAME)
-    searcher = SingleIndexSearcher(index: index, query: query, filterState: filterState)
-    query.facets = ["category"]
-    searcher.search()
-
-    textFieldWidget.subscribeToTextChangeHandler { (text) in
-      self.searcher.setQuery(text: text)
-      self.query.page = 0
-      self.searcher.search()
-    }
-
-    self.searcher.isLoading.subscribe(with: self) { (isLoading) in
-      if isLoading {
-        self.activityIndicator.startAnimating()
-      } else {
-        self.activityIndicator.stopAnimating()
-      }
-
-    }.onQueue(.main)
-
-    self.searcher.onResultsChanged.subscribe(with: self) { [weak self] (queryMetada, result) in
-      switch result {
-      case .success(let result): self?.hitsViewModel.update(result, with: queryMetada)
-      case .failure(let error):
-        print(error)
-        break
-      }
-
-      self?.tableView.reloadData()
-    }
-
-    self.hitsViewModel.onNewPage.subscribe(with: self) { [weak self] (page) in
-      //self?.searcher.indexSearchData.query.page = UInt(page)
-      self?.query.page = UInt(page)
-      self?.searcher.search()
-    }
   }
 
   // MARK: - Table View
@@ -105,30 +57,81 @@ class SingleIndexController: UIViewController, UITableViewDataSource {
 }
 
 extension SingleIndexController {
+  
   fileprivate func setupUI() {
+    searchBar.translatesAutoresizingMaskIntoConstraints = false
     tableView.translatesAutoresizingMaskIntoConstraints = false
-    textField.translatesAutoresizingMaskIntoConstraints = false
     activityIndicator.translatesAutoresizingMaskIntoConstraints = false
     self.view.addSubview(tableView)
-    self.view.addSubview(textField)
+    self.view.addSubview(searchBar)
     self.view.addSubview(activityIndicator)
 
-    textField.backgroundColor = .white
+    searchBar.searchBarStyle = .minimal
     activityIndicator.style = .gray
 
     activityIndicator.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 8).isActive = true
     activityIndicator.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20).isActive = true
 
-    textField.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 0).isActive = true
-    textField.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 0).isActive = true
-    textField.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 0).isActive = true
-    textField.bottomAnchor.constraint(equalTo: tableView.topAnchor, constant: 0).isActive = true
-    textField.heightAnchor.constraint(equalToConstant: 40).isActive = true
+    searchBar.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 0).isActive = true
+    searchBar.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 0).isActive = true
+    searchBar.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: 0).isActive = true
+    searchBar.heightAnchor.constraint(equalToConstant: 40).isActive = true
 
-    tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 0).isActive = true
-    tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 0).isActive = true
-    tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 0).isActive = true
+    NSLayoutConstraint.activate([
+      tableView.topAnchor.constraint(equalTo: searchBar.bottomAnchor, constant: 0),
+      tableView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 0),
+      tableView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: 0),
+      tableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: 0),
+    ])
+
 
     tableView.register(UITableViewCell.self, forCellReuseIdentifier: "CellId")
   }
+  
+}
+
+extension SingleIndexController: SearcherPluggable {
+  
+  func plug<R>(_ searcher: SingleIndexSearcher<R>) where R : Decodable, R : Encodable {
+    
+    searcher.search()
+    
+    searcher.indexSearchData.query.facets = ["category"]
+    
+    searchBarWidget.subscribeToTextChangeHandler { text in
+      searcher.setQuery(text: text)
+      searcher.indexSearchData.query.page = 0
+      searcher.search()
+    }
+    
+    searcher.isLoading.subscribe(with: self) { isLoading in
+      if isLoading {
+        self.activityIndicator.startAnimating()
+      } else {
+        self.activityIndicator.stopAnimating()
+      }
+      
+      }.onQueue(.main)
+    
+    searcher.onResultsChanged.subscribe(with: self) { [weak self] (queryMetada, result) in
+      switch result {
+      case .success(let result):
+        let data = try! JSONEncoder().encode(result)
+        let jsonResult = try! JSONDecoder().decode(SearchResults<JSON>.self, from: data)
+        self?.hitsViewModel.update(jsonResult, with: queryMetada)
+        
+      case .failure(let error):
+        print(error)
+        break
+      }
+      
+      self?.tableView.reloadData()
+    }
+    
+    self.hitsViewModel.onNewPage.subscribe(with: self) { page in
+      searcher.indexSearchData.query.page = UInt(page)
+      searcher.search()
+    }
+  }
+  
 }

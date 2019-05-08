@@ -28,4 +28,6 @@ struct DemoDescriptor {
     apiKey: "1f6fd3a6fb973cb08419fe7d288fa4db",
     controller: ToggleDemo())
   
+  static let singleIndex = DemoDescriptor(appID: "latency", indexName: "bestbuy_promo", apiKey: "1f6fd3a6fb973cb08419fe7d288fa4db", controller: SingleIndexController())
+  
 }
