@@ -13,10 +13,12 @@ import InstantSearchCore
 class ToggleDemo: UIViewController {
   
   let promotionsAttribute = Attribute("promotions")
+  
   var freeShippingViewModel: SelectableViewModel<Filter.Facet>!
   var sizeConstraintViewModel: SelectableViewModel<Filter.Numeric>!
   var vintageViewModel: SelectableViewModel<Filter.Tag>!
   var couponViewModel: SelectableViewModel<Filter.Facet>!
+  
   var promotionsViewModel: SelectableFacetsViewModel!
   
   let mainStackView = UIStackView()
@@ -37,20 +39,29 @@ class ToggleDemo: UIViewController {
     
     setupUI()
     
+    // Free shipping button
+    
     let freeShipingFacet = Filter.Facet(attribute: promotionsAttribute, stringValue: "free shipping")
     freeShippingViewModel = SelectableViewModel(item: freeShipingFacet)
     let freeShippingButtonController = RefinementFilterButtonController<Filter.Facet>(button: freeShippingButton)
     freeShippingViewModel.connectViewController(freeShippingButtonController)
+    
+    // Size constraint button
     
     let sizeConstraintFilter = Filter.Numeric(attribute: "size", operator: .greaterThan, value: 40)
     sizeConstraintViewModel = SelectableViewModel(item: sizeConstraintFilter)
     let sizeConstraintButtonController = RefinementFilterButtonController<Filter.Numeric>(button: sizeButton)
     sizeConstraintViewModel.connectViewController(sizeConstraintButtonController)
     
+    // Vintage tag button
+    
     let vintageFilter = Filter.Tag(value: "vintage")
     vintageViewModel = SelectableViewModel(item: vintageFilter)
     let vintageButtonController = RefinementFilterButtonController<Filter.Tag>(button: vintageButton)
     vintageViewModel.connectViewController(vintageButtonController)
+    
+    
+    // Coupon switch
     
     let couponFacet = Filter.Facet(attribute: promotionsAttribute, stringValue: "coupon")
     couponViewModel = SelectableViewModel<Filter.Facet>(item: couponFacet)
@@ -58,10 +69,10 @@ class ToggleDemo: UIViewController {
     let switchController = RefinementFilterSwitchController<Filter.Facet>(switch: couponSwitch)
     couponViewModel.connectViewController(switchController)
     
+    // Promotions list
+    
     promotionsViewModel = RefinementFacetsViewModel(selectionMode: .multiple)
-    
     let promotionsController = FacetsController(tableView: promotionsTableView)
-    
     promotionsViewModel.connectController(promotionsController)
   }
   

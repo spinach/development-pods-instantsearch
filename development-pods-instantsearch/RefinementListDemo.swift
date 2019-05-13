@@ -44,10 +44,6 @@ class RefinementListDemo: UIViewController {
     let colorAController = FacetsController(tableView: topLeftTableView, titleDescriptor: colorATitleDescriptor)
     colorAViewModel.connectController(colorAController, with: colorAPresenter)
     
-    segmentedControlVM = RefinementFacetsViewModel(selectionMode: .single)
-    let segmentedController = SegmentedController(segmentedControl: segmentedControl)
-    colorAViewModel.connectController(segmentedController)
-
     
     // Top right - Color B
     colorBViewModel = RefinementFacetsViewModel(selectionMode: .single)
@@ -63,12 +59,17 @@ class RefinementListDemo: UIViewController {
     let promotionController = FacetsController(tableView: bottomLeftTableView, titleDescriptor: promotionTitleDescriptor)
     promotionViewModel.connectController(promotionController, with: promotionPresenter)
     
-    // Bottom Right - Category
+    // Bottom Right - Category TODO: rename it
     bottomRightViewModel = RefinementFacetsViewModel()
     let categoryRefinementListPresenter = RefinementFacetsPresenter(sortBy: [.count(order: .descending), .alphabetical(order: .ascending)])
     let categoryTitleDescriptor = TitleDescriptor(text: "Or, CountDesc-AlphaAsc, I=5", color: .init(hexString: "#ff0099cc"))
     let categoryController = FacetsController(tableView: bottomRightTableView, titleDescriptor: categoryTitleDescriptor)
     bottomRightViewModel.connectController(categoryController, with: categoryRefinementListPresenter)
+
+    
+    segmentedControlVM = RefinementFacetsViewModel(selectionMode: .single)
+    let segmentedController = SegmentedController(segmentedControl: segmentedControl)
+    bottomRightViewModel.connectController(segmentedController)
 
   }
 

@@ -27,7 +27,7 @@ class RefinementsDemo: UIViewController {
   var filterState: FilterState = FilterState()
   var query: Query = Query()
   
-  var demo: DemoDescriptor = .toggle
+  var demo: DemoDescriptor = .singleIndex
 
   let mainStackView = UIStackView()
   let headerStackView = UIStackView()
@@ -46,16 +46,18 @@ class RefinementsDemo: UIViewController {
     searcher = SingleIndexSearcher(index: index, query: query, filterState: filterState)
     
     setupUI()
+    
+    let colorMap: [String: UIColor] = [
+      "_tags": UIColor(hexString: "#9673b4"),
+      "size": UIColor(hexString: "#698c28"),
+      self.colorAttribute.name: .red,
+      self.promotionsAttribute.name: .blue,
+      self.categoryAttribute.name: .green
+    ]
 
     searcher.indexSearchData.filterState.onChange.subscribe(with: self) { filterState in
-      self.filterValueLabel.attributedText = self.searcher.indexSearchData.filterState.toFilterGroups().compactMap({ $0 as? FilterGroupType & SQLSyntaxConvertible }).sqlFormWithSyntaxHighlighting(
-        colorMap: [
-          "_tags": UIColor(hexString: "#9673b4"),
-          "size": UIColor(hexString: "#698c28"),
-          self.colorAttribute.name: .red,
-          self.promotionsAttribute.name: .blue,
-          self.categoryAttribute.name: .green
-        ])
+      self.filterValueLabel.attributedText = self.searcher.indexSearchData.filterState.toFilterGroups().sqlFormWithSyntaxHighlighting(
+        colorMap: colorMap)
     }
     
     searcher.search()
@@ -167,19 +169,30 @@ extension RefinementsDemo {
   
 }
 
-extension Collection where Element == FilterGroupType & SQLSyntaxConvertible {
+extension Collection where Element == FilterGroupType {
 
   public func sqlFormWithSyntaxHighlighting(colorMap: [String: UIColor]) -> NSAttributedString {
-    return map { element in
-      var color: UIColor = .darkText
+    let converter = FilterGroupConverter()
+    return compactMap { element -> NSAttributedString? in
+      
+      let color: UIColor
+      
       if let groupName = element.name, let specifiedColor = colorMap[groupName] {
         color = specifiedColor
+      } else {
+        color = .darkText
       }
 
-      return NSMutableAttributedString()
-        .appendWith(color: color, weight: .regular, ofSize: 18.0, element.sqlForm.replacingOccurrences(of: "\"", with: ""))
-      }.joined(separator: NSMutableAttributedString()
-        .appendWith(weight: .semibold, ofSize: 18.0, " AND "))
+      return converter.sql(element)
+        .flatMap { $0.replacingOccurrences(of: "\"", with: "") }
+        .flatMap { sqlString in
+          return NSMutableAttributedString()
+            .appendWith(color: color, weight: .regular, ofSize: 18.0, sqlString)
+        }
+      
+    }
+      .joined(separator: NSMutableAttributedString()
+      .appendWith(weight: .semibold, ofSize: 18.0, " AND "))
   }
 
 }

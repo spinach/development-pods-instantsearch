@@ -8,41 +8,32 @@
 
 import UIKit
 import InstantSearchCore
+import InstantSearch
 
-class SingleIndexController: UIViewController, UITableViewDataSource {
+class SingleIndexController: UIViewController {
 
   var searchBarWidget: SearchBarWidget!
   let hitsViewModel = HitsViewModel<JSON>()
-
-  var tableView = UITableView()
-  var activityIndicator = UIActivityIndicatorView()
+  var hitsWidget: TableViewHitsWidget<HitsViewModel<JSON>>!
+  let tableView = UITableView()
+  let activityIndicator = UIActivityIndicatorView()
   let searchBar = UISearchBar()
 
   override func viewDidLoad() {
     super.viewDidLoad()
-
-    tableView.dataSource = self
-    setupUI()
+    
     searchBarWidget = SearchBarWidget(searchBar: searchBar)
-
-  }
-
-  // MARK: - Table View
-
-  func numberOfSections(in tableView: UITableView) -> Int {
-    return 1
-  }
-
-  func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    return hitsViewModel.numberOfHits()
-  }
-
-  func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-    let cell = tableView.dequeueReusableCell(withIdentifier: "CellId", for: indexPath)
-
-    let rawHit = hitsViewModel.rawHitAtIndex(indexPath.row)
-    cell.textLabel!.text = rawHit?["name"] as? String
-    return cell
+    
+    hitsWidget = TableViewHitsWidget(tableView: tableView)
+    
+    hitsWidget.dataSource = TableViewHitsDataSource<HitsViewModel<JSON>>(cellConfigurator: { (tableView, rawHit, indexPath) -> UITableViewCell in
+      let cell = tableView.dequeueReusableCell(withIdentifier: "CellId", for: indexPath)
+      cell.textLabel!.text = [String: Any](rawHit)?["name"] as? String
+      return cell
+    })
+        
+    setupUI()
+    
   }
 
 //  override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -110,28 +101,14 @@ extension SingleIndexController: SearcherPluggable {
       } else {
         self.activityIndicator.stopAnimating()
       }
-      
-      }.onQueue(.main)
+    }.onQueue(.main)
     
-    searcher.onResultsChanged.subscribe(with: self) { [weak self] (queryMetada, result) in
-      switch result {
-      case .success(let result):
-        let data = try! JSONEncoder().encode(result)
-        let jsonResult = try! JSONDecoder().decode(SearchResults<JSON>.self, from: data)
-        self?.hitsViewModel.update(jsonResult, with: queryMetada)
-        
-      case .failure(let error):
-        print(error)
-        break
-      }
-      
-      self?.tableView.reloadData()
+    if let searcher = searcher as? SingleIndexSearcher<JSON> {
+      hitsViewModel.connectSearcher(searcher)
     }
     
-    self.hitsViewModel.onNewPage.subscribe(with: self) { page in
-      searcher.indexSearchData.query.page = UInt(page)
-      searcher.search()
-    }
+    hitsViewModel.connectController(hitsWidget)
+    
   }
   
 }
