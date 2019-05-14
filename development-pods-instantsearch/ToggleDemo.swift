@@ -13,12 +13,12 @@ import InstantSearchCore
 class ToggleDemo: UIViewController {
   
   let promotionsAttribute = Attribute("promotions")
-  
+
   var freeShippingViewModel: SelectableViewModel<Filter.Facet>!
   var sizeConstraintViewModel: SelectableViewModel<Filter.Numeric>!
   var vintageViewModel: SelectableViewModel<Filter.Tag>!
   var couponViewModel: SelectableViewModel<Filter.Facet>!
-  
+
   var promotionsViewModel: SelectableFacetsViewModel!
   
   let mainStackView = UIStackView()
@@ -31,7 +31,8 @@ class ToggleDemo: UIViewController {
   
   let sizeButton = UIButton(frame: .zero)
   let vintageButton = UIButton(frame: .zero)
-  
+
+
   let promotionsTableView = UITableView(frame: .zero, style: .plain)
   
   override func viewDidLoad() {
@@ -69,11 +70,15 @@ class ToggleDemo: UIViewController {
     let switchController = RefinementFilterSwitchController<Filter.Facet>(switch: couponSwitch)
     couponViewModel.connectViewController(switchController)
     
+
+    
     // Promotions list
     
     promotionsViewModel = RefinementFacetsViewModel(selectionMode: .multiple)
     let promotionsController = FacetsController(tableView: promotionsTableView)
     promotionsViewModel.connectController(promotionsController)
+    
+    
   }
   
 }
@@ -86,6 +91,7 @@ extension ToggleDemo: SearcherPluggable {
     sizeConstraintViewModel.connectSearcher(searcher, operator: .or)
     vintageViewModel.connectSearcher(searcher, operator: .or)
     promotionsViewModel.connectSearcher(searcher, with: promotionsAttribute, operator: .or)
+    
   }
   
 }
@@ -120,7 +126,6 @@ fileprivate extension ToggleDemo {
     togglesStackView.addArrangedSubview(couponStackView)
     togglesStackView.addArrangedSubview(sizeButton)
     togglesStackView.addArrangedSubview(vintageButton)
-
     mainStackView.addArrangedSubview(togglesStackView)
     mainStackView.addArrangedSubview(promotionsTableView)
     

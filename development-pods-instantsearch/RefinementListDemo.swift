@@ -16,17 +16,15 @@ extension CGFloat {
 
 class RefinementListDemo: UIViewController {
   
-  var segmentedControlVM: RefinementFacetsViewModel!
   var colorAViewModel: SelectableFacetsViewModel!
   var colorBViewModel: SelectableFacetsViewModel!
-  var bottomRightViewModel: SelectableFacetsViewModel!
+  var categoryViewModel: SelectableFacetsViewModel!
   var promotionViewModel: SelectableFacetsViewModel!
 
   let colorAttribute = Attribute("color")
   let promotionAttribute = Attribute("promotions")
   let categoryAttribute = Attribute("category")
   
-  let segmentedControl = UISegmentedControl(frame: .zero)
   let topLeftTableView = UITableView()
   let topRightTableView = UITableView()
   let bottomLeftTableView = UITableView()
@@ -60,16 +58,11 @@ class RefinementListDemo: UIViewController {
     promotionViewModel.connectController(promotionController, with: promotionPresenter)
     
     // Bottom Right - Category TODO: rename it
-    bottomRightViewModel = RefinementFacetsViewModel()
+    categoryViewModel = RefinementFacetsViewModel()
     let categoryRefinementListPresenter = RefinementFacetsPresenter(sortBy: [.count(order: .descending), .alphabetical(order: .ascending)])
     let categoryTitleDescriptor = TitleDescriptor(text: "Or, CountDesc-AlphaAsc, I=5", color: .init(hexString: "#ff0099cc"))
     let categoryController = FacetsController(tableView: bottomRightTableView, titleDescriptor: categoryTitleDescriptor)
-    bottomRightViewModel.connectController(categoryController, with: categoryRefinementListPresenter)
-
-    
-    segmentedControlVM = RefinementFacetsViewModel(selectionMode: .single)
-    let segmentedController = SegmentedController(segmentedControl: segmentedControl)
-    bottomRightViewModel.connectController(segmentedController)
+    categoryViewModel.connectController(categoryController, with: categoryRefinementListPresenter)
 
   }
 
@@ -87,7 +80,7 @@ extension RefinementListDemo: SearcherPluggable {
     colorAViewModel.connectSearcher(searcher, with: colorAttribute, operator: .and)
     colorBViewModel.connectSearcher(searcher, with: colorAttribute, operator: .and)
     promotionViewModel.connectSearcher(searcher, with: promotionAttribute, operator: .and)
-    bottomRightViewModel.connectSearcher(searcher, with: categoryAttribute, operator: .or)
+    categoryViewModel.connectSearcher(searcher, with: categoryAttribute, operator: .or)
   }
   
 }
@@ -101,10 +94,6 @@ extension RefinementListDemo {
     mainStackView.distribution = .fill
     mainStackView.translatesAutoresizingMaskIntoConstraints = false
     mainStackView.spacing = 5
-    
-    segmentedControl.heightAnchor.constraint(equalToConstant: 40).isActive = true
-    
-    mainStackView.addArrangedSubview(segmentedControl)
     
     let gridStackView = UIStackView()
     gridStackView.axis = .vertical

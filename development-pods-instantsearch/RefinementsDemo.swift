@@ -27,7 +27,7 @@ class RefinementsDemo: UIViewController {
   var filterState: FilterState = FilterState()
   var query: Query = Query()
   
-  var demo: DemoDescriptor = .singleIndex
+  var demo: DemoDescriptor = .segmented
 
   let mainStackView = UIStackView()
   let headerStackView = UIStackView()

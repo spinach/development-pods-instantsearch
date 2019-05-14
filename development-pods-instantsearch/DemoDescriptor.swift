@@ -18,16 +18,26 @@ struct DemoDescriptor {
   
   static let refinementList = DemoDescriptor(
     appID: "latency",
-    indexName: "mobile_demo_refinement_facets",
+    indexName: "mobile_demo_facet_list",
     apiKey: "1f6fd3a6fb973cb08419fe7d288fa4db",
     controller: RefinementListDemo())
   
   static let toggle = DemoDescriptor(
     appID: "latency",
-    indexName: "mobile_demo_refinement_filter",
+    indexName: "mobile_demo_filter_toggle",
     apiKey: "1f6fd3a6fb973cb08419fe7d288fa4db",
     controller: ToggleDemo())
   
-  static let singleIndex = DemoDescriptor(appID: "latency", indexName: "bestbuy_promo", apiKey: "1f6fd3a6fb973cb08419fe7d288fa4db", controller: SingleIndexController())
+  static let singleIndex = DemoDescriptor(
+    appID: "latency",
+    indexName: "bestbuy_promo",
+    apiKey: "1f6fd3a6fb973cb08419fe7d288fa4db",
+    controller: SingleIndexController())
+  
+  static let segmented = DemoDescriptor(
+    appID: "latency",
+    indexName: "mobile_demo_filter_segment",
+    apiKey: "1f6fd3a6fb973cb08419fe7d288fa4db",
+    controller: SegmentedDemo())
   
 }

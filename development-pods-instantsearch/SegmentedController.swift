@@ -9,38 +9,36 @@
 import Foundation
 import InstantSearchCore
 
-class SegmentedController: NSObject, RefinementFacetsViewController {
+class SegmentedController<Value: FilterType>: NSObject, SelectableMapController {
   
-  var onClick: ((Facet) -> Void)?
+  typealias Key = Int
   
-  var segmentedControl: UISegmentedControl
+  let segmentedControl: UISegmentedControl
   
-  var selectableItems: [RefinementFacet] = []
-  
-  func setSelectableItems(selectableItems: [(item: Facet, isSelected: Bool)]) {
-    self.selectableItems = selectableItems
-  }
-  
-  func reload() {
-    segmentedControl.removeAllSegments()
-   
-    for (index, item) in selectableItems.enumerated() {
-      segmentedControl.insertSegment(withTitle: item.item.value, at: index, animated: false)
-      if item.isSelected {
-        segmentedControl.selectedSegmentIndex = index
-      }
-    }
-  }
+  var onClick: ((Int) -> Void)?
   
   public init(segmentedControl: UISegmentedControl) {
     self.segmentedControl = segmentedControl
     super.init()
     segmentedControl.addTarget(self, action: #selector(didSelectSegment(_:)), for: .valueChanged)
   }
+
+  func setSelected(_ selected: Int?) {
+    segmentedControl.selectedSegmentIndex = selected ?? UISegmentedControl.noSegment
+  }
+  
+  func setItems(items: [Int : String]) {
+    segmentedControl.removeAllSegments()
+    
+    for item in items {
+      segmentedControl.insertSegment(withTitle: item.value, at: item.key, animated: false)
+    }
+  }
   
   @objc private func didSelectSegment(_ segmentedControl: UISegmentedControl) {
-    let item = selectableItems[segmentedControl.selectedSegmentIndex].item
-    onClick?(item)
+    if segmentedControl.selectedSegmentIndex != UISegmentedControl.noSegment {
+      onClick?(segmentedControl.selectedSegmentIndex)
+    }
   }
   
 }
