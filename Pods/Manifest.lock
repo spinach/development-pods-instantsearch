@@ -11,9 +11,9 @@ PODS:
   - Signals (6.0.1)
 
 DEPENDENCIES:
-  - InstantSearch (from `/Users/vladislavfitc/Workspace/instantsearch-ios`)
-  - InstantSearchClient (from `/Users/vladislavfitc/Workspace/algoliasearch-client-swift`)
-  - InstantSearchCore (from `/Users/vladislavfitc/Workspace/instantsearch-core-swift`)
+  - InstantSearch (from `/Users/guydaher/Developer/Algolia/iOS/instantsearch-ios`)
+  - InstantSearchClient (from `/Users/guydaher/Developer/Algolia/iOS/algoliasearch-client-swift`)
+  - InstantSearchCore (from `/Users/guydaher/Developer/Algolia/iOS/instantsearch-core-swift`)
 
 SPEC REPOS:
   https://github.com/cocoapods/specs.git:
@@ -21,11 +21,11 @@ SPEC REPOS:
 
 EXTERNAL SOURCES:
   InstantSearch:
-    :path: "/Users/vladislavfitc/Workspace/instantsearch-ios"
+    :path: "/Users/guydaher/Developer/Algolia/iOS/instantsearch-ios"
   InstantSearchClient:
-    :path: "/Users/vladislavfitc/Workspace/algoliasearch-client-swift"
+    :path: "/Users/guydaher/Developer/Algolia/iOS/algoliasearch-client-swift"
   InstantSearchCore:
-    :path: "/Users/vladislavfitc/Workspace/instantsearch-core-swift"
+    :path: "/Users/guydaher/Developer/Algolia/iOS/instantsearch-core-swift"
 
 SPEC CHECKSUMS:
   InstantSearch: 2d2947ac43da7f774468326a6d9e13f2120cebfc
@@ -33,6 +33,6 @@ SPEC CHECKSUMS:
   InstantSearchCore: 0c21e6f540cbf9850f37c79b8fa2d9100349f85b
   Signals: 2c92e8639f97fe45678460840fabe2056b3190b4
 
-PODFILE CHECKSUM: a53ab191cc72532e41fac3e2af02fcc42ba7debd
+PODFILE CHECKSUM: c5b978a4bd7a8528e27f63aaf3f5baac5585c8b9
 
-COCOAPODS: 1.6.1
+COCOAPODS: 1.7.0.beta.3

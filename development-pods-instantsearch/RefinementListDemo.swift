@@ -21,6 +21,8 @@ class RefinementListDemo: UIViewController {
   var categoryViewModel: SelectableFacetsViewModel!
   var promotionViewModel: SelectableFacetsViewModel!
 
+  var tagListViewModel: FilterListViewModel.Tag!
+
   let colorAttribute = Attribute("color")
   let promotionAttribute = Attribute("promotions")
   let categoryAttribute = Attribute("category")
@@ -34,6 +36,8 @@ class RefinementListDemo: UIViewController {
     super.viewDidLoad()
     
     setupUI()
+
+    tagListViewModel = FilterListViewModel.Tag.init(items: [Filter.Tag(value: "tag 1"),Filter.Tag(value: "tag 1")])
     
     // Top Left - Color A
     colorAViewModel = RefinementFacetsViewModel(selectionMode: .single)
@@ -77,10 +81,18 @@ extension RefinementListDemo: SearcherPluggable {
       filterState.add(Filter.Facet(attribute: colorAttribute, stringValue: "green"), toGroupWithID: FilterGroup.ID.and(name: colorAttribute.name))
     }
     
-    colorAViewModel.connectSearcher(searcher, with: colorAttribute, operator: .and)
-    colorBViewModel.connectSearcher(searcher, with: colorAttribute, operator: .and)
-    promotionViewModel.connectSearcher(searcher, with: promotionAttribute, operator: .and)
-    categoryViewModel.connectSearcher(searcher, with: categoryAttribute, operator: .or)
+    colorAViewModel.connectSearcher(searcher, with: colorAttribute)
+    colorBViewModel.connectSearcher(searcher, with: colorAttribute)
+    promotionViewModel.connectSearcher(searcher, with: promotionAttribute)
+    categoryViewModel.connectSearcher(searcher, with: categoryAttribute)
+
+    colorAViewModel.connectFilterState(searcher.indexSearchData.filterState, with: colorAttribute, operator: .and)
+    colorBViewModel.connectFilterState(searcher.indexSearchData.filterState, with: colorAttribute, operator: .and)
+    promotionViewModel.connectFilterState(searcher.indexSearchData.filterState, with: promotionAttribute, operator: .and)
+    categoryViewModel.connectFilterState(searcher.indexSearchData.filterState, with: categoryAttribute, operator: .or)
+
+
+    tagListViewModel.connectFilterState(searcher.indexSearchData.filterState)
   }
   
 }

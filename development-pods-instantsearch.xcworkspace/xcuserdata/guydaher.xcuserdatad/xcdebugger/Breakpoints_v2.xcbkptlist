@@ -63,8 +63,8 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "252"
             endingLineNumber = "252"
-            landmarkName = "isDisjunctiveFacetingAvailable()"
-            landmarkType = "7">
+            landmarkName = "Filters"
+            landmarkType = "21">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -79,7 +79,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "89"
             endingLineNumber = "89"
-            landmarkName = "connect(attribute:searcher:operator:groupName:)"
+            landmarkName = "connectController(_:with:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
