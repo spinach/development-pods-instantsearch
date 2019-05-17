@@ -14,6 +14,9 @@ extension CGFloat {
   static let px16: CGFloat = 16
 }
 
+//TODO: FilterFormatter / Presenter
+
+
 class RefinementListDemo: UIViewController {
   
   var colorAViewModel: SelectableFacetsViewModel!
@@ -21,7 +24,7 @@ class RefinementListDemo: UIViewController {
   var categoryViewModel: SelectableFacetsViewModel!
   var promotionViewModel: SelectableFacetsViewModel!
 
-  var tagListViewModel: FilterListViewModel.Tag!
+  var filterListViewModel: FilterListViewModel.Numeric!
 
   let colorAttribute = Attribute("color")
   let promotionAttribute = Attribute("promotions")
@@ -37,35 +40,66 @@ class RefinementListDemo: UIViewController {
     
     setupUI()
 
-    tagListViewModel = FilterListViewModel.Tag.init(items: [Filter.Tag(value: "tag 1"),Filter.Tag(value: "tag 1")])
+    let facetFilters: [Filter.Facet] = [
+      .init(attribute: "f1", stringValue: "v1"),
+      .init(attribute: "f2", stringValue: "v2"),
+      .init(attribute: "f3", stringValue: "v3"),
+    ]
+    
+    let numericFilters: [Filter.Numeric] = [
+      .init(attribute: "size", range: 32...42),
+      .init(attribute: "price", operator: .greaterThan, value: 100),
+      .init(attribute: "count", operator: .equals, value: 20),
+    ]
+    
+    let tags = (0...5).map { Filter.Tag(value: "Tag \($0)") }
+    
+    filterListViewModel = FilterListViewModel.Numeric(items: numericFilters)
+    let presenter: FilterPresenter = { filter in
+      switch filter {
+      case .numeric(let numericFilter):
+        switch numericFilter.value {
+        case .range(let range):
+          return "\(range.lowerBound) – \(range.upperBound)"
+          
+        case .comparison(let op, let val):
+          return "\(op.description) \(val)"
+        }
+      default:
+        return ""
+      }
+    }
+    let tagListController = FilterListTableController<Filter.Numeric>(tableView: topLeftTableView)
+    tagListController.filterFormatter = presenter
+    filterListViewModel.connectController(tagListController)
     
     // Top Left - Color A
-    colorAViewModel = RefinementFacetsViewModel(selectionMode: .single)
-    let colorAPresenter = RefinementFacetsPresenter(sortBy: [.isRefined, .alphabetical(order: .ascending)], limit: 5)
-    let colorATitleDescriptor = TitleDescriptor(text: "And, IsRefined-AlphaAsc, I=5", color: .init(hexString: "#ffcc0000"))
-    let colorAController = FacetsController(tableView: topLeftTableView, titleDescriptor: colorATitleDescriptor)
-    colorAViewModel.connectController(colorAController, with: colorAPresenter)
+//    colorAViewModel = RefinementFacetsViewModel(selectionMode: .single)
+//    let colorAPresenter = RefinementFacetsPresenter(sortBy: [.isRefined, .alphabetical(order: .ascending)], limit: 5)
+//    let colorATitleDescriptor = TitleDescriptor(text: "And, IsRefined-AlphaAsc, I=5", color: .init(hexString: "#ffcc0000"))
+//    let colorAController = FacetsController(tableView: topLeftTableView, titleDescriptor: colorATitleDescriptor)
+//    colorAViewModel.connectController(colorAController, with: colorAPresenter)
     
     
     // Top right - Color B
-    colorBViewModel = RefinementFacetsViewModel(selectionMode: .single)
-    let colorBPresenter = RefinementFacetsPresenter(sortBy: [.alphabetical(order: .descending)], limit: 3)
+    colorBViewModel = FacetListViewModel(selectionMode: .single)
+    let colorBPresenter = FacetListPresenter(sortBy: [.alphabetical(order: .descending)], limit: 3)
     let colorBTitleDescriptor = TitleDescriptor(text: "And, AlphaDesc, I=3", color: .init(hexString: "#ffcc0000"))
-    let colorBController = FacetsController(tableView: topRightTableView, titleDescriptor: colorBTitleDescriptor)
+    let colorBController = FacetListTableController(tableView: topRightTableView, titleDescriptor: colorBTitleDescriptor)
     colorBViewModel.connectController(colorBController, with: colorBPresenter)
     
     // Bottom Left - Promotion
-    promotionViewModel = RefinementFacetsViewModel()
-    let promotionPresenter = RefinementFacetsPresenter(sortBy: [.count(order: .descending)], limit: 5)
+    promotionViewModel = FacetListViewModel()
+    let promotionPresenter = FacetListPresenter(sortBy: [.count(order: .descending)], limit: 5)
     let promotionTitleDescriptor = TitleDescriptor(text: "And, CountDesc, I=5", color: .init(hexString: "#ff669900"))
-    let promotionController = FacetsController(tableView: bottomLeftTableView, titleDescriptor: promotionTitleDescriptor)
+    let promotionController = FacetListTableController(tableView: bottomLeftTableView, titleDescriptor: promotionTitleDescriptor)
     promotionViewModel.connectController(promotionController, with: promotionPresenter)
     
-    // Bottom Right - Category TODO: rename it
-    categoryViewModel = RefinementFacetsViewModel()
-    let categoryRefinementListPresenter = RefinementFacetsPresenter(sortBy: [.count(order: .descending), .alphabetical(order: .ascending)])
+    // Bottom Right - Category
+    categoryViewModel = FacetListViewModel()
+    let categoryRefinementListPresenter = FacetListPresenter(sortBy: [.count(order: .descending), .alphabetical(order: .ascending)])
     let categoryTitleDescriptor = TitleDescriptor(text: "Or, CountDesc-AlphaAsc, I=5", color: .init(hexString: "#ff0099cc"))
-    let categoryController = FacetsController(tableView: bottomRightTableView, titleDescriptor: categoryTitleDescriptor)
+    let categoryController = FacetListTableController(tableView: bottomRightTableView, titleDescriptor: categoryTitleDescriptor)
     categoryViewModel.connectController(categoryController, with: categoryRefinementListPresenter)
 
   }
@@ -77,22 +111,21 @@ extension RefinementListDemo: SearcherPluggable {
   func plug<R: Codable>(_ searcher: SingleIndexSearcher<R>) {
     
     // predefined filter
-    searcher.indexSearchData.filterState.notify { (filterState) in
-      filterState.add(Filter.Facet(attribute: colorAttribute, stringValue: "green"), toGroupWithID: FilterGroup.ID.and(name: colorAttribute.name))
-    }
+    let greenColor = Filter.Facet(attribute: colorAttribute, stringValue: "green")
+    let groupID = FilterGroup.ID.and(name: colorAttribute.name)
+    searcher.filterState.notify(.add(filter: greenColor, toGroupWithID: groupID))
     
-    colorAViewModel.connectSearcher(searcher, with: colorAttribute)
+    filterListViewModel.connectFilterState(searcher.filterState, operator: .or)
+//    colorAViewModel.connectSearcher(searcher, with: colorAttribute)
     colorBViewModel.connectSearcher(searcher, with: colorAttribute)
     promotionViewModel.connectSearcher(searcher, with: promotionAttribute)
     categoryViewModel.connectSearcher(searcher, with: categoryAttribute)
 
-    colorAViewModel.connectFilterState(searcher.indexSearchData.filterState, with: colorAttribute, operator: .and)
+//    colorAViewModel.connectFilterState(searcher.indexSearchData.filterState, with: colorAttribute, operator: .and)
     colorBViewModel.connectFilterState(searcher.indexSearchData.filterState, with: colorAttribute, operator: .and)
     promotionViewModel.connectFilterState(searcher.indexSearchData.filterState, with: promotionAttribute, operator: .and)
     categoryViewModel.connectFilterState(searcher.indexSearchData.filterState, with: categoryAttribute, operator: .or)
 
-
-    tagListViewModel.connectFilterState(searcher.indexSearchData.filterState)
   }
   
 }

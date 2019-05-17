@@ -14,7 +14,7 @@ class SegmentedDemo: UIViewController {
 
   let genderAttribute = Attribute("gender")
 
-  var genderViewModel: SelectableMapViewModel<Int, Filter.Facet>!
+  var genderViewModel: SelectableSegmentViewModel<Int, Filter.Facet>!
 
   let mainStackView = UIStackView(frame: .zero)
   let segmentedControl = UISegmentedControl(frame: .zero)
@@ -26,7 +26,7 @@ class SegmentedDemo: UIViewController {
     
     // Gender segmented control
     
-    genderViewModel = SelectableMapViewModel(items: [:])
+    genderViewModel = SelectableSegmentViewModel(items: [:])
     genderViewModel.items = [
       0: Filter.Facet(attribute: genderAttribute, stringValue: "male"),
       1: Filter.Facet(attribute: genderAttribute, stringValue: "female")

@@ -10,7 +10,7 @@ import Foundation
 import InstantSearchCore
 import UIKit
 
-class RefinementFilterSwitchController<F: FilterType>: RefinementFilterViewController {
+class RefinementFilterSwitchController<F: FilterType>: SelectableController {
   
   typealias Item = F
   

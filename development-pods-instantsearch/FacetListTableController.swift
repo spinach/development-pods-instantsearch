@@ -15,7 +15,7 @@ struct TitleDescriptor {
   let color: UIColor
 }
 
-class FacetsController: NSObject, RefinementFacetsViewController {
+class FacetListTableController: NSObject, FacetListController {
 
   var onClick: ((Facet) -> Void)?
 
@@ -44,7 +44,7 @@ class FacetsController: NSObject, RefinementFacetsViewController {
 
 }
 
-extension FacetsController: UITableViewDataSource {
+extension FacetListTableController: UITableViewDataSource {
   
   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
     return selectableItems.count
@@ -69,7 +69,7 @@ extension FacetsController: UITableViewDataSource {
   
 }
 
-extension FacetsController: UITableViewDelegate {
+extension FacetListTableController: UITableViewDelegate {
   
   func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
     let selectableItem = selectableItems[indexPath.row]

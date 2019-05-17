@@ -6,7 +6,7 @@ target 'development-pods-instantsearch' do
   use_frameworks!
   pod 'InstantSearchCore', :path => '/Users/vladislavfitc/Workspace/instantsearch-core-swift'
   pod 'InstantSearchClient', :path => '/Users/vladislavfitc/Workspace/algoliasearch-client-swift'
-
+  pod 'InstantSearch', :path => '/Users/vladislavfitc/Workspace/instantsearch-ios'
   # Pods for development-pods-instantsearch
 
   target 'development-pods-instantsearchTests' do

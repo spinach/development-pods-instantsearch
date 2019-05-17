@@ -44,21 +44,21 @@ class ToggleDemo: UIViewController {
     
     let freeShipingFacet = Filter.Facet(attribute: promotionsAttribute, stringValue: "free shipping")
     freeShippingViewModel = SelectableViewModel(item: freeShipingFacet)
-    let freeShippingButtonController = RefinementFilterButtonController<Filter.Facet>(button: freeShippingButton)
+    let freeShippingButtonController = SelectableFilterButtonController<Filter.Facet>(button: freeShippingButton)
     freeShippingViewModel.connectViewController(freeShippingButtonController)
     
     // Size constraint button
     
     let sizeConstraintFilter = Filter.Numeric(attribute: "size", operator: .greaterThan, value: 40)
     sizeConstraintViewModel = SelectableViewModel(item: sizeConstraintFilter)
-    let sizeConstraintButtonController = RefinementFilterButtonController<Filter.Numeric>(button: sizeButton)
+    let sizeConstraintButtonController = SelectableFilterButtonController<Filter.Numeric>(button: sizeButton)
     sizeConstraintViewModel.connectViewController(sizeConstraintButtonController)
     
     // Vintage tag button
     
     let vintageFilter = Filter.Tag(value: "vintage")
     vintageViewModel = SelectableViewModel(item: vintageFilter)
-    let vintageButtonController = RefinementFilterButtonController<Filter.Tag>(button: vintageButton)
+    let vintageButtonController = SelectableFilterButtonController<Filter.Tag>(button: vintageButton)
     vintageViewModel.connectViewController(vintageButtonController)
     
     
@@ -74,8 +74,8 @@ class ToggleDemo: UIViewController {
     
     // Promotions list
     
-    promotionsViewModel = RefinementFacetsViewModel(selectionMode: .multiple)
-    let promotionsController = FacetsController(tableView: promotionsTableView)
+    promotionsViewModel = FacetListViewModel(selectionMode: .multiple)
+    let promotionsController = FacetListTableController(tableView: promotionsTableView)
     promotionsViewModel.connectController(promotionsController)
     
     

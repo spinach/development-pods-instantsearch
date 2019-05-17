@@ -9,7 +9,7 @@
 import Foundation
 import InstantSearchCore
 
-class SegmentedController<Value: FilterType>: NSObject, SelectableMapController {
+class SegmentedController<Value: FilterType>: NSObject, SelectableSegmentController {
   
   typealias Key = Int
   
