@@ -1,6 +1,0 @@
-framework module Pods_development_pods_instantsearchTests {
-  umbrella header "Pods-development-pods-instantsearchTests-umbrella.h"
-
-  export *
-  module * { export * }
-}
