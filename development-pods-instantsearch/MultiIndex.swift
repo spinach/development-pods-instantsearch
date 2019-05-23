@@ -18,7 +18,7 @@ class MultindexController: UIViewController, UITableViewDataSource {
   let hitsViewModel = MultiHitsViewModel()
 
   var tableView = UITableView()
-  var textFieldWidget: TextFieldWidget!
+  var textFieldController: TextFieldController!
   let textField = UITextField()
   var searcher: MultiIndexSearcher!
   var client: Client!
@@ -50,7 +50,7 @@ class MultindexController: UIViewController, UITableViewDataSource {
 
     tableView.register(UITableViewCell.self, forCellReuseIdentifier: "CellId")
 
-    textFieldWidget = TextFieldWidget(textField: textField)
+    textFieldController = TextFieldController(textField: textField)
     client = Client(appID: ALGOLIA_APP_ID, apiKey: ALGOLIA_API_KEY)
     let actorsIndex = client.index(withName: "actors")
     let moviesIndex = client.index(withName: "movies")
@@ -64,7 +64,7 @@ class MultindexController: UIViewController, UITableViewDataSource {
 
     searcher.search()
 
-    textFieldWidget.subscribeToTextChangeHandler { (text) in
+    textFieldController.onSearch = { text in
       self.searcher.setQuery(text: text)
       self.searcher.search()
     }

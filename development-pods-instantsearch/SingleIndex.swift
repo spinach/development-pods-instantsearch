@@ -12,7 +12,7 @@ import InstantSearch
 
 class SingleIndexController: UIViewController {
 
-  var searchBarWidget: SearchBarWidget!
+  var searchBarController: SearchBarController!
   let hitsViewModel = HitsViewModel<JSON>()
   var hitsController: HitsTableController<HitsViewModel<JSON>>!
   let tableView = UITableView()
@@ -22,7 +22,7 @@ class SingleIndexController: UIViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     
-    searchBarWidget = SearchBarWidget(searchBar: searchBar)
+    searchBarController = SearchBarController(searchBar: searchBar)
     
     hitsController = HitsTableController(tableView: tableView)
     
@@ -89,7 +89,7 @@ extension SingleIndexController: SearcherPluggable {
     
     searcher.indexSearchData.query.facets = ["category"]
     
-    searchBarWidget.subscribeToTextChangeHandler { text in
+    searchBarController.onSearch = { text in
       searcher.setQuery(text: text)
       searcher.indexSearchData.query.page = 0
       searcher.search()
