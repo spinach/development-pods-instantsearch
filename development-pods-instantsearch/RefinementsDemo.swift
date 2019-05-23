@@ -34,7 +34,7 @@ class RefinementsDemo: UIViewController {
   var filterState: FilterState = FilterState()
   var query: Query = Query()
   
-  var demo: DemoDescriptor = .singleIndex
+  var demo: DemoDescriptor = .refinementList
 
   let mainStackView = UIStackView()
   let headerStackView = UIStackView()
@@ -44,6 +44,7 @@ class RefinementsDemo: UIViewController {
   let activityIndicator = UIActivityIndicatorView()
   var loadableController: ActivityIndicatorController!
   let clearButton = UIButton(type: .custom)
+  var statsController: StatsController!
   
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -76,14 +77,8 @@ class RefinementsDemo: UIViewController {
     searcher.connectController(loadableController)
     facetSearcher.connectController(loadableController)
 
-    searcher.onResultsChanged.subscribe(with: self) { (queryMetadata, result) in
-      switch result {
-      case .failure:
-        self.filterValueLabel.text = "Network error"
-      case .success(let results):
-        self.hitsCountLabel.text = "hits: \(results.totalHitsCount)"
-      }
-    }
+    statsController = LabelStatsController(label: hitsCountLabel)
+    searcher.connectController(statsController)
   }
 }
 

@@ -89,7 +89,7 @@ extension SingleIndexController: SearcherPluggable {
     
     searcher.indexSearchData.query.facets = ["category"]
     
-    searchBarController.onSearch = { text in
+    searchBarController.onSearch.subscribe(with: self) { text in
       searcher.setQuery(text: text)
       searcher.indexSearchData.query.page = 0
       searcher.search()
