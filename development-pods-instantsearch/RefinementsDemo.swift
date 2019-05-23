@@ -12,6 +12,13 @@ import InstantSearchCore
 
 protocol SearcherPluggable {
   func plug<R: Codable>(_ searcher: SingleIndexSearcher<R>)
+  func plug(_ facetSearcher: FacetSearcher)
+}
+
+extension SearcherPluggable {
+  func plug(_ facetSearcher: FacetSearcher) {
+    // defaults to doing nothing
+  }
 }
 
 class RefinementsDemo: UIViewController {
@@ -21,19 +28,21 @@ class RefinementsDemo: UIViewController {
   let categoryAttribute = Attribute("category")
 
   var searcher: SingleIndexSearcher<JSON>!
-  var searcherSFFV: FacetSearcher!
+  var facetSearcher: FacetSearcher!
   var client: Client!
   var index: Index!
   var filterState: FilterState = FilterState()
   var query: Query = Query()
   
-  var demo: DemoDescriptor = .refinementList
+  var demo: DemoDescriptor = .sffv
 
   let mainStackView = UIStackView()
   let headerStackView = UIStackView()
   let titleLabel = UILabel()
   let filterValueLabel = UILabel()
   let hitsCountLabel = UILabel()
+  let activityIndicator = UIActivityIndicatorView()
+  var loadableController: ActivityIndicatorController!
   let clearButton = UIButton(type: .custom)
   
   override func viewDidLoad() {
@@ -44,7 +53,8 @@ class RefinementsDemo: UIViewController {
     client = Client(appID: demo.appID, apiKey: demo.apiKey)
     index = client.index(withName: demo.indexName)
     searcher = SingleIndexSearcher(index: index, query: query, filterState: filterState)
-    
+    facetSearcher = FacetSearcher(index: index, query: query, filterState: filterState, facetName: colorAttribute.name)
+
     setupUI()
     
     let colorMap: [String: UIColor] = [
@@ -62,6 +72,10 @@ class RefinementsDemo: UIViewController {
     
     searcher.search()
 
+    loadableController = ActivityIndicatorController(activityIndicator: activityIndicator)
+    searcher.connectController(loadableController)
+    facetSearcher.connectController(loadableController)
+
     searcher.onResultsChanged.subscribe(with: self) { (queryMetadata, result) in
       switch result {
       case .failure:
@@ -69,7 +83,6 @@ class RefinementsDemo: UIViewController {
       case .success(let results):
         self.hitsCountLabel.text = "hits: \(results.totalHitsCount)"
       }
-
     }
   }
 }
@@ -83,6 +96,7 @@ extension RefinementsDemo {
     configureFilterValueLabel()
     configureHitsCountLabel()
     configureClearButton()
+    configureActivityIndicator()
     configureLayout()    
   }
   
@@ -98,6 +112,12 @@ extension RefinementsDemo {
     clearButton.setTitle("Clear", for: .normal)
     clearButton.translatesAutoresizingMaskIntoConstraints = false
     clearButton.addTarget(self, action: #selector(clearButtonTapped), for: .touchUpInside)
+  }
+
+  func configureActivityIndicator() {
+    activityIndicator.style = .gray
+    activityIndicator.hidesWhenStopped = false
+
   }
   
   func configureTitleLabel() {
@@ -123,6 +143,7 @@ extension RefinementsDemo {
     headerStackView.distribution = .equalSpacing
     headerStackView.translatesAutoresizingMaskIntoConstraints = false
     headerStackView.addBackground(color: .white)
+    headerStackView.alignment = .leading
     headerStackView.subviews.first.flatMap {
       $0.layer.borderWidth = 0.5
       $0.layer.borderColor = UIColor.black.cgColor
@@ -136,6 +157,7 @@ extension RefinementsDemo {
     
     headerStackView.addArrangedSubview(titleLabel)
     headerStackView.addArrangedSubview(filterValueLabel)
+    headerStackView.addArrangedSubview(activityIndicator)
     headerStackView.addArrangedSubview(hitsCountLabel)
     
     mainStackView.addArrangedSubview(headerStackView)
@@ -154,6 +176,7 @@ extension RefinementsDemo {
     mainStackView.addArrangedSubview(demo.controller.view)
     
     demo.controller.plug(searcher)
+    demo.controller.plug(facetSearcher)
     
     view.addSubview(clearButton)
     

@@ -4,9 +4,10 @@
 target 'development-pods-instantsearch' do
   # Comment the next line if you're not using Swift and don't want to use dynamic frameworks
   use_frameworks!
-  pod 'InstantSearchCore', :path => '/Users/vladislavfitc/Workspace/instantsearch-core-swift'
-  pod 'InstantSearchClient', :path => '/Users/vladislavfitc/Workspace/algoliasearch-client-swift'
-  pod 'InstantSearch', :path => '/Users/vladislavfitc/Workspace/instantsearch-ios'
+  pod 'InstantSearchCore', :path => '/Users/guydaher/Developer/Algolia/iOS/instantsearch-core-swift'
+  pod 'InstantSearchClient', :path => '/Users/guydaher/Developer/Algolia/iOS/algoliasearch-client-swift'
+  pod 'InstantSearch', :path => '/Users/guydaher/Developer/Algolia/iOS/instantsearch-ios'
+
   # Pods for development-pods-instantsearch
 
   target 'development-pods-instantsearchTests' do

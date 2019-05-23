@@ -39,5 +39,11 @@ struct DemoDescriptor {
     indexName: "mobile_demo_filter_segment",
     apiKey: "1f6fd3a6fb973cb08419fe7d288fa4db",
     controller: SegmentedDemo())
+
+  static let sffv = DemoDescriptor(
+    appID: "latency",
+    indexName: "mobile_demo_facet_list",
+    apiKey: "1f6fd3a6fb973cb08419fe7d288fa4db",
+    controller: FacetSearcherDemo())
   
 }

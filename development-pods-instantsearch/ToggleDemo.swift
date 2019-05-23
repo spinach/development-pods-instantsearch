@@ -45,21 +45,21 @@ class ToggleDemo: UIViewController {
     let freeShipingFacet = Filter.Facet(attribute: promotionsAttribute, stringValue: "free shipping")
     freeShippingViewModel = SelectableViewModel(item: freeShipingFacet)
     let freeShippingButtonController = SelectableFilterButtonController<Filter.Facet>(button: freeShippingButton)
-    freeShippingViewModel.connectViewController(freeShippingButtonController)
+    freeShippingViewModel.connectController(freeShippingButtonController)
     
     // Size constraint button
     
     let sizeConstraintFilter = Filter.Numeric(attribute: "size", operator: .greaterThan, value: 40)
     sizeConstraintViewModel = SelectableViewModel(item: sizeConstraintFilter)
     let sizeConstraintButtonController = SelectableFilterButtonController<Filter.Numeric>(button: sizeButton)
-    sizeConstraintViewModel.connectViewController(sizeConstraintButtonController)
+    sizeConstraintViewModel.connectController(sizeConstraintButtonController)
     
     // Vintage tag button
     
     let vintageFilter = Filter.Tag(value: "vintage")
     vintageViewModel = SelectableViewModel(item: vintageFilter)
     let vintageButtonController = SelectableFilterButtonController<Filter.Tag>(button: vintageButton)
-    vintageViewModel.connectViewController(vintageButtonController)
+    vintageViewModel.connectController(vintageButtonController)
     
     
     // Coupon switch
@@ -68,7 +68,7 @@ class ToggleDemo: UIViewController {
     couponViewModel = SelectableViewModel<Filter.Facet>(item: couponFacet)
     
     let switchController = RefinementFilterSwitchController<Filter.Facet>(switch: couponSwitch)
-    couponViewModel.connectViewController(switchController)
+    couponViewModel.connectController(switchController)
     
 
     

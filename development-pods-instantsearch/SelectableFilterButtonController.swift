@@ -11,6 +11,11 @@ import InstantSearchCore
 import UIKit
 
 class SelectableFilterButtonController<F: FilterType>: SelectableController {
+
+  func setItem(_ item: F) {
+    let title = DefaultFilterPresenter.present(Filter(item))
+    button.setTitle(title, for: .normal)
+  }
   
   typealias Item = F
   

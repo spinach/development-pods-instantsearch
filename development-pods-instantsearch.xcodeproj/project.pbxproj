@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 51;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -28,6 +28,7 @@
 		E265DBEC226F44FB002DC989 /* SelectionDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = E265DBEB226F44FB002DC989 /* SelectionDataSource.swift */; };
 		E265DBEE2273341D002DC989 /* FacetListTableController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E265DBED2273341D002DC989 /* FacetListTableController.swift */; };
 		E28C38F22236A78A0070BE3D /* RefinementList.swift in Sources */ = {isa = PBXBuildFile; fileRef = E28C38F12236A78A0070BE3D /* RefinementList.swift */; };
+		E2B03F67229541F500DBE6D3 /* FacetSearcherDemo.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2B03F66229541F500DBE6D3 /* FacetSearcherDemo.swift */; };
 		E2E09E3D223276C800F3056D /* Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2E09E3C223276C800F3056D /* Helpers.swift */; };
 /* End PBXBuildFile section */
 
@@ -71,6 +72,7 @@
 		E265DBED2273341D002DC989 /* FacetListTableController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FacetListTableController.swift; sourceTree = "<group>"; };
 		E28C38F12236A78A0070BE3D /* RefinementList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RefinementList.swift; sourceTree = "<group>"; };
 		E29E45712243FAAE005B358D /* SingleIndex.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = SingleIndex.playground; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
+		E2B03F66229541F500DBE6D3 /* FacetSearcherDemo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FacetSearcherDemo.swift; sourceTree = "<group>"; };
 		E2E09E3C223276C800F3056D /* Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Helpers.swift; sourceTree = "<group>"; };
 		F2062212BAF0883D11154F15 /* Pods-development-pods-instantsearchTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-development-pods-instantsearchTests.debug.xcconfig"; path = "Target Support Files/Pods-development-pods-instantsearchTests/Pods-development-pods-instantsearchTests.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -139,6 +141,7 @@
 				AF536C36227C7C79006DAE84 /* RefinementListDemo.swift */,
 				AF536C34227C78AD006DAE84 /* ToggleDemo.swift */,
 				AFE343862289C4B300829AC1 /* SegmentedDemo.swift */,
+				E2B03F66229541F500DBE6D3 /* FacetSearcherDemo.swift */,
 				E265DBED2273341D002DC989 /* FacetListTableController.swift */,
 				AF2B261822836430006DE798 /* SegmentedController.swift */,
 				AF536C30227C75FB006DAE84 /* SelectableFilterButtonController.swift */,
@@ -322,22 +325,11 @@
 			files = (
 			);
 			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-development-pods-instantsearch/Pods-development-pods-instantsearch-frameworks.sh",
-				"${BUILT_PRODUCTS_DIR}/InstantSearch/InstantSearch.framework",
-				"${BUILT_PRODUCTS_DIR}/InstantSearchClient/InstantSearchClient.framework",
-				"${BUILT_PRODUCTS_DIR}/InstantSearchCore/InstantSearchCore.framework",
-				"${BUILT_PRODUCTS_DIR}/Signals/Signals.framework",
+				"${PODS_ROOT}/Target Support Files/Pods-development-pods-instantsearch/Pods-development-pods-instantsearch-frameworks-${CONFIGURATION}-input-files.xcfilelist",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputFileListPaths = (
-			);
-			outputPaths = (
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/InstantSearch.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/InstantSearchClient.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/InstantSearchCore.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Signals.framework",
+				"${PODS_ROOT}/Target Support Files/Pods-development-pods-instantsearch/Pods-development-pods-instantsearch-frameworks-${CONFIGURATION}-output-files.xcfilelist",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -352,6 +344,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				AF536C33227C75FB006DAE84 /* RefinementFilterSwitchController.swift in Sources */,
+				E2B03F67229541F500DBE6D3 /* FacetSearcherDemo.swift in Sources */,
 				E265DBEE2273341D002DC989 /* FacetListTableController.swift in Sources */,
 				AF536C37227C7C79006DAE84 /* RefinementListDemo.swift in Sources */,
 				E24DC9D5222EB72B006F1EED /* MultiIndex.swift in Sources */,
