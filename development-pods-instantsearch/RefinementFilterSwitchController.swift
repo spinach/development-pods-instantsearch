@@ -31,4 +31,8 @@ class RefinementFilterSwitchController<F: FilterType>: SelectableController {
     self.switch.isOn = isSelected
   }
   
+  func setItem(_ item: F) {
+    
+  }
+  
 }

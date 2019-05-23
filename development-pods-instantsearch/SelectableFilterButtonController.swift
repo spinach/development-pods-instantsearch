@@ -31,4 +31,9 @@ class SelectableFilterButtonController<F: FilterType>: SelectableController {
     self.button.isSelected = isSelected
   }
   
+  func setItem(_ item: F) {
+    let title = DefaultFilterPresenter.present(Filter(item))
+    button.setTitle(title, for: .normal)
+  }
+  
 }
