@@ -9,6 +9,7 @@
 import Foundation
 import UIKit
 import InstantSearchCore
+import InstantSearch
 
 class ToggleDemo: UIViewController {
   
@@ -67,7 +68,7 @@ class ToggleDemo: UIViewController {
     let couponFacet = Filter.Facet(attribute: promotionsAttribute, stringValue: "coupon")
     couponViewModel = SelectableViewModel<Filter.Facet>(item: couponFacet)
     
-    let switchController = RefinementFilterSwitchController<Filter.Facet>(switch: couponSwitch)
+    let switchController = FilterSwitchController<Filter.Facet>(switch: couponSwitch)
     couponViewModel.connectController(switchController)
     
 

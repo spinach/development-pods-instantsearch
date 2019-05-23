@@ -10,8 +10,6 @@
 		9BE878203D48991B58641B3C /* Pods_development_pods_instantsearchTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A3124C071D3F19C1B835884C /* Pods_development_pods_instantsearchTests.framework */; };
 		A174DB7FFFE740D94F373ED6 /* Pods_development_pods_instantsearch.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BE4725361587DFDC81F01BCB /* Pods_development_pods_instantsearch.framework */; };
 		AF2B261922836430006DE798 /* SegmentedController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF2B261822836430006DE798 /* SegmentedController.swift */; };
-		AF536C32227C75FB006DAE84 /* SelectableFilterButtonController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF536C30227C75FB006DAE84 /* SelectableFilterButtonController.swift */; };
-		AF536C33227C75FB006DAE84 /* RefinementFilterSwitchController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF536C31227C75FB006DAE84 /* RefinementFilterSwitchController.swift */; };
 		AF536C35227C78AD006DAE84 /* ToggleDemo.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF536C34227C78AD006DAE84 /* ToggleDemo.swift */; };
 		AF536C37227C7C79006DAE84 /* RefinementListDemo.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF536C36227C7C79006DAE84 /* RefinementListDemo.swift */; };
 		AF536C392280671B006DAE84 /* DemoDescriptor.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF536C382280671B006DAE84 /* DemoDescriptor.swift */; };
@@ -46,8 +44,6 @@
 		6CF06BA2662866DC7F8CA6D5 /* Pods-development-pods-instantsearchTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-development-pods-instantsearchTests.release.xcconfig"; path = "Target Support Files/Pods-development-pods-instantsearchTests/Pods-development-pods-instantsearchTests.release.xcconfig"; sourceTree = "<group>"; };
 		A3124C071D3F19C1B835884C /* Pods_development_pods_instantsearchTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_development_pods_instantsearchTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		AF2B261822836430006DE798 /* SegmentedController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SegmentedController.swift; sourceTree = "<group>"; };
-		AF536C30227C75FB006DAE84 /* SelectableFilterButtonController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelectableFilterButtonController.swift; sourceTree = "<group>"; };
-		AF536C31227C75FB006DAE84 /* RefinementFilterSwitchController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RefinementFilterSwitchController.swift; sourceTree = "<group>"; };
 		AF536C34227C78AD006DAE84 /* ToggleDemo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToggleDemo.swift; sourceTree = "<group>"; };
 		AF536C36227C7C79006DAE84 /* RefinementListDemo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RefinementListDemo.swift; sourceTree = "<group>"; };
 		AF536C382280671B006DAE84 /* DemoDescriptor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DemoDescriptor.swift; sourceTree = "<group>"; };
@@ -141,8 +137,6 @@
 				AFE343862289C4B300829AC1 /* SegmentedDemo.swift */,
 				E265DBED2273341D002DC989 /* FacetListTableController.swift */,
 				AF2B261822836430006DE798 /* SegmentedController.swift */,
-				AF536C30227C75FB006DAE84 /* SelectableFilterButtonController.swift */,
-				AF536C31227C75FB006DAE84 /* RefinementFilterSwitchController.swift */,
 				E265DBEB226F44FB002DC989 /* SelectionDataSource.swift */,
 				E2E09E3C223276C800F3056D /* Helpers.swift */,
 				E24233DE223AAD1D008F24FB /* PotentialInstantSearch.swift */,
@@ -351,7 +345,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				AF536C33227C75FB006DAE84 /* RefinementFilterSwitchController.swift in Sources */,
 				E265DBEE2273341D002DC989 /* FacetListTableController.swift in Sources */,
 				AF536C37227C7C79006DAE84 /* RefinementListDemo.swift in Sources */,
 				E24DC9D5222EB72B006F1EED /* MultiIndex.swift in Sources */,
@@ -360,7 +353,6 @@
 				E24233DF223AAD1D008F24FB /* PotentialInstantSearch.swift in Sources */,
 				E24DC9D3222EB72B006F1EED /* SingleIndex.swift in Sources */,
 				AF2B261922836430006DE798 /* SegmentedController.swift in Sources */,
-				AF536C32227C75FB006DAE84 /* SelectableFilterButtonController.swift in Sources */,
 				AF536C392280671B006DAE84 /* DemoDescriptor.swift in Sources */,
 				E265DBEC226F44FB002DC989 /* SelectionDataSource.swift in Sources */,
 				E24DC9D1222EB72B006F1EED /* AppDelegate.swift in Sources */,
