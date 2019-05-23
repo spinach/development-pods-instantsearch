@@ -9,57 +9,6 @@
 import Foundation
 import UIKit
 
-public typealias TextChangeHandler = (String) -> Void
-
-public class SearchBarWidget: NSObject {
-  
-  let searchBar: UISearchBar
-  var textChangeObservations = [TextChangeHandler]()
-
-  public init(searchBar: UISearchBar) {
-    self.searchBar = searchBar
-    super.init()
-    searchBar.delegate = self
-  }
-
-  @objc func textFieldTextChanged(textField: UITextField) {
-    guard let searchText = textField.text else { return }
-    textChangeObservations.forEach { $0(searchText) }
-  }
-  
-  public func subscribeToTextChangeHandler(using closure: @escaping TextChangeHandler) {
-    textChangeObservations.append(closure)
-  }
-
-}
-
-extension SearchBarWidget: UISearchBarDelegate {
-  
-  public func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-    textChangeObservations.forEach { $0(searchText) }
-  }
-  
-}
-
-public class TextFieldWidget {
-
-  var textChangeObservations = [TextChangeHandler]()
-
-  public init (textField: UITextField) {
-    textField.addTarget(self, action: #selector(textFieldTextChanged), for: .editingChanged)
-  }
-
-  @objc func textFieldTextChanged(textField: UITextField) {
-    guard let searchText = textField.text else { return }
-    textChangeObservations.forEach { $0(searchText) }
-  }
-
-  public func subscribeToTextChangeHandler(using closure: @escaping TextChangeHandler) {
-    textChangeObservations.append(closure)
-  }
-  
-}
-
 extension UIColor {
   convenience init(hexString: String) {
     let hex = hexString.trimmingCharacters(in: CharacterSet.alphanumerics.inverted)

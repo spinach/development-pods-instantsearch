@@ -34,7 +34,7 @@ class RefinementsDemo: UIViewController {
   var filterState: FilterState = FilterState()
   var query: Query = Query()
   
-  var demo: DemoDescriptor = .sffv
+  var demo: DemoDescriptor = .singleIndex
 
   let mainStackView = UIStackView()
   let headerStackView = UIStackView()

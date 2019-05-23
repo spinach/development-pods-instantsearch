@@ -12,9 +12,9 @@ import InstantSearch
 
 class SingleIndexController: UIViewController {
 
-  var searchBarWidget: SearchBarWidget!
+  var searchBarController: SearchBarController!
   let hitsViewModel = HitsViewModel<JSON>()
-  var hitsWidget: TableViewHitsWidget<HitsViewModel<JSON>>!
+  var hitsController: HitsTableController<HitsViewModel<JSON>>!
   let tableView = UITableView()
   let activityIndicator = UIActivityIndicatorView()
   let searchBar = UISearchBar()
@@ -22,11 +22,11 @@ class SingleIndexController: UIViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     
-    searchBarWidget = SearchBarWidget(searchBar: searchBar)
+    searchBarController = SearchBarController(searchBar: searchBar)
     
-    hitsWidget = TableViewHitsWidget(tableView: tableView)
+    hitsController = HitsTableController(tableView: tableView)
     
-    hitsWidget.dataSource = TableViewHitsDataSource<HitsViewModel<JSON>>(cellConfigurator: { (tableView, rawHit, indexPath) -> UITableViewCell in
+    hitsController.dataSource = HitsTableViewDataSource<HitsViewModel<JSON>>(cellConfigurator: { (tableView, rawHit, indexPath) -> UITableViewCell in
       let cell = tableView.dequeueReusableCell(withIdentifier: "CellId", for: indexPath)
       cell.textLabel!.text = [String: Any](rawHit)?["name"] as? String
       return cell
@@ -89,7 +89,7 @@ extension SingleIndexController: SearcherPluggable {
     
     searcher.indexSearchData.query.facets = ["category"]
     
-    searchBarWidget.subscribeToTextChangeHandler { text in
+    searchBarController.onSearch = { text in
       searcher.setQuery(text: text)
       searcher.indexSearchData.query.page = 0
       searcher.search()
@@ -107,7 +107,7 @@ extension SingleIndexController: SearcherPluggable {
       hitsViewModel.connectSearcher(searcher)
     }
     
-    hitsViewModel.connectController(hitsWidget)
+    hitsViewModel.connectController(hitsController)
     
   }
   
