@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 51;
+	objectVersion = 50;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -13,6 +13,7 @@
 		AF536C35227C78AD006DAE84 /* ToggleDemo.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF536C34227C78AD006DAE84 /* ToggleDemo.swift */; };
 		AF536C37227C7C79006DAE84 /* RefinementListDemo.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF536C36227C7C79006DAE84 /* RefinementListDemo.swift */; };
 		AF536C392280671B006DAE84 /* DemoDescriptor.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF536C382280671B006DAE84 /* DemoDescriptor.swift */; };
+		AF939675229700D500757257 /* FilterStateViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF939674229700D500757257 /* FilterStateViewController.swift */; };
 		AFE343872289C4B300829AC1 /* SegmentedDemo.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFE343862289C4B300829AC1 /* SegmentedDemo.swift */; };
 		E24233DF223AAD1D008F24FB /* PotentialInstantSearch.swift in Sources */ = {isa = PBXBuildFile; fileRef = E24233DE223AAD1D008F24FB /* PotentialInstantSearch.swift */; };
 		E24DC9D1222EB72B006F1EED /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E24DC9D0222EB72B006F1EED /* AppDelegate.swift */; };
@@ -48,6 +49,7 @@
 		AF536C34227C78AD006DAE84 /* ToggleDemo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToggleDemo.swift; sourceTree = "<group>"; };
 		AF536C36227C7C79006DAE84 /* RefinementListDemo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RefinementListDemo.swift; sourceTree = "<group>"; };
 		AF536C382280671B006DAE84 /* DemoDescriptor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DemoDescriptor.swift; sourceTree = "<group>"; };
+		AF939674229700D500757257 /* FilterStateViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterStateViewController.swift; sourceTree = "<group>"; };
 		AFE343862289C4B300829AC1 /* SegmentedDemo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SegmentedDemo.swift; sourceTree = "<group>"; };
 		BE4725361587DFDC81F01BCB /* Pods_development_pods_instantsearch.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_development_pods_instantsearch.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C9A5A80DB939697E9B6CE6D3 /* Pods-development-pods-instantsearch.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-development-pods-instantsearch.debug.xcconfig"; path = "Target Support Files/Pods-development-pods-instantsearch/Pods-development-pods-instantsearch.debug.xcconfig"; sourceTree = "<group>"; };
@@ -147,6 +149,7 @@
 				E24DC9D9222EB72C006F1EED /* Assets.xcassets */,
 				E24DC9DB222EB72C006F1EED /* LaunchScreen.storyboard */,
 				E24DC9DE222EB72C006F1EED /* Info.plist */,
+				AF939674229700D500757257 /* FilterStateViewController.swift */,
 			);
 			path = "development-pods-instantsearch";
 			sourceTree = "<group>";
@@ -348,6 +351,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AF939675229700D500757257 /* FilterStateViewController.swift in Sources */,
 				E2B03F67229541F500DBE6D3 /* FacetSearcherDemo.swift in Sources */,
 				E265DBEE2273341D002DC989 /* FacetListTableController.swift in Sources */,
 				AF536C37227C7C79006DAE84 /* RefinementListDemo.swift in Sources */,

@@ -9,6 +9,7 @@
 import Foundation
 import UIKit
 import InstantSearchCore
+import InstantSearch
 
 protocol SearcherPluggable {
   func plug<R: Codable>(_ searcher: SingleIndexSearcher<R>)
@@ -33,22 +34,24 @@ class RefinementsDemo: UIViewController {
   var index: Index!
   var filterState: FilterState = FilterState()
   var query: Query = Query()
+  let filterStateViewController = FilterStateViewController()
+  var clearRefinementsController: ClearRefinementsController!
   
-  var demo: DemoDescriptor = .singleIndex
+  var demo: DemoDescriptor = .refinementList
 
   let mainStackView = UIStackView()
   let headerStackView = UIStackView()
+  let clearRefinementsButton = UIButton(type: .custom)
   let titleLabel = UILabel()
-  let filterValueLabel = UILabel()
   let hitsCountLabel = UILabel()
   let activityIndicator = UIActivityIndicatorView()
   var loadableController: ActivityIndicatorController!
-  let clearButton = UIButton(type: .custom)
   
   override func viewDidLoad() {
     super.viewDidLoad()
 
     view.backgroundColor =  UIColor(hexString: "#f7f8fa")
+    clearRefinementsController = ClearRefinementsButtonController(button: clearRefinementsButton)
     
     client = Client(appID: demo.appID, apiKey: demo.apiKey)
     index = client.index(withName: demo.indexName)
@@ -56,30 +59,28 @@ class RefinementsDemo: UIViewController {
     facetSearcher = FacetSearcher(index: index, query: query, filterState: filterState, facetName: colorAttribute.name)
 
     setupUI()
-    
-    let colorMap: [String: UIColor] = [
-      "_tags": UIColor(hexString: "#9673b4"),
-      "size": UIColor(hexString: "#698c28"),
-      self.colorAttribute.name: .red,
-      self.promotionsAttribute.name: .blue,
-      self.categoryAttribute.name: .green
-    ]
-
-    searcher.indexSearchData.filterState.onChange.subscribe(with: self) { filterState in
-      self.filterValueLabel.attributedText = self.searcher.indexSearchData.filterState.toFilterGroups().sqlFormWithSyntaxHighlighting(
-        colorMap: colorMap)
-    }
-    
+        
     searcher.search()
 
     loadableController = ActivityIndicatorController(activityIndicator: activityIndicator)
     searcher.connectController(loadableController)
     facetSearcher.connectController(loadableController)
 
+    filterStateViewController.colorMap = [
+      "_tags": UIColor(hexString: "#9673b4"),
+      "size": UIColor(hexString: "#698c28"),
+      colorAttribute.name: .red,
+      promotionsAttribute.name: .blue,
+      categoryAttribute.name: .green
+    ]
+    
+    filterStateViewController.connectFilterState(searcher.indexSearchData.filterState)
+    clearRefinementsController.connectFilterState(searcher.indexSearchData.filterState)
+    
     searcher.onResultsChanged.subscribe(with: self) { (queryMetadata, result) in
       switch result {
       case .failure:
-        self.filterValueLabel.text = "Network error"
+        self.filterStateViewController.stateLabel.text = "Network error"
       case .success(let results):
         self.hitsCountLabel.text = "hits: \(results.totalHitsCount)"
       }
@@ -93,7 +94,6 @@ extension RefinementsDemo {
     configureMainStackView()
     configureHeaderStackView()
     configureTitleLabel()
-    configureFilterValueLabel()
     configureHitsCountLabel()
     configureClearButton()
     configureActivityIndicator()
@@ -108,10 +108,9 @@ extension RefinementsDemo {
   }
   
   func configureClearButton() {
-    clearButton.setTitleColor(.black, for: .normal)
-    clearButton.setTitle("Clear", for: .normal)
-    clearButton.translatesAutoresizingMaskIntoConstraints = false
-    clearButton.addTarget(self, action: #selector(clearButtonTapped), for: .touchUpInside)
+    clearRefinementsButton.setTitleColor(.black, for: .normal)
+    clearRefinementsButton.setTitle("Clear", for: .normal)
+    clearRefinementsButton.translatesAutoresizingMaskIntoConstraints = false
   }
 
   func configureActivityIndicator() {
@@ -123,11 +122,6 @@ extension RefinementsDemo {
   func configureTitleLabel() {
     titleLabel.font = .boldSystemFont(ofSize: 25)
     titleLabel.text = "Filters"
-  }
-  
-  func configureFilterValueLabel() {
-    filterValueLabel.font = .systemFont(ofSize: 16)
-    filterValueLabel.numberOfLines = 0
   }
   
   func configureHitsCountLabel() {
@@ -156,7 +150,10 @@ extension RefinementsDemo {
     headerStackView.heightAnchor.constraint(equalToConstant: 150).isActive = true
     
     headerStackView.addArrangedSubview(titleLabel)
-    headerStackView.addArrangedSubview(filterValueLabel)
+    addChild(filterStateViewController)
+    filterStateViewController.didMove(toParent: self)
+    
+    headerStackView.addArrangedSubview(filterStateViewController.stateLabel)
     headerStackView.addArrangedSubview(activityIndicator)
     headerStackView.addArrangedSubview(hitsCountLabel)
     
@@ -178,89 +175,14 @@ extension RefinementsDemo {
     demo.controller.plug(searcher)
     demo.controller.plug(facetSearcher)
     
-    view.addSubview(clearButton)
+    view.addSubview(clearRefinementsButton)
     
     NSLayoutConstraint.activate([
-      clearButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 10),
-      clearButton.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -25),
+      clearRefinementsButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 10),
+      clearRefinementsButton.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -25),
       ])
   }
-
-  @objc func clearButtonTapped() {
-    filterState.notify(.removeAll)
-  }
   
 }
 
-extension Collection where Element == FilterGroupType {
 
-  public func sqlFormWithSyntaxHighlighting(colorMap: [String: UIColor]) -> NSAttributedString {
-    let converter = FilterGroupConverter()
-    return compactMap { element -> NSAttributedString? in
-      
-      let color: UIColor
-      
-      if let groupName = element.name, let specifiedColor = colorMap[groupName] {
-        color = specifiedColor
-      } else {
-        color = .darkText
-      }
-
-      return converter.sql(element)
-        .flatMap { $0.replacingOccurrences(of: "\"", with: "") }
-        .flatMap { sqlString in
-          return NSMutableAttributedString()
-            .appendWith(color: color, weight: .regular, ofSize: 18.0, sqlString)
-        }
-      
-    }
-      .joined(separator: NSMutableAttributedString()
-      .appendWith(weight: .semibold, ofSize: 18.0, " AND "))
-  }
-
-}
-
-extension NSMutableAttributedString {
-
-  @discardableResult func appendWith(color: UIColor = UIColor.darkText, weight: UIFont.Weight = .regular, ofSize: CGFloat = 12.0, _ text: String) -> NSMutableAttributedString{
-    let attrText = NSAttributedString.makeWith(color: color, weight: weight, ofSize:ofSize, text)
-    self.append(attrText)
-    return self
-  }
-
-}
-extension NSAttributedString {
-
-  public static func makeWith(color: UIColor = UIColor.darkText, weight: UIFont.Weight = .regular, ofSize: CGFloat = 12.0, _ text: String) -> NSMutableAttributedString {
-
-    let attrs = [NSAttributedString.Key.font: UIFont.systemFont(ofSize: ofSize, weight: weight), NSAttributedString.Key.foregroundColor: color]
-    return NSMutableAttributedString(string: text, attributes:attrs)
-  }
-}
-
-extension Sequence where Iterator.Element: NSAttributedString {
-  /// Returns a new attributed string by concatenating the elements of the sequence, adding the given separator between each element.
-  /// - parameters:
-  ///     - separator: A string to insert between each of the elements in this sequence. The default separator is an empty string.
-  func joined(separator: NSAttributedString = NSAttributedString(string: "")) -> NSAttributedString {
-    var isFirst = true
-    return self.reduce(NSMutableAttributedString()) {
-      (r, e) in
-      if isFirst {
-        isFirst = false
-      } else {
-        r.append(separator)
-      }
-      r.append(e)
-      return r
-    }
-  }
-
-  /// Returns a new attributed string by concatenating the elements of the sequence, adding the given separator between each element.
-  /// - parameters:
-  ///     - separator: A string to insert between each of the elements in this sequence. The default separator is an empty string.
-  func joined(separator: String = "") -> NSAttributedString {
-    return joined(separator: NSAttributedString(string: separator))
-  }
-  
-}
