@@ -27,6 +27,7 @@ class RefinementsDemo: UIViewController {
   let colorAttribute = Attribute("color")
   let promotionsAttribute = Attribute("promotions")
   let categoryAttribute = Attribute("category")
+  let brandAttribute = Attribute("brand")
 
   var searcher: SingleIndexSearcher<JSON>!
   var facetSearcher: FacetSearcher!
@@ -37,7 +38,7 @@ class RefinementsDemo: UIViewController {
   let filterStateViewController = FilterStateViewController()
   var clearRefinementsController: ClearRefinementsController!
   
-  var demo: DemoDescriptor = .refinementList
+  var demo: DemoDescriptor = .sffv
 
   let mainStackView = UIStackView()
   let headerStackView = UIStackView()
@@ -58,18 +59,18 @@ class RefinementsDemo: UIViewController {
     client = Client(appID: demo.appID, apiKey: demo.apiKey)
     index = client.index(withName: demo.indexName)
     searcher = SingleIndexSearcher(index: index, query: query, filterState: filterState)
-    facetSearcher = FacetSearcher(index: index, query: query, filterState: filterState, facetName: colorAttribute.name)
+    facetSearcher = FacetSearcher(index: index, query: query, filterState: filterState, facetName: brandAttribute.name)
 
     setupUI()
         
     searcher.search()
 
     loadableController = ActivityIndicatorController(activityIndicator: activityIndicator)
-    searcher.connectController(loadableController)
-    facetSearcher.connectController(loadableController)
+    loadableController.connectTo(searcher)
+    loadableController.connectTo(facetSearcher)
 
     statsController = LabelStatsController(label: hitsCountLabel)
-    searcher.connectController(statsController)
+    statsController.connectTo(searcher)
 
     filterStateViewController.colorMap = [
       "_tags": UIColor(hexString: "#9673b4"),
@@ -79,8 +80,8 @@ class RefinementsDemo: UIViewController {
       categoryAttribute.name: .green
     ]
     
-    filterStateViewController.connectFilterState(searcher.indexSearchData.filterState)
-    clearRefinementsController.connectFilterState(searcher.indexSearchData.filterState)
+    filterStateViewController.connectTo(searcher.indexSearchData.filterState)
+    clearRefinementsController.connectTo(searcher.indexSearchData.filterState)
     
     searcher.onResultsChanged.subscribe(with: self) { (queryMetadata, result) in
       switch result {

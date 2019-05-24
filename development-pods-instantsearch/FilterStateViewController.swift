@@ -35,7 +35,7 @@ class FilterStateViewController: UIViewController {
     stateLabel.attributedText = (filterState as! FilterGroupsConvertible).toFilterGroups().sqlFormWithSyntaxHighlighting(colorMap: colorMap)
   }
   
-  func connectFilterState(_ filterState: FilterState) {
+  func connectTo(_ filterState: FilterState) {
     filterState.onChange.subscribe(with: self, callback: refreshStateLabel)
   }
   

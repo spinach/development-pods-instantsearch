@@ -86,13 +86,13 @@ extension FacetSearcherDemo: SearcherPluggable {
 
   func plug(_ facetSearcher: FacetSearcher) {
 
-    categoryViewModel.connectFilterState(facetSearcher.filterState, with: Attribute("color"), operator: .or)
+    categoryViewModel.connectTo(facetSearcher.filterState, with: Attribute("brand"), operator: .or)
 
-    categoryViewModel.connectFacetSearcher(facetSearcher)
+    categoryViewModel.connectTo(facetSearcher)
 
 
     facetSearcher.search()
-    facetSearcher.connectController(searchBarController)
+    searchBarController.connectTo(facetSearcher)
 
   }
 

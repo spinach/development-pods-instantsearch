@@ -9,6 +9,7 @@
 import UIKit
 import InstantSearchCore
 import InstantSearchClient
+import InstantSearch
 
 class MultindexController: UIViewController, UITableViewDataSource {
 

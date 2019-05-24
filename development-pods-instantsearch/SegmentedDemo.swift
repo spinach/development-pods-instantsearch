@@ -44,7 +44,7 @@ class SegmentedDemo: UIViewController {
 extension SegmentedDemo: SearcherPluggable {
   
   func plug<R>(_ searcher: SingleIndexSearcher<R>) where R : Decodable, R : Encodable {
-    genderViewModel.connectSearcher(searcher, attribute: genderAttribute, operator: .or)
+    genderViewModel.connectTo(searcher, attribute: genderAttribute, operator: .or)
   }
   
 }

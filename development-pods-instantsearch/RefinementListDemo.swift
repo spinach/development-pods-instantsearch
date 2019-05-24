@@ -115,16 +115,16 @@ extension RefinementListDemo: SearcherPluggable {
     let groupID = FilterGroup.ID.and(name: colorAttribute.name)
     searcher.filterState.notify(.add(filter: greenColor, toGroupWithID: groupID))
     
-    filterListViewModel.connectFilterState(searcher.filterState, operator: .or)
-//    colorAViewModel.connectSearcher(searcher, with: colorAttribute)
-    colorBViewModel.connectSearcher(searcher, with: colorAttribute)
-    promotionViewModel.connectSearcher(searcher, with: promotionAttribute)
-    categoryViewModel.connectSearcher(searcher, with: categoryAttribute)
+    filterListViewModel.connectTo(searcher.filterState, operator: .or)
+//    colorAViewModel.connectTo(searcher, with: colorAttribute)
+    colorBViewModel.connectTo(searcher, with: colorAttribute)
+    promotionViewModel.connectTo(searcher, with: promotionAttribute)
+    categoryViewModel.connectTo(searcher, with: categoryAttribute)
 
-//    colorAViewModel.connectFilterState(searcher.indexSearchData.filterState, with: colorAttribute, operator: .and)
-    colorBViewModel.connectFilterState(searcher.indexSearchData.filterState, with: colorAttribute, operator: .and)
-    promotionViewModel.connectFilterState(searcher.indexSearchData.filterState, with: promotionAttribute, operator: .and)
-    categoryViewModel.connectFilterState(searcher.indexSearchData.filterState, with: categoryAttribute, operator: .or)
+//    colorAViewModel.connectTo(searcher.indexSearchData.filterState, with: colorAttribute, operator: .and)
+    colorBViewModel.connectTo(searcher.indexSearchData.filterState, with: colorAttribute, operator: .and)
+    promotionViewModel.connectTo(searcher.indexSearchData.filterState, with: promotionAttribute, operator: .and)
+    categoryViewModel.connectTo(searcher.indexSearchData.filterState, with: categoryAttribute, operator: .or)
 
   }
   

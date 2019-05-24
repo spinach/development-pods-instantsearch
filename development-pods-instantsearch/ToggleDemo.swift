@@ -87,11 +87,11 @@ class ToggleDemo: UIViewController {
 extension ToggleDemo: SearcherPluggable {
   
   func plug<R: Codable>(_ searcher: SingleIndexSearcher<R>) {
-    freeShippingViewModel.connectFilterState(searcher.indexSearchData.filterState, operator: .or)
-    couponViewModel.connectFilterState(searcher.indexSearchData.filterState, operator: .or)
-    sizeConstraintViewModel.connectFilterState(searcher.indexSearchData.filterState, operator: .or)
-    vintageViewModel.connectFilterState(searcher.indexSearchData.filterState, operator: .or)
-    promotionsViewModel.connectFilterState(searcher.indexSearchData.filterState, with: promotionsAttribute, operator: .or)
+    freeShippingViewModel.connectTo(searcher.indexSearchData.filterState, operator: .or)
+    couponViewModel.connectTo(searcher.indexSearchData.filterState, operator: .or)
+    sizeConstraintViewModel.connectTo(searcher.indexSearchData.filterState, operator: .or)
+    vintageViewModel.connectTo(searcher.indexSearchData.filterState, operator: .or)
+    promotionsViewModel.connectTo(searcher.indexSearchData.filterState, with: promotionsAttribute, operator: .or)
   }
   
 }
