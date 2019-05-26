@@ -1,5 +1,5 @@
 //
-//  RefinementListDemo.swift
+//  RefinementListDemoViewController.swift
 //  development-pods-instantsearch
 //
 //  Created by Vladislav Fitc on 03/05/2019.
@@ -16,15 +16,15 @@ extension CGFloat {
 
 //TODO: FilterFormatter / Presenter
 
-
-class RefinementListDemo: UIViewController {
+class RefinementListDemoViewController: UIViewController {
   
+  let searcher: SingleIndexSearcher<JSON>
   var colorAViewModel: SelectableFacetsViewModel!
   var colorBViewModel: SelectableFacetsViewModel!
   var categoryViewModel: SelectableFacetsViewModel!
   var promotionViewModel: SelectableFacetsViewModel!
 
-  var filterListViewModel: FilterListViewModel.Numeric!
+  let searchStateViewController: SearchStateViewController
 
   let colorAttribute = Attribute("color")
   let promotionAttribute = Attribute("promotions")
@@ -35,51 +35,28 @@ class RefinementListDemo: UIViewController {
   let bottomLeftTableView = UITableView()
   let bottomRightTableView = UITableView()
   
+  override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
+    let client = Client(appID: "latency", apiKey: "1f6fd3a6fb973cb08419fe7d288fa4db")
+    searcher = SingleIndexSearcher(index: client.index(withName: "mobile_demo_facet_list"))
+    searchStateViewController = SearchStateViewController()
+    super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
+  }
+  
+  required init?(coder aDecoder: NSCoder) {
+    fatalError("init(coder:) has not been implemented")
+  }
+  
   override func viewDidLoad() {
     super.viewDidLoad()
     
     setupUI()
 
-    let facetFilters: [Filter.Facet] = [
-      .init(attribute: "f1", stringValue: "v1"),
-      .init(attribute: "f2", stringValue: "v2"),
-      .init(attribute: "f3", stringValue: "v3"),
-    ]
-    
-    let numericFilters: [Filter.Numeric] = [
-      .init(attribute: "size", range: 32...42),
-      .init(attribute: "price", operator: .greaterThan, value: 100),
-      .init(attribute: "count", operator: .equals, value: 20),
-    ]
-    
-    let tags = (0...5).map { Filter.Tag(value: "Tag \($0)") }
-    
-    filterListViewModel = FilterListViewModel.Numeric(items: numericFilters)
-    let presenter: FilterPresenter = { filter in
-      switch filter {
-      case .numeric(let numericFilter):
-        switch numericFilter.value {
-        case .range(let range):
-          return "\(range.lowerBound) – \(range.upperBound)"
-          
-        case .comparison(let op, let val):
-          return "\(op.description) \(val)"
-        }
-      default:
-        return ""
-      }
-    }
-    let tagListController = FilterListTableController<Filter.Numeric>(tableView: topLeftTableView)
-    tagListController.filterFormatter = presenter
-    filterListViewModel.connectController(tagListController)
-    
     // Top Left - Color A
-//    colorAViewModel = RefinementFacetsViewModel(selectionMode: .single)
-//    let colorAPresenter = RefinementFacetsPresenter(sortBy: [.isRefined, .alphabetical(order: .ascending)], limit: 5)
-//    let colorATitleDescriptor = TitleDescriptor(text: "And, IsRefined-AlphaAsc, I=5", color: .init(hexString: "#ffcc0000"))
-//    let colorAController = FacetsController(tableView: topLeftTableView, titleDescriptor: colorATitleDescriptor)
-//    colorAViewModel.connectController(colorAController, with: colorAPresenter)
-    
+    colorAViewModel = FacetListViewModel(selectionMode: .single)
+    let colorAPresenter = FacetListPresenter(sortBy: [.isRefined, .alphabetical(order: .ascending)], limit: 5)
+    let colorATitleDescriptor = TitleDescriptor(text: "And, IsRefined-AlphaAsc, I=5", color: .init(hexString: "#ffcc0000"))
+    let colorAController = FacetListTableController(tableView: topLeftTableView, titleDescriptor: colorATitleDescriptor)
+    colorAViewModel.connectController(colorAController, with: colorAPresenter)
     
     // Top right - Color B
     colorBViewModel = FacetListViewModel(selectionMode: .single)
@@ -102,43 +79,55 @@ class RefinementListDemo: UIViewController {
     let categoryController = FacetListTableController(tableView: bottomRightTableView, titleDescriptor: categoryTitleDescriptor)
     categoryViewModel.connectController(categoryController, with: categoryRefinementListPresenter)
 
+    setup()
+
   }
 
 }
 
-extension RefinementListDemo: SearcherPluggable {
+private extension RefinementListDemoViewController {
   
-  func plug<R: Codable>(_ searcher: SingleIndexSearcher<R>) {
-    
+  func setup() {
     // predefined filter
     let greenColor = Filter.Facet(attribute: colorAttribute, stringValue: "green")
     let groupID = FilterGroup.ID.and(name: colorAttribute.name)
     searcher.filterState.notify(.add(filter: greenColor, toGroupWithID: groupID))
     
-    filterListViewModel.connectTo(searcher.filterState, operator: .or)
-//    colorAViewModel.connectTo(searcher, with: colorAttribute)
+    colorAViewModel.connectTo(searcher, with: colorAttribute)
     colorBViewModel.connectTo(searcher, with: colorAttribute)
     promotionViewModel.connectTo(searcher, with: promotionAttribute)
     categoryViewModel.connectTo(searcher, with: categoryAttribute)
-
-//    colorAViewModel.connectTo(searcher.indexSearchData.filterState, with: colorAttribute, operator: .and)
-    colorBViewModel.connectTo(searcher.indexSearchData.filterState, with: colorAttribute, operator: .and)
-    promotionViewModel.connectTo(searcher.indexSearchData.filterState, with: promotionAttribute, operator: .and)
-    categoryViewModel.connectTo(searcher.indexSearchData.filterState, with: categoryAttribute, operator: .or)
-
+    
+    let filterState = searcher.filterState
+    
+    colorAViewModel.connectTo(filterState, with: colorAttribute, operator: .and)
+    colorBViewModel.connectTo(filterState, with: colorAttribute, operator: .and)
+    promotionViewModel.connectTo(filterState, with: promotionAttribute, operator: .and)
+    categoryViewModel.connectTo(filterState, with: categoryAttribute, operator: .or)
+    
+    searchStateViewController.connectTo(searcher)
+    
+    searcher.search()
   }
   
 }
 
-extension RefinementListDemo {
+extension RefinementListDemoViewController {
   
   func setupUI() {
+    
+    view.backgroundColor = .white
     
     let mainStackView = UIStackView()
     mainStackView.axis = .vertical
     mainStackView.distribution = .fill
     mainStackView.translatesAutoresizingMaskIntoConstraints = false
-    mainStackView.spacing = 5
+    mainStackView.spacing = .px16
+    
+    addChild(searchStateViewController)
+    searchStateViewController.didMove(toParent: self)
+    searchStateViewController.view.heightAnchor.constraint(equalToConstant: 150).isActive = true
+    mainStackView.addArrangedSubview(searchStateViewController.view)
     
     let gridStackView = UIStackView()
     gridStackView.axis = .vertical

@@ -8,42 +8,21 @@
 
 import Foundation
 import UIKit
+import InstantSearchCore
 
 struct DemoDescriptor {
   
-  let appID: String
-  let indexName: String
-  let apiKey: String
-  let controller: UIViewController & SearcherPluggable
+  private static let appID = "latency"
+  private static let apiKey = "1f6fd3a6fb973cb08419fe7d288fa4db"
+  private static let client = Client(appID: "latency", apiKey: "1f6fd3a6fb973cb08419fe7d288fa4db")
   
-  static let refinementList = DemoDescriptor(
-    appID: "latency",
-    indexName: "mobile_demo_facet_list",
-    apiKey: "1f6fd3a6fb973cb08419fe7d288fa4db",
-    controller: RefinementListDemo())
+  let title: String
+//  let appID: String
+//  let searcher: Searcher
+//  let indexName: String
+//  let apiKey: String
+//  let controller: UIViewController
   
-  static let toggle = DemoDescriptor(
-    appID: "latency",
-    indexName: "mobile_demo_filter_toggle",
-    apiKey: "1f6fd3a6fb973cb08419fe7d288fa4db",
-    controller: ToggleDemo())
-  
-  static let singleIndex = DemoDescriptor(
-    appID: "latency",
-    indexName: "bestbuy_promo",
-    apiKey: "1f6fd3a6fb973cb08419fe7d288fa4db",
-    controller: SingleIndexController())
-  
-  static let segmented = DemoDescriptor(
-    appID: "latency",
-    indexName: "mobile_demo_filter_segment",
-    apiKey: "1f6fd3a6fb973cb08419fe7d288fa4db",
-    controller: SegmentedDemo())
-
-  static let sffv = DemoDescriptor(
-    appID: "latency",
-    indexName: "mobile_demo_facet_list_search",
-    apiKey: "1f6fd3a6fb973cb08419fe7d288fa4db",
-    controller: FacetSearcherDemo())
+  static let singleIndex = DemoDescriptor(title: "Single index")
   
 }

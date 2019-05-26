@@ -16,6 +16,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
 
   func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
     
+    let initialViewController = DemoListViewController()
+    let navigationController = UINavigationController(rootViewController: initialViewController)
+    navigationController.navigationBar.prefersLargeTitles = true
+    initialViewController.title = "InstantSearch demos"
+    self.window?.rootViewController = navigationController
+    self.window?.makeKeyAndVisible()
+    
     return true
   }
 
