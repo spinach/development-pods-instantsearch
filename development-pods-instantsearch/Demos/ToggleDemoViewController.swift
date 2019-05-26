@@ -39,9 +39,7 @@ class ToggleDemoViewController: UIViewController {
   
   override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
     
-    let client = Client(appID: "latency", apiKey: "1f6fd3a6fb973cb08419fe7d288fa4db")
-    let index = client.index(withName: "mobile_demo_filter_toggle")
-    searcher = SingleIndexSearcher(index: index)
+    searcher = SingleIndexSearcher(index: .demo(withName: "mobile_demo_filter_toggle"))
     headerViewControler = SearchStateViewController()
     
     // Free shipping button

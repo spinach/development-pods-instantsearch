@@ -12,7 +12,7 @@
 		AF2B261922836430006DE798 /* SegmentedController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF2B261822836430006DE798 /* SegmentedController.swift */; };
 		AF536C35227C78AD006DAE84 /* ToggleDemoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF536C34227C78AD006DAE84 /* ToggleDemoViewController.swift */; };
 		AF536C37227C7C79006DAE84 /* RefinementListDemoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF536C36227C7C79006DAE84 /* RefinementListDemoViewController.swift */; };
-		AF536C392280671B006DAE84 /* DemoDescriptor.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF536C382280671B006DAE84 /* DemoDescriptor.swift */; };
+		AF536C392280671B006DAE84 /* DemoHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF536C382280671B006DAE84 /* DemoHelper.swift */; };
 		AF939675229700D500757257 /* FilterStateViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF939674229700D500757257 /* FilterStateViewController.swift */; };
 		AF939694229848B700757257 /* SearchStateViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF939693229848B700757257 /* SearchStateViewController.swift */; };
 		AF939696229A917B00757257 /* DemoListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF939695229A917B00757257 /* DemoListViewController.swift */; };
@@ -49,7 +49,7 @@
 		AF2B261822836430006DE798 /* SegmentedController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SegmentedController.swift; sourceTree = "<group>"; };
 		AF536C34227C78AD006DAE84 /* ToggleDemoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToggleDemoViewController.swift; sourceTree = "<group>"; };
 		AF536C36227C7C79006DAE84 /* RefinementListDemoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RefinementListDemoViewController.swift; sourceTree = "<group>"; };
-		AF536C382280671B006DAE84 /* DemoDescriptor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DemoDescriptor.swift; sourceTree = "<group>"; };
+		AF536C382280671B006DAE84 /* DemoHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DemoHelper.swift; sourceTree = "<group>"; };
 		AF939674229700D500757257 /* FilterStateViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterStateViewController.swift; sourceTree = "<group>"; };
 		AF939693229848B700757257 /* SearchStateViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchStateViewController.swift; sourceTree = "<group>"; };
 		AF939695229A917B00757257 /* DemoListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DemoListViewController.swift; sourceTree = "<group>"; };
@@ -147,7 +147,7 @@
 				AF939699229AD21C00757257 /* Demos */,
 				E29E45712243FAAE005B358D /* SingleIndex.playground */,
 				E24DC9D0222EB72B006F1EED /* AppDelegate.swift */,
-				AF536C382280671B006DAE84 /* DemoDescriptor.swift */,
+				AF536C382280671B006DAE84 /* DemoHelper.swift */,
 				AF939695229A917B00757257 /* DemoListViewController.swift */,
 				E24DC9D4222EB72B006F1EED /* MultiIndex.swift */,
 				E28C38F12236A78A0070BE3D /* RefinementList.swift */,
@@ -374,7 +374,7 @@
 				E24DC9D3222EB72B006F1EED /* SingleIndexDemoViewController.swift in Sources */,
 				AF2B261922836430006DE798 /* SegmentedController.swift in Sources */,
 				AF939696229A917B00757257 /* DemoListViewController.swift in Sources */,
-				AF536C392280671B006DAE84 /* DemoDescriptor.swift in Sources */,
+				AF536C392280671B006DAE84 /* DemoHelper.swift in Sources */,
 				E24DC9D1222EB72B006F1EED /* AppDelegate.swift in Sources */,
 				AF536C35227C78AD006DAE84 /* ToggleDemoViewController.swift in Sources */,
 				E2E09E3D223276C800F3056D /* Helpers.swift in Sources */,

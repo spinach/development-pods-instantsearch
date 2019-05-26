@@ -21,10 +21,8 @@ class FacetSearchDemoViewController: UIViewController {
   
   override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
     
-    let client = Client(appID: "latency", apiKey: "1f6fd3a6fb973cb08419fe7d288fa4db")
-    
-    let index = client.index(withName: "mobile_demo_facet_list_search")
     let filterState = FilterState()
+    let index: Index = .demo(withName: "mobile_demo_facet_list_search")
     self.searcher = SingleIndexSearcher(index: index, filterState: filterState)
     self.facetSearcher = FacetSearcher(index: index, filterState: filterState, facetName: Attribute("brand").name)
 

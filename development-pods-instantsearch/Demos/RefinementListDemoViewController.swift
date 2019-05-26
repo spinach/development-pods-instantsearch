@@ -36,8 +36,7 @@ class RefinementListDemoViewController: UIViewController {
   let bottomRightTableView = UITableView()
   
   override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
-    let client = Client(appID: "latency", apiKey: "1f6fd3a6fb973cb08419fe7d288fa4db")
-    searcher = SingleIndexSearcher(index: client.index(withName: "mobile_demo_facet_list"))
+    searcher = SingleIndexSearcher(index: .demo(withName:"mobile_demo_facet_list"))
     searchStateViewController = SearchStateViewController()
     super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
   }

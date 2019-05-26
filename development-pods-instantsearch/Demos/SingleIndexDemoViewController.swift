@@ -19,9 +19,7 @@ class SingleIndexDemoViewController: UIViewController {
 
   override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
     
-    let client = Client(appID: "latency", apiKey: "1f6fd3a6fb973cb08419fe7d288fa4db")
-    let index = client.index(withName: "bestbuy_promo")
-    self.searcher = SingleIndexSearcher<JSON>(index: index)
+    self.searcher = SingleIndexSearcher<JSON>(index: .demo(withName: "bestbuy_promo"))
     
     let searchBar = UISearchBar()
     self.searchBarController = SearchBarController(searchBar: searchBar)
