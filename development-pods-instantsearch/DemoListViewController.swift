@@ -18,6 +18,9 @@ class DemoListViewController: UITableViewController {
     case toggle
     case facetList
     case segmented
+    case facetFilterList
+    case numericFilterList
+    case tagFilterList
     
     var title: String {
       switch self {
@@ -35,6 +38,15 @@ class DemoListViewController: UITableViewController {
         
       case .segmented:
         return "Segmented filters"
+      
+      case .facetFilterList:
+        return "Facet filter list"
+        
+      case .numericFilterList:
+        return "Numeric filter list"
+        
+      case .tagFilterList:
+        return "Tag filter list"
       }
     }
 
@@ -54,6 +66,15 @@ class DemoListViewController: UITableViewController {
         
       case .segmented:
         viewController = SegmentedDemoViewController()
+        
+      case .facetFilterList:
+        return FilterListDemo.facet()
+        
+      case .numericFilterList:
+        return FilterListDemo.numeric()
+        
+      case .tagFilterList:
+        return FilterListDemo.tag()
       }
       
       viewController.title = title

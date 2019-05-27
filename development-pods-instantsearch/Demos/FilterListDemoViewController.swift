@@ -10,31 +10,42 @@ import Foundation
 import InstantSearchCore
 import InstantSearch
 
-class FilterListDemoViewController: UIViewController {
+struct FilterListDemo {
   
-  let facetFilters: [Filter.Facet] = [
-    .init(attribute: "f1", stringValue: "v1"),
-    .init(attribute: "f2", stringValue: "v2"),
-    .init(attribute: "f3", stringValue: "v3"),
-  ]
+  static func facet() -> FilterListDemoViewController<Filter.Facet> {
+    let facetFilters: [Filter.Facet] = ["red", "blue", "green", "yellow", "black"].map {
+      .init(attribute: "color", stringValue: $0)
+    }
+    return FilterListDemoViewController<Filter.Facet>(items: facetFilters, selectionMode: .multiple)
+  }
   
-  let numericFilters: [Filter.Numeric] = [
-    .init(attribute: "size", range: 32...42),
-    .init(attribute: "price", operator: .greaterThan, value: 100),
-    .init(attribute: "count", operator: .equals, value: 20),
-  ]
+  static func numeric() -> FilterListDemoViewController<Filter.Numeric> {
+    let numericFilters: [Filter.Numeric] = [5, 10, 50, 100, 500].map { .init(attribute: "price", operator: .lessThanOrEqual, value: $0) }
+    return FilterListDemoViewController<Filter.Numeric>(items: numericFilters, selectionMode: .single)
+  }
   
-  let tagFilters = (0...5).map { Filter.Tag(value: "Tag \($0)") }
+  static func tag() -> FilterListDemoViewController<Filter.Tag> {
+    let tagFilters: [Filter.Tag] = [
+      "coupon", "free shipping", "free return", "on sale", "no exchange"]
+    return FilterListDemoViewController<Filter.Tag>(items: tagFilters, selectionMode: .multiple)
+  }
   
-  let filterListViewModel: FilterListViewModel<Filter.Tag>
-  let filterListController: FilterListTableController<Filter.Tag>
-  let filterStateViewController: SearchStateViewController
+}
+
+class FilterListDemoViewController<F: FilterType & Hashable>: UIViewController {
   
-  init() {
-    filterListViewModel = FilterListViewModel(items: tagFilters)
+  let searcher: SingleIndexSearcher<JSON>
+  let filterListViewModel: FilterListViewModel<F>
+  let filterListController: FilterListTableController<F>
+  let searchStateViewController: SearchStateViewController
+  
+  init(items: [F], selectionMode: SelectionMode) {
+    searcher = SingleIndexSearcher(index: .demo(withName: "mobile_demo_filter_list"))
+    filterListViewModel = FilterListViewModel(items: items, selectionMode: selectionMode)
     filterListController = FilterListTableController(tableView: .init())
-    filterStateViewController = SearchStateViewController()
+    searchStateViewController = SearchStateViewController()
     super.init(nibName: nil, bundle: nil)
+    searcher.isDisjunctiveFacetingEnabled = false
   }
   
   required init?(coder aDecoder: NSCoder) {
@@ -44,6 +55,7 @@ class FilterListDemoViewController: UIViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     setup()
+    setupUI()
   }
   
 }
@@ -52,10 +64,14 @@ private extension FilterListDemoViewController {
   
   func setup() {
     filterListViewModel.connectController(filterListController)
-//    filterStateViewController.connectTo()
+    filterListViewModel.connectTo(searcher.filterState, operator: .or)
+    searchStateViewController.connectTo(searcher)
+    searcher.search()
   }
   
   func setupUI() {
+    
+    view.backgroundColor = .white
     
     let mainStackView = UIStackView()
     mainStackView.translatesAutoresizingMaskIntoConstraints = false
@@ -65,16 +81,17 @@ private extension FilterListDemoViewController {
     view.addSubview(mainStackView)
     
     NSLayoutConstraint.activate([
-      mainStackView.topAnchor.constraint(equalTo:view.topAnchor),
-      mainStackView.bottomAnchor.constraint(equalTo:view.topAnchor),
-      mainStackView.leadingAnchor.constraint(equalTo:view.leadingAnchor),
-      mainStackView.trailingAnchor.constraint(equalTo:view.trailingAnchor),
+      mainStackView.topAnchor.constraint(equalTo:view.safeAreaLayoutGuide.topAnchor),
+      mainStackView.bottomAnchor.constraint(equalTo:view.safeAreaLayoutGuide.bottomAnchor),
+      mainStackView.leadingAnchor.constraint(equalTo:view.safeAreaLayoutGuide.leadingAnchor),
+      mainStackView.trailingAnchor.constraint(equalTo:view.safeAreaLayoutGuide.trailingAnchor),
     ])
     
-    addChild(filterStateViewController)
-    filterStateViewController.view.heightAnchor.constraint(equalToConstant: 150).isActive = true
+    addChild(searchStateViewController)
+    searchStateViewController.didMove(toParent: self)
+    searchStateViewController.view.heightAnchor.constraint(equalToConstant: 150).isActive = true
     
-    mainStackView.addArrangedSubview(filterStateViewController.view)
+    mainStackView.addArrangedSubview(searchStateViewController.view)
     mainStackView.addArrangedSubview(filterListController.tableView)
     
   }
