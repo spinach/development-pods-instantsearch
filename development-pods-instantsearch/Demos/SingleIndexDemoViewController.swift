@@ -13,6 +13,7 @@ import InstantSearch
 class SingleIndexDemoViewController: UIViewController {
 
   let searcher: SingleIndexSearcher<JSON>
+  let queryInputViewModel: QueryInputViewModel
   let searchBarController: SearchBarController
   let hitsViewModel: HitsViewModel<JSON>
   let hitsController: HitsTableController<HitsViewModel<JSON>>
@@ -21,17 +22,21 @@ class SingleIndexDemoViewController: UIViewController {
     
     self.searcher = SingleIndexSearcher<JSON>(index: .demo(withName: "bestbuy_promo"))
     
-    let searchBar = UISearchBar()
-    self.searchBarController = SearchBarController(searchBar: searchBar)
+    self.searchBarController = SearchBarController(searchBar: .init())
     self.hitsViewModel = HitsViewModel()
+    self.queryInputViewModel = QueryInputViewModel()
     let tableView = UITableView(frame: .zero, style: .plain)
     self.hitsController = HitsTableController(tableView: tableView)
     super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
     searcher.search()
     searcher.indexSearchData.query.facets = ["category"]
-    searchBarController.connectTo(searcher)
+    
     hitsViewModel.connectSearcher(searcher)
     hitsViewModel.connectController(hitsController)
+    
+    queryInputViewModel.connect(searchBarController)
+    queryInputViewModel.connect(searcher, searchAsYouType: false)
+    
   }
   
   required init?(coder aDecoder: NSCoder) {

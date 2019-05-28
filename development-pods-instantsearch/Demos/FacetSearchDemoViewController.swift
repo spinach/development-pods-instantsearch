@@ -62,7 +62,7 @@ private extension FacetSearchDemoViewController {
     searchStateViewController.connectTo(searcher)
 
     facetSearcher.search()
-    searchBarController.connectTo(facetSearcher)
+//    searchBarController.connectTo(facetSearcher)
     searchStateViewController.connectTo(facetSearcher)
     categoryViewModel.connectTo(facetSearcher)
     categoryViewModel.connectTo(facetSearcher.filterState, with: Attribute("brand"), operator: .or)

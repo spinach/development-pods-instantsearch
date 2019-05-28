@@ -166,7 +166,7 @@ extension SearchStateViewController {
   func connectTo<R>(_ searcher: SingleIndexSearcher<R>) where R : Decodable, R : Encodable {
     loadableController.connectTo(searcher)
     statsController.connectTo(searcher)
-    searcher.onResultsChanged.subscribe(with: self) { (queryMetadata, result) in
+    searcher.onResultsChanged.subscribe(with: self) { (query, _, result) in
       switch result {
       case .failure:
         self.filterStateViewController.stateLabel.text = "Network error"

@@ -65,10 +65,11 @@ class MultindexController: UIViewController, UITableViewDataSource {
 
     searcher.search()
 
-    textFieldController.onSearch.subscribe(with: self) { text in
-      self.searcher.setQuery(text: text)
-      self.searcher.search()
-    }
+//    textFieldController
+//    textFieldController.onQueryChanged = { text in
+//      self.searcher.setQuery(text: text)
+//      self.searcher.search()
+//    }
 
     self.searcher.onResultsChanged.subscribe(with: self) { [weak self] result in
       
