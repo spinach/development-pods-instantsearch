@@ -19,24 +19,13 @@ class SingleIndexDemoViewController: UIViewController {
   let hitsController: HitsTableController<HitsViewModel<JSON>>
 
   override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
-    
-    self.searcher = SingleIndexSearcher<JSON>(index: .demo(withName: "bestbuy_promo"))
-    
+    self.searcher = SingleIndexSearcher<JSON>(index: .demo(withName: "mobile_demo_movies"))
     self.searchBarController = SearchBarController(searchBar: .init())
     self.hitsViewModel = HitsViewModel()
     self.queryInputViewModel = QueryInputViewModel()
-    let tableView = UITableView(frame: .zero, style: .plain)
-    self.hitsController = HitsTableController(tableView: tableView)
+    self.hitsController = HitsTableController(tableView: .init())
     super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
-    searcher.search()
-    searcher.indexSearchData.query.facets = ["category"]
-    
-    hitsViewModel.connectSearcher(searcher)
-    hitsViewModel.connectController(hitsController)
-    
-    queryInputViewModel.connect(searchBarController)
-    queryInputViewModel.connect(searcher, searchAsYouType: false)
-    
+    setup()
   }
   
   required init?(coder aDecoder: NSCoder) {
@@ -48,11 +37,24 @@ class SingleIndexDemoViewController: UIViewController {
     view.backgroundColor = .white
     hitsController.dataSource = HitsTableViewDataSource { (tableView, hit, indexPath) -> UITableViewCell in
       let cell = tableView.dequeueReusableCell(withIdentifier: "CellId", for: indexPath)
-      cell.textLabel!.text = [String: Any](hit)?["name"] as? String
+      cell.textLabel!.text = [String: Any](hit)?["title"] as? String
       return cell
     }
         
     setupUI()
+    
+  }
+  
+  private func setup() {
+    
+    searcher.search()
+    
+    hitsViewModel.connect(to: searcher)
+    hitsViewModel.connect(to: searcher.filterState)
+    hitsViewModel.connect(to: hitsController)
+    
+    queryInputViewModel.connect(to: searchBarController)
+    queryInputViewModel.connect(to: searcher, searchAsYouType: true)
     
   }
 

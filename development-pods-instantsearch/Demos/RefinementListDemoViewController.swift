@@ -55,28 +55,28 @@ class RefinementListDemoViewController: UIViewController {
     let colorAPresenter = FacetListPresenter(sortBy: [.isRefined, .alphabetical(order: .ascending)], limit: 5)
     let colorATitleDescriptor = TitleDescriptor(text: "And, IsRefined-AlphaAsc, I=5", color: .init(hexString: "#ffcc0000"))
     let colorAController = FacetListTableController(tableView: topLeftTableView, titleDescriptor: colorATitleDescriptor)
-    colorAViewModel.connectController(colorAController, with: colorAPresenter)
+    colorAViewModel.connect(to: colorAController, with: colorAPresenter)
     
     // Top right - Color B
     colorBViewModel = FacetListViewModel(selectionMode: .single)
     let colorBPresenter = FacetListPresenter(sortBy: [.alphabetical(order: .descending)], limit: 3)
     let colorBTitleDescriptor = TitleDescriptor(text: "And, AlphaDesc, I=3", color: .init(hexString: "#ffcc0000"))
     let colorBController = FacetListTableController(tableView: topRightTableView, titleDescriptor: colorBTitleDescriptor)
-    colorBViewModel.connectController(colorBController, with: colorBPresenter)
+    colorBViewModel.connect(to: colorBController, with: colorBPresenter)
     
     // Bottom Left - Promotion
     promotionViewModel = FacetListViewModel()
     let promotionPresenter = FacetListPresenter(sortBy: [.count(order: .descending)], limit: 5)
     let promotionTitleDescriptor = TitleDescriptor(text: "And, CountDesc, I=5", color: .init(hexString: "#ff669900"))
     let promotionController = FacetListTableController(tableView: bottomLeftTableView, titleDescriptor: promotionTitleDescriptor)
-    promotionViewModel.connectController(promotionController, with: promotionPresenter)
+    promotionViewModel.connect(to: promotionController, with: promotionPresenter)
     
     // Bottom Right - Category
     categoryViewModel = FacetListViewModel()
     let categoryRefinementListPresenter = FacetListPresenter(sortBy: [.count(order: .descending), .alphabetical(order: .ascending)])
     let categoryTitleDescriptor = TitleDescriptor(text: "Or, CountDesc-AlphaAsc, I=5", color: .init(hexString: "#ff0099cc"))
     let categoryController = FacetListTableController(tableView: bottomRightTableView, titleDescriptor: categoryTitleDescriptor)
-    categoryViewModel.connectController(categoryController, with: categoryRefinementListPresenter)
+    categoryViewModel.connect(to: categoryController, with: categoryRefinementListPresenter)
 
     setup()
 
@@ -92,19 +92,19 @@ private extension RefinementListDemoViewController {
     let groupID = FilterGroup.ID.and(name: colorAttribute.name)
     searcher.filterState.notify(.add(filter: greenColor, toGroupWithID: groupID))
     
-    colorAViewModel.connectTo(searcher, with: colorAttribute)
-    colorBViewModel.connectTo(searcher, with: colorAttribute)
-    promotionViewModel.connectTo(searcher, with: promotionAttribute)
-    categoryViewModel.connectTo(searcher, with: categoryAttribute)
+    colorAViewModel.connect(to: searcher, with: colorAttribute)
+    colorBViewModel.connect(to: searcher, with: colorAttribute)
+    promotionViewModel.connect(to: searcher, with: promotionAttribute)
+    categoryViewModel.connect(to: searcher, with: categoryAttribute)
     
     let filterState = searcher.filterState
     
-    colorAViewModel.connectTo(filterState, with: colorAttribute, operator: .and)
-    colorBViewModel.connectTo(filterState, with: colorAttribute, operator: .and)
-    promotionViewModel.connectTo(filterState, with: promotionAttribute, operator: .and)
-    categoryViewModel.connectTo(filterState, with: categoryAttribute, operator: .or)
+    colorAViewModel.connect(to: filterState, with: colorAttribute, operator: .and)
+    colorBViewModel.connect(to: filterState, with: colorAttribute, operator: .and)
+    promotionViewModel.connect(to: filterState, with: promotionAttribute, operator: .and)
+    categoryViewModel.connect(to: filterState, with: categoryAttribute, operator: .or)
     
-    searchStateViewController.connectTo(searcher)
+    searchStateViewController.connect(to: searcher)
     
     searcher.search()
   }

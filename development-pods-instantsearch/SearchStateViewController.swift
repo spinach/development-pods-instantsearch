@@ -158,27 +158,31 @@ class SearchStateViewController: UIViewController {
 
 extension SearchStateViewController {
   
-  func connectTo(_ filterState: FilterState) {
+  func connect(to filterState: FilterState) {
     filterStateViewController.connectTo(filterState)
     clearRefinementsController.connectTo(filterState)
   }
   
-  func connectTo<R>(_ searcher: SingleIndexSearcher<R>) where R : Decodable, R : Encodable {
+  func connect<R>(to searcher: SingleIndexSearcher<R>) where R : Decodable, R : Encodable {
     loadableController.connectTo(searcher)
     statsController.connectTo(searcher)
     searcher.onResultsChanged.subscribe(with: self) { (query, _, result) in
+      
+      let text: String
       switch result {
       case .failure:
-        self.filterStateViewController.stateLabel.text = "Network error"
+        text = "Network error"
       case .success(let results):
-        self.hitsCountLabel.text = "hits: \(results.totalHitsCount)"
+        text = "hits: \(results.totalHitsCount)"
       }
+      
+      self.hitsCountLabel.text = text
     }
     
-    connectTo(searcher.filterState)
+    connect(to: searcher.filterState)
   }
   
-  func connectTo(_ facetSearcher: FacetSearcher) {
+  func connect(to facetSearcher: FacetSearcher) {
     loadableController.connectTo(facetSearcher)
   }
   

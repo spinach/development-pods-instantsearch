@@ -13,21 +13,30 @@ import InstantSearch
 struct FilterListDemo {
   
   static func facet() -> FilterListDemoViewController<Filter.Facet> {
+    
     let facetFilters: [Filter.Facet] = ["red", "blue", "green", "yellow", "black"].map {
       .init(attribute: "color", stringValue: $0)
     }
+    
     return FilterListDemoViewController<Filter.Facet>(items: facetFilters, selectionMode: .multiple)
+    
   }
   
   static func numeric() -> FilterListDemoViewController<Filter.Numeric> {
+    
     let numericFilters: [Filter.Numeric] = [5, 10, 50, 100, 500].map { .init(attribute: "price", operator: .lessThanOrEqual, value: $0) }
+    
     return FilterListDemoViewController<Filter.Numeric>(items: numericFilters, selectionMode: .single)
+    
   }
   
   static func tag() -> FilterListDemoViewController<Filter.Tag> {
+    
     let tagFilters: [Filter.Tag] = [
       "coupon", "free shipping", "free return", "on sale", "no exchange"]
+    
     return FilterListDemoViewController<Filter.Tag>(items: tagFilters, selectionMode: .multiple)
+    
   }
   
 }
@@ -63,10 +72,10 @@ class FilterListDemoViewController<F: FilterType & Hashable>: UIViewController {
 private extension FilterListDemoViewController {
   
   func setup() {
-    filterListViewModel.connectController(filterListController)
-    filterListViewModel.connectTo(searcher.filterState, operator: .or)
-    searchStateViewController.connectTo(searcher)
     searcher.search()
+    filterListViewModel.connect(to: filterListController)
+    filterListViewModel.connect(to: searcher.filterState, operator: .or)
+    searchStateViewController.connect(to: searcher)
   }
   
   func setupUI() {

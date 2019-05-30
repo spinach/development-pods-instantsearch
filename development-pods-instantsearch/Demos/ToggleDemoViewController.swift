@@ -97,16 +97,16 @@ private extension ToggleDemoViewController {
     couponViewModel.connectTo(filterState, operator: .or)
     sizeConstraintViewModel.connectTo(filterState, operator: .or)
     vintageViewModel.connectTo(filterState, operator: .or)
-    promotionsViewModel.connectTo(searcher, with: promotionsAttribute)
-    promotionsViewModel.connectTo(filterState, with: promotionsAttribute, operator: .or)
-    headerViewControler.connectTo(searcher)
+    promotionsViewModel.connect(to: searcher, with: promotionsAttribute)
+    promotionsViewModel.connect(to: filterState, with: promotionsAttribute, operator: .or)
+    headerViewControler.connect(to: searcher)
     searcher.search()
     
     freeShippingViewModel.connectController(freeShippingButtonController)
     sizeConstraintViewModel.connectController(sizeConstraintButtonController)
     vintageViewModel.connectController(vintageButtonController)
     couponViewModel.connectController(couponSwitchController)
-    promotionsViewModel.connectController(promotionsController)
+    promotionsViewModel.connect(to: promotionsController)
 
   }
   

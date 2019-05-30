@@ -55,7 +55,7 @@ private extension SegmentedDemoViewController {
   func setup() {
     genderViewModel.connectTo(searcher, attribute: genderAttribute, operator: .or)
     genderViewModel.connectController(segmentedController)
-    searchStateViewController.connectTo(searcher)
+    searchStateViewController.connect(to: searcher)
     searcher.filterState.notify(.add(filter: male, toGroupWithID: .or(name: genderAttribute.name)))
     searcher.search()
   }
