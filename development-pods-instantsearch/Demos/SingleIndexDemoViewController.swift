@@ -9,17 +9,25 @@
 import UIKit
 import InstantSearchCore
 import InstantSearch
+import Kingfisher
+
+struct Movie: Codable {
+  let title: String
+  let year: Int
+  let image: URL
+  let genre: [String]
+}
 
 class SingleIndexDemoViewController: UIViewController {
 
-  let searcher: SingleIndexSearcher<JSON>
+  let searcher: SingleIndexSearcher<Movie>
   let queryInputViewModel: QueryInputViewModel
   let searchBarController: SearchBarController
-  let hitsViewModel: HitsViewModel<JSON>
-  let hitsController: HitsTableController<HitsViewModel<JSON>>
+  let hitsViewModel: HitsViewModel<Movie>
+  let hitsController: HitsTableController<HitsViewModel<Movie>>
 
   override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
-    self.searcher = SingleIndexSearcher<JSON>(index: .demo(withName: "mobile_demo_movies"))
+    self.searcher = SingleIndexSearcher(index: .demo(withName: "mobile_demo_movies"))
     self.searchBarController = SearchBarController(searchBar: .init())
     self.hitsViewModel = HitsViewModel()
     self.queryInputViewModel = QueryInputViewModel()
@@ -37,9 +45,12 @@ class SingleIndexDemoViewController: UIViewController {
     view.backgroundColor = .white
     hitsController.dataSource = HitsTableViewDataSource { (tableView, hit, indexPath) -> UITableViewCell in
       let cell = tableView.dequeueReusableCell(withIdentifier: "CellId", for: indexPath)
-      cell.textLabel!.text = [String: Any](hit)?["title"] as? String
+      cell.textLabel?.text = hit.title
+      cell.detailTextLabel?.text = hit.genre.joined(separator: ", ")
+      cell.imageView?.kf.setImage(with: hit.image)
       return cell
     }
+    hitsController.delegate = MovieTableDelegate(clickHandler: { _, _, _ in })
         
     setupUI()
     
@@ -58,6 +69,14 @@ class SingleIndexDemoViewController: UIViewController {
     
   }
 
+}
+
+class MovieTableDelegate: HitsTableViewDelegate<HitsViewModel<Movie>> {
+  
+  @objc override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    
+  }
+  
 }
 
 extension SingleIndexDemoViewController {
