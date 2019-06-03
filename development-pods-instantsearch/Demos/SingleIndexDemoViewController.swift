@@ -18,20 +18,36 @@ struct Movie: Codable {
   let genre: [String]
 }
 
-class SingleIndexDemoViewController: UIViewController {
+class SingleIndexDemoViewController: UIViewController, InstantSearchCore.HitsController {
+  
+  var hitsSource: HitsViewModel<Movie>?
+  
+  func reload() {
+    tableView.reloadData()
+  }
+  
+  func scrollToTop() {
+    guard hitsViewModel.numberOfHits() > 0 else { return }
+    tableView.scrollToRow(at: IndexPath(), at: .top, animated: false)
+  }
+  
+  typealias DataSource = HitsViewModel<Movie>
 
   let searcher: SingleIndexSearcher<Movie>
   let queryInputViewModel: QueryInputViewModel
   let searchBarController: SearchBarController
   let hitsViewModel: HitsViewModel<Movie>
-  let hitsController: HitsTableController<HitsViewModel<Movie>>
+  
+  let tableView: UITableView
+  
+  private let cellIdentifier = "CellID"
 
   override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
     self.searcher = SingleIndexSearcher(index: .demo(withName: "mobile_demo_movies"))
     self.searchBarController = SearchBarController(searchBar: .init())
     self.hitsViewModel = HitsViewModel()
     self.queryInputViewModel = QueryInputViewModel()
-    self.hitsController = HitsTableController(tableView: .init())
+    self.tableView = UITableView(frame: .zero, style: .plain)
     super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
     setup()
   }
@@ -42,27 +58,16 @@ class SingleIndexDemoViewController: UIViewController {
   
   override func viewDidLoad() {
     super.viewDidLoad()
-    view.backgroundColor = .white
-    hitsController.dataSource = HitsTableViewDataSource { (tableView, hit, indexPath) -> UITableViewCell in
-      let cell = tableView.dequeueReusableCell(withIdentifier: "CellId", for: indexPath)
-      cell.textLabel?.text = hit.title
-      cell.detailTextLabel?.text = hit.genre.joined(separator: ", ")
-      cell.imageView?.kf.setImage(with: hit.image)
-      return cell
-    }
-    hitsController.delegate = MovieTableDelegate(clickHandler: { _, _, _ in })
-        
     setupUI()
-    
   }
   
   private func setup() {
-    
+    searcher.setQuery(text: "quality sens")
     searcher.search()
     
     hitsViewModel.connect(to: searcher)
     hitsViewModel.connect(to: searcher.filterState)
-    hitsViewModel.connect(to: hitsController)
+    hitsViewModel.connect(to: self)
     
     queryInputViewModel.connect(to: searchBarController)
     queryInputViewModel.connect(to: searcher, searchAsYouType: true)
@@ -83,13 +88,16 @@ extension SingleIndexDemoViewController {
   
   fileprivate func setupUI() {
     
+    view.backgroundColor = .white
+    
     let searchBar = searchBarController.searchBar
-    let tableView = hitsController.tableView
     searchBar.translatesAutoresizingMaskIntoConstraints = false
     searchBar.searchBarStyle = .minimal
 
     tableView.translatesAutoresizingMaskIntoConstraints = false
-    tableView.register(UITableViewCell.self, forCellReuseIdentifier: "CellId")
+    tableView.register(UITableViewCell.self, forCellReuseIdentifier: cellIdentifier)
+    tableView.dataSource = self
+    tableView.delegate = self
     
     view.addSubview(searchBar)
 
@@ -112,3 +120,32 @@ extension SingleIndexDemoViewController {
   }
   
 }
+
+extension SingleIndexDemoViewController: UITableViewDataSource {
+  
+  func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    return hitsViewModel.numberOfHits()
+  }
+  
+  func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath)
+    if let movie = hitsViewModel.hit(atIndex: indexPath.row) {
+//      print([String: Any](movie))
+      cell.textLabel?.text = movie.title
+      cell.detailTextLabel?.text = movie.genre.joined(separator: ", ")
+//      cell.imageView?.kf.setImage(with: movie.image)
+    }
+    return cell
+  }
+  
+}
+
+extension SingleIndexDemoViewController: UITableViewDelegate {
+  
+  func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+    return 80
+  }
+  
+}
+
+

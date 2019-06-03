@@ -13,6 +13,8 @@ import InstantSearchCore
 
 class SearchStateViewController: UIViewController {
   
+  let statsViewModel: StatsViewModel
+  
   let mainStackView: UIStackView
   let titleLabel: UILabel
   let hitsCountLabel: UILabel
@@ -20,7 +22,7 @@ class SearchStateViewController: UIViewController {
   let filterStateViewController: FilterStateViewController
   let clearRefinementsButton: UIButton
   let loadableController: ActivityIndicatorController
-  let statsController: StatsController
+  let statsController: LabelStatsController
   let clearRefinementsController: ClearRefinementsController
   
   override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
@@ -33,7 +35,9 @@ class SearchStateViewController: UIViewController {
     self.loadableController = ActivityIndicatorController(activityIndicator: activityIndicator)
     self.statsController = LabelStatsController(label: hitsCountLabel)
     self.clearRefinementsController = ClearRefinementsButtonController(button: clearRefinementsButton)
+    self.statsViewModel = StatsViewModel(item: .none)
     super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
+    statsViewModel.connectController(statsController)
   }
   
   required init?(coder aDecoder: NSCoder) {
@@ -161,24 +165,12 @@ extension SearchStateViewController {
   func connect(to filterState: FilterState) {
     filterStateViewController.connectTo(filterState)
     clearRefinementsController.connectTo(filterState)
+    
   }
   
   func connect<R>(to searcher: SingleIndexSearcher<R>) where R : Decodable, R : Encodable {
     loadableController.connectTo(searcher)
-    statsController.connectTo(searcher)
-    searcher.onResultsChanged.subscribe(with: self) { (query, _, result) in
-      
-      let text: String
-      switch result {
-      case .failure:
-        text = "Network error"
-      case .success(let results):
-        text = "hits: \(results.totalHitsCount)"
-      }
-      
-      self.hitsCountLabel.text = text
-    }
-    
+    statsViewModel.connectSearcher(searcher)
     connect(to: searcher.filterState)
   }
   
