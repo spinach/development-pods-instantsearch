@@ -9,7 +9,7 @@
 import UIKit
 import InstantSearchCore
 import InstantSearch
-import Kingfisher
+import SDWebImage
 
 struct Movie: Codable {
   let title: String
@@ -130,10 +130,11 @@ extension SingleIndexDemoViewController: UITableViewDataSource {
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath)
     if let movie = hitsViewModel.hit(atIndex: indexPath.row) {
-//      print([String: Any](movie))
       cell.textLabel?.text = movie.title
       cell.detailTextLabel?.text = movie.genre.joined(separator: ", ")
-//      cell.imageView?.kf.setImage(with: movie.image)
+      cell.imageView?.sd_setImage(with: movie.image, completed: { (_, _, _, _) in
+        cell.setNeedsLayout()
+      })
     }
     return cell
   }
