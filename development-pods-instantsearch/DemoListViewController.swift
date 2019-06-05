@@ -29,6 +29,7 @@ struct Demo: Codable {
     case facetFilterList = "filter_list_facet"
     case numericFilterList = "filter_list_numeric"
     case tagFilterList = "filter_list_tag"
+    case filterNumericComparison = "filter_numeric_comparison"
   }
   
 }
@@ -109,6 +110,9 @@ class DemoListViewController: UIViewController {
       
     case .segmented:
       viewController = SegmentedDemoViewController()
+
+    case .filterNumericComparison:
+      viewController = FilterNumericComparisonDemoViewController()
       
     case .facetFilterList:
       return FilterListDemo.facet()
@@ -118,6 +122,7 @@ class DemoListViewController: UIViewController {
       
     case .tagFilterList:
       return FilterListDemo.tag()
+
     }
     
     return viewController
