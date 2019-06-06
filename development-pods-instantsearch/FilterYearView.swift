@@ -24,8 +24,6 @@ class FilterYearController: NSObject, NumberView {
     self.computation = computation
   }
 
-
-
   let textField: UITextField
 
   public init(textField: UITextField) {

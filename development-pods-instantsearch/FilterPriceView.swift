@@ -18,10 +18,15 @@ class FilterPriceController: NumberView {
     stepper.value = item
   }
 
-  func setComputation<Number>(computation: Computation<Number>) where Number : Numeric {
-    //stepper.addTarget(self, action: #selector(stepperAction), for: <#T##UIControl.Event#>)
+  var computation: Computation<Double>?
 
+  func setComputation(computation: Computation<Double>) {
+    stepper.addTarget(self, action: #selector(stepperOnValueChanged), for: .valueChanged)
+    self.computation = computation
+  }
 
+  @objc func stepperOnValueChanged(sender: UIStepper) {
+    computation?.just(value: sender.value)
   }
 
   let stepper: UIStepper
