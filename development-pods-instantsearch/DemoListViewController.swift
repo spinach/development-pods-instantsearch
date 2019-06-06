@@ -30,6 +30,7 @@ struct Demo: Codable {
     case numericFilterList = "filter_list_numeric"
     case tagFilterList = "filter_list_tag"
     case filterNumericComparison = "filter_numeric_comparison"
+    case sortBy = "index_segment"
   }
   
 }
@@ -113,6 +114,9 @@ class DemoListViewController: UIViewController {
 
     case .filterNumericComparison:
       viewController = FilterNumericComparisonDemoViewController()
+
+    case .sortBy:
+      viewController = IndexSegmentDemoViewController()
       
     case .facetFilterList:
       return FilterListDemo.facet()
