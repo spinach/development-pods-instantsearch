@@ -13,6 +13,7 @@ import InstantSearchCore
 class FilterNumericComparisonDemoViewController: UIViewController {
 
   let yearAttribute = Attribute("year")
+  let priceAttribute = Attribute("price")
 
   let searcher: SingleIndexSearcher<JSON>
 
@@ -74,8 +75,12 @@ private extension FilterNumericComparisonDemoViewController {
     numberViewModel2.connectFilterState(searcher.filterState, attribute: yearAttribute, operator: .greaterThanOrEqual)
     numberViewModel2.connectView(view: numberController2)
 
-    numberViewModel3.connectFilterState(searcher.filterState, attribute: yearAttribute, operator: .greaterThanOrEqual)
+    numberViewModel3.connectFilterState(searcher.filterState, attribute: priceAttribute, operator: .greaterThanOrEqual)
     numberViewModel3.connectView(view: numberController3)
+
+    numberViewModel.connectSearcher(searcher, attribute: yearAttribute)
+    numberViewModel2.connectSearcher(searcher, attribute: yearAttribute)
+    numberViewModel3.connectSearcher(searcher, attribute: priceAttribute)
 
     searchStateViewController.connect(to: searcher)
 
