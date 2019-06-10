@@ -41,6 +41,7 @@ struct Demo: Codable {
 class DemoListViewController: UIViewController {
   
   let searcher: SingleIndexSearcher
+  let filterState: FilterState
   let hitsViewModel: HitsViewModel<DemoHit>
   let searchBarController: SearchBarController
   
@@ -51,11 +52,14 @@ class DemoListViewController: UIViewController {
 
   override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
     searcher = SingleIndexSearcher(index: .demo(withName: "mobile_demo_home"))
+    filterState = .init()
     hitsViewModel = HitsViewModel(infiniteScrolling: .on(withOffset: 10), showItemsOnEmptyQuery: true)
     searchBarController = SearchBarController(searchBar: .init())
     groupedDemos = []
+    
+    searcher.connectFilterState(filterState)
     hitsViewModel.connectSearcher(searcher)
-    hitsViewModel.connectFilterState(searcher.filterState)
+    hitsViewModel.connectFilterState(filterState)
     searchController = UISearchController(searchResultsController: .none)
     searchController.dimsBackgroundDuringPresentation = false
     self.tableView = UITableView()

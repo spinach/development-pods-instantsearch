@@ -37,6 +37,10 @@ class NumericTextFieldController: NSObject, NumberController {
     self.computation?.just(value: intText)
     textField.resignFirstResponder()
   }
+  
+  func invalidate() {
+    textField.text = nil
+  }
 
 }
 

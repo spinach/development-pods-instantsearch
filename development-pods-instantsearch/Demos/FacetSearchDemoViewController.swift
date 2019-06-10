@@ -13,6 +13,7 @@ import InstantSearch
 class FacetSearchDemoViewController: UIViewController {
 
   let searcher: SingleIndexSearcher
+  let filterState: FilterState
   let facetSearcher: FacetSearcher
   let searchBarController: SearchBarController
   let categoryController: FacetListTableController
@@ -23,11 +24,11 @@ class FacetSearchDemoViewController: UIViewController {
   
   override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
     
-    let filterState = FilterState()
     let index: Index = .demo(withName: "mobile_demo_facet_list_search")
     
-    searcher = SingleIndexSearcher(index: index, filterState: filterState)
-    facetSearcher = FacetSearcher(index: index, filterState: filterState, facetName: Attribute("brand").name)
+    searcher = SingleIndexSearcher(index: index)
+    filterState = .init()
+    facetSearcher = FacetSearcher(index: index, facetName: Attribute("brand").name)
     
     queryInputViewModel = QueryInputViewModel()
     categoryListViewModel = FacetListViewModel(selectionMode: .multiple)
@@ -59,16 +60,20 @@ private extension FacetSearchDemoViewController {
   func setup() {
     
     searcher.search()
+    searcher.connectFilterState(filterState)
+
     facetSearcher.search()
+    facetSearcher.connectFilterState(filterState)
 
     searchStateViewController.connectSearcher(searcher)
-    searchStateViewController.connect(to: facetSearcher)
+    searchStateViewController.connectFilterState(filterState)
+    searchStateViewController.connectFacetSearcher(facetSearcher)
 
-    queryInputViewModel.connectController( searchBarController)
+    queryInputViewModel.connectController(searchBarController)
     queryInputViewModel.connectSearcher(facetSearcher, searchAsYouType: true)
     
     categoryListViewModel.connectFacetSearcher(facetSearcher)
-    categoryListViewModel.connectFilterState(facetSearcher.filterState, with: Attribute("brand"), operator: .or)
+    categoryListViewModel.connectFilterState(filterState, with: Attribute("brand"), operator: .or)
     categoryListViewModel.connect(to: categoryController)
     
   }

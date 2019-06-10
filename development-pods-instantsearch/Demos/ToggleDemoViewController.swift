@@ -14,7 +14,8 @@ import InstantSearch
 class ToggleDemoViewController: UIViewController {
   
   let searcher: SingleIndexSearcher
-  let headerViewControler: SearchStateViewController
+  let filterState: FilterState
+  let searchStateViewController: SearchStateViewController
   
   let sizeConstraintViewModel: SelectableViewModel<Filter.Numeric>
   let vintageViewModel: SelectableViewModel<Filter.Tag>
@@ -34,7 +35,8 @@ class ToggleDemoViewController: UIViewController {
   override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
     
     searcher = SingleIndexSearcher(index: .demo(withName: "mobile_demo_filter_toggle"))
-    headerViewControler = SearchStateViewController()
+    filterState = .init()
+    searchStateViewController = SearchStateViewController()
     
     // Size constraint button
     
@@ -75,11 +77,12 @@ class ToggleDemoViewController: UIViewController {
 private extension ToggleDemoViewController {
   
   func setup() {
-    let filterState = searcher.indexSearchData.filterState
+    searcher.connectFilterState(filterState)
     couponViewModel.connectTo(filterState, operator: .or)
     sizeConstraintViewModel.connectTo(filterState, operator: .or)
     vintageViewModel.connectTo(filterState, operator: .or)
-    headerViewControler.connectSearcher(searcher)
+    searchStateViewController.connectSearcher(searcher)
+    searchStateViewController.connectFilterState(filterState)
     searcher.search()
     
     sizeConstraintViewModel.connectController(sizeConstraintButtonController)
@@ -111,14 +114,14 @@ private extension ToggleDemoViewController {
       mainStackView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
     ])
     
-    addChild(headerViewControler)
+    addChild(searchStateViewController)
 
-    headerViewControler.didMove(toParent: self)
-    mainStackView.addArrangedSubview(headerViewControler.view)
+    searchStateViewController.didMove(toParent: self)
+    mainStackView.addArrangedSubview(searchStateViewController.view)
     
     NSLayoutConstraint.activate([
-      headerViewControler.view.heightAnchor.constraint(equalToConstant: 150),
-      headerViewControler.view.widthAnchor.constraint(equalTo: mainStackView.widthAnchor, multiplier: 0.98)
+      searchStateViewController.view.heightAnchor.constraint(equalToConstant: 150),
+      searchStateViewController.view.widthAnchor.constraint(equalTo: mainStackView.widthAnchor, multiplier: 0.98)
     ])
     
     sizeConstraintButtonController.button.heightAnchor.constraint(equalToConstant: 44).isActive = true
@@ -212,7 +215,8 @@ private extension ToggleDemoViewController {
 class ToggleDefaultDemoViewController: UIViewController {
   
   let searcher: SingleIndexSearcher
-  let headerViewControler: SearchStateViewController
+  let filterState: FilterState
+  let searchStateViewController: SearchStateViewController
 
   let popularViewModel: SelectableViewModel<Filter.Facet>
   
@@ -223,7 +227,8 @@ class ToggleDefaultDemoViewController: UIViewController {
   override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
     
     searcher = SingleIndexSearcher(index: .demo(withName: "mobile_demo_filter_toggle"))
-    headerViewControler = SearchStateViewController()
+    filterState = .init()
+    searchStateViewController = SearchStateViewController()
     
     let popularFacet = Filter.Facet(attribute: "popular", boolValue: true)
     popularViewModel = SelectableViewModel<Filter.Facet>(item: popularFacet)
@@ -245,10 +250,11 @@ class ToggleDefaultDemoViewController: UIViewController {
   }
   
   func setup() {
-    let filterState = searcher.indexSearchData.filterState
+    searcher.connectFilterState(filterState)
     filterState.add(Filter.Facet(attribute: "popular", boolValue: false), toGroupWithID: .or(name: "popular"))
     popularViewModel.connectTo(filterState, operator: .or)
-    headerViewControler.connectSearcher(searcher)
+    searchStateViewController.connectSearcher(searcher)
+    searchStateViewController.connectFilterState(filterState)
     searcher.search()
     popularViewModel.connectController(popularButtonController)
   }
@@ -289,14 +295,14 @@ class ToggleDefaultDemoViewController: UIViewController {
       mainStackView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
       ])
     
-    addChild(headerViewControler)
+    addChild(searchStateViewController)
     
-    headerViewControler.didMove(toParent: self)
-    mainStackView.addArrangedSubview(headerViewControler.view)
+    searchStateViewController.didMove(toParent: self)
+    mainStackView.addArrangedSubview(searchStateViewController.view)
     
     NSLayoutConstraint.activate([
-      headerViewControler.view.heightAnchor.constraint(equalToConstant: 150),
-      headerViewControler.view.widthAnchor.constraint(equalTo: mainStackView.widthAnchor, multiplier: 0.98)
+      searchStateViewController.view.heightAnchor.constraint(equalToConstant: 150),
+      searchStateViewController.view.widthAnchor.constraint(equalTo: mainStackView.widthAnchor, multiplier: 0.98)
     ])
 
     

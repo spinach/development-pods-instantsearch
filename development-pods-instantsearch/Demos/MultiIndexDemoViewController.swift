@@ -54,6 +54,11 @@ class MultiIndexDemoViewController: UIViewController, InstantSearchCore.MultiHit
   }
   
   let multiHitsViewModel: MultiHitsViewModel
+  
+  let moviesHitsViewModel = HitsViewModel<Movie>(infiniteScrolling: .off, showItemsOnEmptyQuery: true)
+  let actorsHitsViewModel = HitsViewModel<Actor>(infiniteScrolling: .off, showItemsOnEmptyQuery: true)
+
+  
   var hitsSource: MultiHitsSource? {
     get {
       return multiHitsViewModel
@@ -76,11 +81,11 @@ class MultiIndexDemoViewController: UIViewController, InstantSearchCore.MultiHit
     self.tableView = .init(frame: .zero, style: .plain)
     self.searchBarController = .init(searchBar: .init())
     self.queryInputViewModel = QueryInputViewModel()
-    let indexSearchDatas = [actorsIndex, moviesIndex].map { IndexSearchData(index: $0) }
-    multiIndexSearcher = MultiIndexSearcher(client: client, indexSearchDatas: indexSearchDatas)
+    let actorsISD = IndexSearchData(index: actorsIndex)
     
-    let moviesHitsViewModel = HitsViewModel<Movie>(infiniteScrolling: .off, showItemsOnEmptyQuery: true)
-    let actorsHitsViewModel = HitsViewModel<Actor>(infiniteScrolling: .off, showItemsOnEmptyQuery: true)
+    let moviesISD = IndexSearchData(index: moviesIndex)
+    multiIndexSearcher = MultiIndexSearcher(client: client, indexSearchDatas: [actorsISD, moviesISD])
+    
     
     self.multiHitsViewModel = MultiHitsViewModel(hitsViewModels: [actorsHitsViewModel, moviesHitsViewModel])
     super.init(nibName: nil, bundle: nil)

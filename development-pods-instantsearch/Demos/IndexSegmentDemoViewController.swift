@@ -27,6 +27,7 @@ class IndexSegmentDemoViewController: UIViewController, InstantSearchCore.HitsCo
   typealias DataSource = HitsViewModel<Movie>
 
   let searcher: SingleIndexSearcher
+  let filterState: FilterState
   let queryInputViewModel: QueryInputViewModel
   let searchBarController: SearchBarController
   let hitsViewModel: HitsViewModel<Movie>
@@ -45,6 +46,7 @@ class IndexSegmentDemoViewController: UIViewController, InstantSearchCore.HitsCo
 
   override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
     self.searcher = SingleIndexSearcher(index: .demo(withName: "mobile_demo_movies"))
+    self.filterState = .init()
     self.searchBarController = SearchBarController(searchBar: .init())
     self.hitsViewModel = HitsViewModel()
     self.queryInputViewModel = QueryInputViewModel()
@@ -70,9 +72,10 @@ class IndexSegmentDemoViewController: UIViewController, InstantSearchCore.HitsCo
 
   private func setup() {
     searcher.search()
+    searcher.connectFilterState(filterState)
 
     hitsViewModel.connectSearcher(searcher)
-    hitsViewModel.connectFilterState(searcher.filterState)
+    hitsViewModel.connectFilterState(filterState)
     hitsViewModel.connectController(self)
 
     queryInputViewModel.connectController(searchBarController)

@@ -19,6 +19,7 @@ extension CGFloat {
 class RefinementListDemoViewController: UIViewController {
   
   let searcher: SingleIndexSearcher
+  let filterState: FilterState
   var colorAViewModel: SelectableFacetsViewModel!
   var colorBViewModel: SelectableFacetsViewModel!
   var categoryViewModel: SelectableFacetsViewModel!
@@ -37,7 +38,8 @@ class RefinementListDemoViewController: UIViewController {
   
   override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
     searcher = SingleIndexSearcher(index: .demo(withName:"mobile_demo_facet_list"))
-    searchStateViewController = SearchStateViewController()
+    searchStateViewController = .init()
+    filterState = .init()
     super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
   }
   
@@ -90,21 +92,23 @@ private extension RefinementListDemoViewController {
     // predefined filter
     let greenColor = Filter.Facet(attribute: colorAttribute, stringValue: "green")
     let groupID = FilterGroup.ID.and(name: colorAttribute.name)
-    searcher.filterState.notify(.add(filter: greenColor, toGroupWithID: groupID))
+    
+    searcher.connectFilterState(filterState)
+    
+    filterState.notify(.add(filter: greenColor, toGroupWithID: groupID))
     
     colorAViewModel.connectSearcher(searcher, with: colorAttribute)
     colorBViewModel.connectSearcher(searcher, with: colorAttribute)
     promotionViewModel.connectSearcher(searcher, with: promotionAttribute)
     categoryViewModel.connectSearcher(searcher, with: categoryAttribute)
-    
-    let filterState = searcher.filterState
-    
+        
     colorAViewModel.connectFilterState(filterState, with: colorAttribute, operator: .and)
     colorBViewModel.connectFilterState(filterState, with: colorAttribute, operator: .and)
     promotionViewModel.connectFilterState(filterState, with: promotionAttribute, operator: .and)
     categoryViewModel.connectFilterState(filterState, with: categoryAttribute, operator: .or)
     
     searchStateViewController.connectSearcher(searcher)
+    searchStateViewController.connectFilterState(filterState)
     
     searcher.search()
   }

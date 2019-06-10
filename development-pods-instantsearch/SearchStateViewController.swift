@@ -165,16 +165,14 @@ extension SearchStateViewController {
   func connectFilterState(_ filterState: FilterState) {
     filterStateViewController.connectTo(filterState)
     clearRefinementsController.connectTo(filterState)
-    
   }
   
   func connectSearcher(_ searcher: SingleIndexSearcher) {
     loadableController.connectTo(searcher)
     statsViewModel.connectSearcher(searcher)
-    connectFilterState(searcher.filterState)
   }
   
-  func connect(to facetSearcher: FacetSearcher) {
+  func connectFacetSearcher(_ facetSearcher: FacetSearcher) {
     loadableController.connectTo(facetSearcher)
   }
   

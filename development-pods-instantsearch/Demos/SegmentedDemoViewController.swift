@@ -15,6 +15,7 @@ class SegmentedDemoViewController: UIViewController {
   let genderAttribute = Attribute("gender")
   
   let searcher: SingleIndexSearcher
+  let filterState: FilterState
 
   let genderViewModel: SelectableSegmentViewModel<Int, Filter.Facet>
   let segmentedController: SegmentedController<Filter.Facet>
@@ -31,6 +32,7 @@ class SegmentedDemoViewController: UIViewController {
       0: male,
       1: female
     ]
+    self.filterState = FilterState()
     self.genderViewModel = SelectableSegmentViewModel(items: items)
     self.searchStateViewController = SearchStateViewController()
     segmentedController = SegmentedController<Filter.Facet>(segmentedControl: .init())
@@ -53,11 +55,19 @@ class SegmentedDemoViewController: UIViewController {
 private extension SegmentedDemoViewController {
   
   func setup() {
-    genderViewModel.connectTo(searcher, attribute: genderAttribute, operator: .or)
-    genderViewModel.connectController(segmentedController)
-    searchStateViewController.connectSearcher(searcher)
-    searcher.filterState.notify(.add(filter: male, toGroupWithID: .or(name: genderAttribute.name)))
+    
     searcher.search()
+    searcher.connectFilterState(filterState)
+
+    genderViewModel.connectSearcher(searcher, attribute: genderAttribute)
+    genderViewModel.connectFilterState(filterState, attribute: genderAttribute, operator: .or)
+    genderViewModel.connectController(segmentedController)
+    
+    searchStateViewController.connectSearcher(searcher)
+    searchStateViewController.connectFilterState(filterState)
+    
+    filterState.notify(.add(filter: male, toGroupWithID: .or(name: genderAttribute.name)))
+    
   }
   
   func setupUI() {

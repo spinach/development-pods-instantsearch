@@ -212,7 +212,7 @@
 				E24DC9C9222EB72B006F1EED /* Sources */,
 				E24DC9CA222EB72B006F1EED /* Frameworks */,
 				E24DC9CB222EB72B006F1EED /* Resources */,
-				2ACD6C8BDDB5E94BE2B9DB19 /* [CP] Embed Pods Frameworks */,
+				36A23B0D2D28C3F39BEDD14A /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -301,17 +301,30 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		2ACD6C8BDDB5E94BE2B9DB19 /* [CP] Embed Pods Frameworks */ = {
+		36A23B0D2D28C3F39BEDD14A /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-development-pods-instantsearch/Pods-development-pods-instantsearch-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			inputPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-development-pods-instantsearch/Pods-development-pods-instantsearch-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/InstantSearch/InstantSearch.framework",
+				"${BUILT_PRODUCTS_DIR}/InstantSearchClient/InstantSearchClient.framework",
+				"${BUILT_PRODUCTS_DIR}/InstantSearchCore/InstantSearchCore.framework",
+				"${BUILT_PRODUCTS_DIR}/SDWebImage/SDWebImage.framework",
+				"${BUILT_PRODUCTS_DIR}/Signals/Signals.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-development-pods-instantsearch/Pods-development-pods-instantsearch-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/InstantSearch.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/InstantSearchClient.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/InstantSearchCore.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SDWebImage.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Signals.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;

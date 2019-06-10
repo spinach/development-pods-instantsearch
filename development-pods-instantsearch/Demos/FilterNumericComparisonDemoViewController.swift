@@ -16,6 +16,7 @@ class FilterNumericComparisonDemoViewController: UIViewController {
   let priceAttribute = Attribute("price")
 
   let searcher: SingleIndexSearcher
+  let filterState: FilterState
 
   let numberViewModel: NumberViewModel<Int>
   let numberViewModel2: NumberViewModel<Int>
@@ -33,10 +34,10 @@ class FilterNumericComparisonDemoViewController: UIViewController {
 
   override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
     self.searcher = SingleIndexSearcher(index: .demo(withName:"mobile_demo_filter_numeric_comparison"))
-
-    numberViewModel = NumberViewModel()
-    numberViewModel2 = NumberViewModel()
-    numberViewModel3 = NumberViewModel()
+    self.filterState = .init()
+    numberViewModel = .init()
+    numberViewModel2 = .init()
+    numberViewModel3 = .init()
 
     let stepper = UIStepper()
     let textField = UITextField()
@@ -68,19 +69,23 @@ class FilterNumericComparisonDemoViewController: UIViewController {
 private extension FilterNumericComparisonDemoViewController {
 
   func setup() {
-    numberViewModel.connectFilterState(searcher.filterState, attribute: yearAttribute, operator: .greaterThanOrEqual)
+    
+    searcher.connectFilterState(filterState)
+    
+    numberViewModel.connectFilterState(filterState, attribute: yearAttribute, operator: .greaterThanOrEqual)
     numberViewModel.connectView(view: numericTextFieldController1)
     numberViewModel.connectSearcher(searcher, attribute: yearAttribute)
 
-    numberViewModel2.connectFilterState(searcher.filterState, attribute: yearAttribute, operator: .greaterThanOrEqual)
+    numberViewModel2.connectFilterState(filterState, attribute: yearAttribute, operator: .greaterThanOrEqual)
     numberViewModel2.connectView(view: numericTextFieldController2)
     numberViewModel2.connectSearcher(searcher, attribute: yearAttribute)
 
-    numberViewModel3.connectFilterState(searcher.filterState, attribute: priceAttribute, operator: .greaterThanOrEqual)
+    numberViewModel3.connectFilterState(filterState, attribute: priceAttribute, operator: .greaterThanOrEqual)
     numberViewModel3.connectView(view: numericStepperController)
     numberViewModel3.connectSearcher(searcher, attribute: priceAttribute)
 
     searchStateViewController.connectSearcher(searcher)
+    searchStateViewController.connectFilterState(filterState)
 
     searcher.search()
   }

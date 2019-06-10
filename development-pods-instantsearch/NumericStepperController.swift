@@ -35,4 +35,8 @@ class NumericStepperController: NumberController {
     self.stepper = stepper
   }
   
+  func invalidate() {
+    stepper.value = 0
+  }
+  
 }
