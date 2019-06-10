@@ -18,7 +18,7 @@ extension CGFloat {
 
 class RefinementListDemoViewController: UIViewController {
   
-  let searcher: SingleIndexSearcher<JSON>
+  let searcher: SingleIndexSearcher
   var colorAViewModel: SelectableFacetsViewModel!
   var colorBViewModel: SelectableFacetsViewModel!
   var categoryViewModel: SelectableFacetsViewModel!
@@ -92,19 +92,19 @@ private extension RefinementListDemoViewController {
     let groupID = FilterGroup.ID.and(name: colorAttribute.name)
     searcher.filterState.notify(.add(filter: greenColor, toGroupWithID: groupID))
     
-    colorAViewModel.connect(to: searcher, with: colorAttribute)
-    colorBViewModel.connect(to: searcher, with: colorAttribute)
-    promotionViewModel.connect(to: searcher, with: promotionAttribute)
-    categoryViewModel.connect(to: searcher, with: categoryAttribute)
+    colorAViewModel.connectSearcher(searcher, with: colorAttribute)
+    colorBViewModel.connectSearcher(searcher, with: colorAttribute)
+    promotionViewModel.connectSearcher(searcher, with: promotionAttribute)
+    categoryViewModel.connectSearcher(searcher, with: categoryAttribute)
     
     let filterState = searcher.filterState
     
-    colorAViewModel.connect(to: filterState, with: colorAttribute, operator: .and)
-    colorBViewModel.connect(to: filterState, with: colorAttribute, operator: .and)
-    promotionViewModel.connect(to: filterState, with: promotionAttribute, operator: .and)
-    categoryViewModel.connect(to: filterState, with: categoryAttribute, operator: .or)
+    colorAViewModel.connectFilterState(filterState, with: colorAttribute, operator: .and)
+    colorBViewModel.connectFilterState(filterState, with: colorAttribute, operator: .and)
+    promotionViewModel.connectFilterState(filterState, with: promotionAttribute, operator: .and)
+    categoryViewModel.connectFilterState(filterState, with: categoryAttribute, operator: .or)
     
-    searchStateViewController.connect(to: searcher)
+    searchStateViewController.connectSearcher(searcher)
     
     searcher.search()
   }

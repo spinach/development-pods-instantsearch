@@ -18,6 +18,12 @@ struct Movie: Codable {
   let genre: [String]
 }
 
+struct Actor: Codable {
+  let name: String
+  let rating: Int
+  let image_path: String
+}
+
 class SingleIndexDemoViewController: UIViewController, InstantSearchCore.HitsController {
   
   var hitsSource: HitsViewModel<Movie>?
@@ -33,7 +39,7 @@ class SingleIndexDemoViewController: UIViewController, InstantSearchCore.HitsCon
   
   typealias DataSource = HitsViewModel<Movie>
 
-  let searcher: SingleIndexSearcher<Movie>
+  let searcher: SingleIndexSearcher
   let queryInputViewModel: QueryInputViewModel
   let searchBarController: SearchBarController
   let hitsViewModel: HitsViewModel<Movie>
@@ -62,15 +68,15 @@ class SingleIndexDemoViewController: UIViewController, InstantSearchCore.HitsCon
   }
   
   private func setup() {
-    searcher.setQuery(text: "quality sens")
+    searcher.query = "quality sens"
     searcher.search()
     
-    hitsViewModel.connect(to: searcher)
-    hitsViewModel.connect(to: searcher.filterState)
-    hitsViewModel.connect(to: self)
+    hitsViewModel.connectSearcher(searcher)
+    hitsViewModel.connectFilterState(searcher.filterState)
+    hitsViewModel.connectController(self)
     
-    queryInputViewModel.connect(to: searchBarController)
-    queryInputViewModel.connect(to: searcher, searchAsYouType: true)
+    queryInputViewModel.connectController(searchBarController)
+    queryInputViewModel.connectSearcher(searcher, searchAsYouType: true)
     
   }
 

@@ -12,7 +12,7 @@ import InstantSearch
 
 class FacetSearchDemoViewController: UIViewController {
 
-  let searcher: SingleIndexSearcher<JSON>
+  let searcher: SingleIndexSearcher
   let facetSearcher: FacetSearcher
   let searchBarController: SearchBarController
   let categoryController: FacetListTableController
@@ -61,14 +61,14 @@ private extension FacetSearchDemoViewController {
     searcher.search()
     facetSearcher.search()
 
-    searchStateViewController.connect(to: searcher)
+    searchStateViewController.connectSearcher(searcher)
     searchStateViewController.connect(to: facetSearcher)
 
-    queryInputViewModel.connect(to: searchBarController)
-    queryInputViewModel.connect(to: facetSearcher, searchAsYouType: true)
+    queryInputViewModel.connectController( searchBarController)
+    queryInputViewModel.connectSearcher(facetSearcher, searchAsYouType: true)
     
-    categoryListViewModel.connect(to: facetSearcher)
-    categoryListViewModel.connect(to: facetSearcher.filterState, with: Attribute("brand"), operator: .or)
+    categoryListViewModel.connectFacetSearcher(facetSearcher)
+    categoryListViewModel.connectFilterState(facetSearcher.filterState, with: Attribute("brand"), operator: .or)
     categoryListViewModel.connect(to: categoryController)
     
   }

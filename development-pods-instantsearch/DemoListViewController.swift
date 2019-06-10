@@ -24,8 +24,10 @@ struct Demo: Codable {
     case singleIndex = "paging_single_searcher"
     case sffv = "facet_list_search"
     case toggle = "filter_toggle"
+    case toggleDefault = "filter_toggle_default"
     case facetList = "facet_list"
     case segmented = "filter_segment"
+    case allFilterList = "filter_list_all"
     case facetFilterList = "filter_list_facet"
     case numericFilterList = "filter_list_numeric"
     case tagFilterList = "filter_list_tag"
@@ -36,7 +38,7 @@ struct Demo: Codable {
 
 class DemoListViewController: UIViewController {
   
-  let searcher: SingleIndexSearcher<DemoHit>
+  let searcher: SingleIndexSearcher
   let hitsViewModel: HitsViewModel<DemoHit>
   let searchBarController: SearchBarController
   
@@ -50,8 +52,8 @@ class DemoListViewController: UIViewController {
     hitsViewModel = HitsViewModel(infiniteScrolling: .on(withOffset: 10), showItemsOnEmptyQuery: true)
     searchBarController = SearchBarController(searchBar: .init())
     groupedDemos = []
-    hitsViewModel.connect(to: searcher)
-    hitsViewModel.connect(to: searcher.filterState)
+    hitsViewModel.connectSearcher(searcher)
+    hitsViewModel.connectFilterState(searcher.filterState)
     searchController = UISearchController(searchResultsController: .none)
     searchController.dimsBackgroundDuringPresentation = false
     self.tableView = UITableView()
@@ -63,20 +65,14 @@ class DemoListViewController: UIViewController {
     tableView.delegate = self
     tableView.dataSource = self
     hitsViewModel.onResultsUpdated.subscribe(with: self) { results in
-      let demos = results.hits.map { $0.object }
-      self.updateDemos(demos)
+      let demos = (try? results.deserializeHits() as [DemoHit]) ?? []
+      self.updateDemos(demos.map { $0.object })
     }
   }
   
   required init?(coder aDecoder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
   }
-  
-//  func configureCell(tableView: UITableView, hit: DemoHit, indexPath: IndexPath) -> UITableViewCell {
-//    let cell = tableView.dequeueReusableCell(withIdentifier: self.cellIdentifier, for: indexPath)
-//    cell.textLabel?.text = hit.object.name
-//    return cell
-//  }
   
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -104,15 +100,22 @@ class DemoListViewController: UIViewController {
       viewController = FacetSearchDemoViewController()
     case .toggle:
       viewController = ToggleDemoViewController()
+      
+    case .toggleDefault:
+      viewController = ToggleDefaultDemoViewController()
+      
     case .facetList:
       viewController = RefinementListDemoViewController()
       
     case .segmented:
       viewController = SegmentedDemoViewController()
       
+    case .allFilterList:
+      return MultiIndexDemoViewController()
+      
     case .facetFilterList:
       return FilterListDemo.facet()
-      
+            
     case .numericFilterList:
       return FilterListDemo.numeric()
       

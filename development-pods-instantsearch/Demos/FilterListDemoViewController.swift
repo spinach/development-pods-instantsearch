@@ -43,7 +43,7 @@ struct FilterListDemo {
 
 class FilterListDemoViewController<F: FilterType & Hashable>: UIViewController {
   
-  let searcher: SingleIndexSearcher<JSON>
+  let searcher: SingleIndexSearcher
   let filterListViewModel: FilterListViewModel<F>
   let filterListController: FilterListTableController<F>
   let searchStateViewController: SearchStateViewController
@@ -74,8 +74,8 @@ private extension FilterListDemoViewController {
   func setup() {
     searcher.search()
     filterListViewModel.connect(to: filterListController)
-    filterListViewModel.connect(to: searcher.filterState, operator: .or)
-    searchStateViewController.connect(to: searcher)
+    filterListViewModel.connectFilterState(searcher.filterState, operator: .or)
+    searchStateViewController.connectSearcher(searcher)
   }
   
   func setupUI() {

@@ -10,18 +10,19 @@ import Foundation
 import UIKit
 import InstantSearchCore
 
+extension Client {
+  static let demo = Client(appID: "latency", apiKey: "1f6fd3a6fb973cb08419fe7d288fa4db")
+}
+
 extension Index {
   
   static func demo(withName demoIndexName: String) -> Index {
-    return DemoHelper.client.index(withName: demoIndexName)
+    return Client.demo.index(withName: demoIndexName)
   }
   
 }
 
 struct DemoHelper {
-  
   public static let appID = "latency"
   public static let apiKey = "1f6fd3a6fb973cb08419fe7d288fa4db"
-  public static let client = Client(appID: "latency", apiKey: "1f6fd3a6fb973cb08419fe7d288fa4db")
-  
 }

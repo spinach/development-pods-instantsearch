@@ -37,7 +37,7 @@ class SearchStateViewController: UIViewController {
     self.clearRefinementsController = ClearRefinementsButtonController(button: clearRefinementsButton)
     self.statsViewModel = StatsViewModel(item: .none)
     super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
-    statsViewModel.connectController(statsController)
+//    statsViewModel.connectController(statsController, presenter: { _ in return "" })
   }
   
   required init?(coder aDecoder: NSCoder) {
@@ -162,16 +162,16 @@ class SearchStateViewController: UIViewController {
 
 extension SearchStateViewController {
   
-  func connect(to filterState: FilterState) {
+  func connectFilterState(_ filterState: FilterState) {
     filterStateViewController.connectTo(filterState)
     clearRefinementsController.connectTo(filterState)
     
   }
   
-  func connect<R>(to searcher: SingleIndexSearcher<R>) where R : Decodable, R : Encodable {
+  func connectSearcher(_ searcher: SingleIndexSearcher) {
     loadableController.connectTo(searcher)
     statsViewModel.connectSearcher(searcher)
-    connect(to: searcher.filterState)
+    connectFilterState(searcher.filterState)
   }
   
   func connect(to facetSearcher: FacetSearcher) {

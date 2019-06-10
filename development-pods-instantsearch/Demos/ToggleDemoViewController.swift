@@ -13,27 +13,21 @@ import InstantSearch
 
 class ToggleDemoViewController: UIViewController {
   
-  let promotionsAttribute = Attribute("promotions")
-
-  let searcher: SingleIndexSearcher<JSON>
+  let searcher: SingleIndexSearcher
   let headerViewControler: SearchStateViewController
   
-  let freeShippingViewModel: SelectableViewModel<Filter.Facet>
   let sizeConstraintViewModel: SelectableViewModel<Filter.Numeric>
   let vintageViewModel: SelectableViewModel<Filter.Tag>
   let couponViewModel: SelectableViewModel<Filter.Facet>
-  let promotionsViewModel: SelectableFacetsViewModel
   
   let mainStackView = UIStackView()
-  let widgetsStackView = UIStackView()
-  let togglesStackView = UIStackView()
+  let firstRowStackView = UIStackView()
+  let secondRowStackView = UIStackView()
   let couponStackView = UIStackView()
   
-  let freeShippingButtonController: SelectableFilterButtonController<Filter.Facet>
   let vintageButtonController: SelectableFilterButtonController<Filter.Tag>
   let sizeConstraintButtonController: SelectableFilterButtonController<Filter.Numeric>
   let couponSwitchController: FilterSwitchController<Filter.Facet>
-  let promotionsController: FacetListTableController
   
   let couponLabel = UILabel()
   
@@ -41,12 +35,6 @@ class ToggleDemoViewController: UIViewController {
     
     searcher = SingleIndexSearcher(index: .demo(withName: "mobile_demo_filter_toggle"))
     headerViewControler = SearchStateViewController()
-    
-    // Free shipping button
-    
-    let freeShipingFacet = Filter.Facet(attribute: promotionsAttribute, stringValue: "free shipping")
-    freeShippingViewModel = SelectableViewModel(item: freeShipingFacet)
-    freeShippingButtonController = SelectableFilterButtonController(button: .init())
     
     // Size constraint button
     
@@ -62,14 +50,9 @@ class ToggleDemoViewController: UIViewController {
     
     // Coupon switch
     
-    let couponFacet = Filter.Facet(attribute: promotionsAttribute, stringValue: "coupon")
+    let couponFacet = Filter.Facet(attribute: "promotions", stringValue: "coupon")
     couponViewModel = SelectableViewModel<Filter.Facet>(item: couponFacet)
     couponSwitchController = FilterSwitchController(switch: .init())
-    
-    // Promotions list
-    
-    promotionsViewModel = FacetListViewModel(selectionMode: .multiple)
-    promotionsController = FacetListTableController(tableView: .init())
     
     super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
     
@@ -93,35 +76,27 @@ private extension ToggleDemoViewController {
   
   func setup() {
     let filterState = searcher.indexSearchData.filterState
-    freeShippingViewModel.connectTo(filterState, operator: .or)
     couponViewModel.connectTo(filterState, operator: .or)
     sizeConstraintViewModel.connectTo(filterState, operator: .or)
     vintageViewModel.connectTo(filterState, operator: .or)
-    promotionsViewModel.connect(to: searcher, with: promotionsAttribute)
-    promotionsViewModel.connect(to: filterState, with: promotionsAttribute, operator: .or)
-    headerViewControler.connect(to: searcher)
+    headerViewControler.connectSearcher(searcher)
     searcher.search()
     
-    freeShippingViewModel.connectController(freeShippingButtonController)
     sizeConstraintViewModel.connectController(sizeConstraintButtonController)
     vintageViewModel.connectController(vintageButtonController)
     couponViewModel.connectController(couponSwitchController)
-    promotionsViewModel.connect(to: promotionsController)
-
   }
   
   func setupUI() {
     view.backgroundColor = .white
-    configureFreeShippingButton()
     configureSizeButton()
     configureVintageButton()
     configureCouponLabel()
     configureCouponSwitch()
     configureCouponStackView()
-    configurePromotionsTableView()
     configureMainStackView()
-    configureTogglesStackView()
-    configureWidgetsStackView()
+    configureFirstRowStackView()
+    configureSecondRowStackView()
     configureLayout()
   }
   
@@ -137,12 +112,15 @@ private extension ToggleDemoViewController {
     ])
     
     addChild(headerViewControler)
-    headerViewControler.view.heightAnchor.constraint(equalToConstant: 150).isActive = true
+
     headerViewControler.didMove(toParent: self)
     mainStackView.addArrangedSubview(headerViewControler.view)
-    mainStackView.addArrangedSubview(widgetsStackView)
     
-    freeShippingButtonController.button.heightAnchor.constraint(equalToConstant: 44).isActive = true
+    NSLayoutConstraint.activate([
+      headerViewControler.view.heightAnchor.constraint(equalToConstant: 150),
+      headerViewControler.view.widthAnchor.constraint(equalTo: mainStackView.widthAnchor, multiplier: 0.98)
+    ])
+    
     sizeConstraintButtonController.button.heightAnchor.constraint(equalToConstant: 44).isActive = true
     vintageButtonController.button.heightAnchor.constraint(equalToConstant: 44).isActive = true
     
@@ -150,41 +128,51 @@ private extension ToggleDemoViewController {
     couponStackView.addArrangedSubview(couponSwitchController.switch)
     couponStackView.heightAnchor.constraint(equalToConstant: 44).isActive = true
     
-    togglesStackView.addArrangedSubview(freeShippingButtonController.button)
-    togglesStackView.addArrangedSubview(couponStackView)
-    togglesStackView.addArrangedSubview(sizeConstraintButtonController.button)
-    togglesStackView.addArrangedSubview(vintageButtonController.button)
-    widgetsStackView.addArrangedSubview(togglesStackView)
-    widgetsStackView.addArrangedSubview(promotionsController.tableView)
-    
-    promotionsController.tableView.heightAnchor.constraint(equalTo: widgetsStackView.heightAnchor).isActive = true
+    firstRowStackView.addArrangedSubview(sizeConstraintButtonController.button)
 
+    firstRowStackView.addArrangedSubview(self.spacer())
+    firstRowStackView.addArrangedSubview(couponStackView)
+
+    secondRowStackView.addArrangedSubview(vintageButtonController.button)
+    secondRowStackView.addArrangedSubview(self.spacer())
+
+    mainStackView.addArrangedSubview(firstRowStackView)
+    mainStackView.addArrangedSubview(secondRowStackView)
+    mainStackView.addArrangedSubview(self.spacer())
+    
+    firstRowStackView.widthAnchor.constraint(equalTo: mainStackView.widthAnchor, multiplier: 0.9).isActive = true
+    secondRowStackView.widthAnchor.constraint(equalTo: mainStackView.widthAnchor, multiplier: 0.9).isActive = true
+    
+  }
+  
+  private func spacer() -> UIView {
+    let view = UIView()
+    view.setContentHuggingPriority(.defaultLow, for: .horizontal)
+    return view
   }
   
   func configureMainStackView() {
     mainStackView.axis = .vertical
+    mainStackView.alignment = .center
     mainStackView.spacing = .px16
     mainStackView.distribution = .fill
     mainStackView.translatesAutoresizingMaskIntoConstraints = false
   }
+  
+  func configureFirstRowStackView() {
+    firstRowStackView.axis = .horizontal
+    firstRowStackView.distribution = .fill
+    firstRowStackView.spacing = .px16
+    firstRowStackView.translatesAutoresizingMaskIntoConstraints = false
+  }
 
-  
-  func configureWidgetsStackView() {
-    widgetsStackView.axis = .horizontal
-    widgetsStackView.spacing = .px16
-    widgetsStackView.distribution = .fillEqually
-    widgetsStackView.alignment = .top
-    widgetsStackView.translatesAutoresizingMaskIntoConstraints = false
+  func configureSecondRowStackView() {
+    secondRowStackView.axis = .horizontal
+    secondRowStackView.distribution = .fill
+    secondRowStackView.spacing = .px16
+    secondRowStackView.translatesAutoresizingMaskIntoConstraints = false
   }
-  
-  func configureTogglesStackView() {
-    togglesStackView.axis = .vertical
-    togglesStackView.spacing = .px16
-    togglesStackView.distribution = .equalCentering
-    togglesStackView.alignment = .leading
-    togglesStackView.translatesAutoresizingMaskIntoConstraints = false
-  }
-  
+
   func configureCheckBoxButton(_ button: UIButton, withTitle title: String) {
     button.translatesAutoresizingMaskIntoConstraints = false
     button.setTitle(title, for: .normal)
@@ -192,10 +180,6 @@ private extension ToggleDemoViewController {
     button.setTitleColor(.black, for: .normal)
     button.setImage(UIImage(named: "square"), for: .normal)
     button.setImage(UIImage(named: "check-square"), for: .selected)
-  }
-  
-  func configureFreeShippingButton() {
-    configureCheckBoxButton(freeShippingButtonController.button, withTitle: "free shipping")
   }
   
   func configureSizeButton() {
@@ -223,13 +207,102 @@ private extension ToggleDemoViewController {
     couponStackView.distribution = .fill
   }
   
-  func configurePromotionsTableView() {
-    let tableView = promotionsController.tableView
-    tableView.register(UITableViewCell.self, forCellReuseIdentifier: "CellId")
-    tableView.alwaysBounceVertical = false
-    tableView.tableHeaderView = UIView(frame: .zero)
-    tableView.tableFooterView = UIView(frame: .zero)
-    tableView.backgroundColor =  UIColor(hexString: "#f7f8fa")
+}
+
+class ToggleDefaultDemoViewController: UIViewController {
+  
+  let searcher: SingleIndexSearcher
+  let headerViewControler: SearchStateViewController
+
+  let popularViewModel: SelectableViewModel<Filter.Facet>
+  
+  let mainStackView = UIStackView()
+
+  let popularButtonController: SelectableFilterButtonController<Filter.Facet>
+  
+  override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
+    
+    searcher = SingleIndexSearcher(index: .demo(withName: "mobile_demo_filter_toggle"))
+    headerViewControler = SearchStateViewController()
+    
+    let popularFacet = Filter.Facet(attribute: "popular", boolValue: true)
+    popularViewModel = SelectableViewModel<Filter.Facet>(item: popularFacet)
+    popularButtonController = SelectableFilterButtonController(button: .init())
+    
+    super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
+
+    setup()
+    
+  }
+  
+  required init?(coder aDecoder: NSCoder) {
+    fatalError("init(coder:) has not been implemented")
+  }
+  
+  override func viewDidLoad() {
+    super.viewDidLoad()
+    setupUI()
+  }
+  
+  func setup() {
+    let filterState = searcher.indexSearchData.filterState
+    filterState.add(Filter.Facet(attribute: "popular", boolValue: false), toGroupWithID: .or(name: "popular"))
+    popularViewModel.connectTo(filterState, operator: .or)
+    headerViewControler.connectSearcher(searcher)
+    searcher.search()
+    popularViewModel.connectController(popularButtonController)
+  }
+  
+  func setupUI() {
+    view.backgroundColor = .white
+    configurePopularButton()
+    configureMainStackView()
+    configureLayout()
+  }
+  
+  func configurePopularButton() {
+    let button = popularButtonController.button
+    button.translatesAutoresizingMaskIntoConstraints = false
+    button.setTitle("Popular", for: .normal)
+    button.titleEdgeInsets = .init(top: 0, left: 5, bottom: 0, right: -5)
+    button.setTitleColor(.black, for: .normal)
+    button.setImage(UIImage(named: "square"), for: .normal)
+    button.setImage(UIImage(named: "check-square"), for: .selected)
+  }
+  
+  func configureMainStackView() {
+    mainStackView.axis = .vertical
+    mainStackView.alignment = .center
+    mainStackView.spacing = .px16
+    mainStackView.distribution = .fill
+    mainStackView.translatesAutoresizingMaskIntoConstraints = false
+  }
+
+  func configureLayout() {
+    
+    view.addSubview(mainStackView)
+    
+    NSLayoutConstraint.activate([
+      mainStackView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+      mainStackView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
+      mainStackView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
+      mainStackView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+      ])
+    
+    addChild(headerViewControler)
+    
+    headerViewControler.didMove(toParent: self)
+    mainStackView.addArrangedSubview(headerViewControler.view)
+    
+    NSLayoutConstraint.activate([
+      headerViewControler.view.heightAnchor.constraint(equalToConstant: 150),
+      headerViewControler.view.widthAnchor.constraint(equalTo: mainStackView.widthAnchor, multiplier: 0.98)
+    ])
+
+    
+    mainStackView.addArrangedSubview(popularButtonController.button)
+    mainStackView.addArrangedSubview(.init())
+
   }
   
 }

@@ -16,7 +16,7 @@ class MultindexController: UIViewController, UITableViewDataSource {
   private let ALGOLIA_APP_ID = "latency"
   private let ALGOLIA_API_KEY = "1f6fd3a6fb973cb08419fe7d288fa4db"
 
-  let hitsViewModel = MultiHitsViewModel()
+  let hitsViewModel: MultiHitsViewModel
 
   var tableView = UITableView()
   var textFieldController: TextFieldController!
@@ -26,7 +26,18 @@ class MultindexController: UIViewController, UITableViewDataSource {
   var index: Index!
   let query = Query()
   let filterState = FilterState()
-
+  
+  init() {
+    let actorViewModel = HitsViewModel<Actor>(infiniteScrolling: .off)
+    let movieViewModel = HitsViewModel<Movie>(infiniteScrolling: .off)
+    self.hitsViewModel = MultiHitsViewModel(hitsViewModels: [actorViewModel, movieViewModel])
+    super.init(nibName: nil, bundle: nil)
+  }
+  
+  required init?(coder aDecoder: NSCoder) {
+    fatalError("init(coder:) has not been implemented")
+  }
+  
   override func viewDidLoad() {
     super.viewDidLoad()
 
@@ -57,11 +68,8 @@ class MultindexController: UIViewController, UITableViewDataSource {
     let moviesIndex = client.index(withName: "movies")
     let indices = [actorsIndex, moviesIndex]
     
-    searcher = MultiIndexSearcher(client: client, indices: indices, query: query, filterState: filterState)
-    let actorViewModel = HitsViewModel<Actor>(infiniteScrolling: .off)
-    let movieViewModel = HitsViewModel<Movie>(infiniteScrolling: .off)
-    hitsViewModel.append(actorViewModel)
-    hitsViewModel.append(movieViewModel)
+    let indexSearchDatas = indices.map { IndexSearchData(index: $0) }
+    searcher = MultiIndexSearcher(client: client, indexSearchDatas: indexSearchDatas)
 
     searcher.search()
 
@@ -70,25 +78,8 @@ class MultindexController: UIViewController, UITableViewDataSource {
 //      self.searcher.setQuery(text: text)
 //      self.searcher.search()
 //    }
-
-    self.searcher.onResultsChanged.subscribe(with: self) { [weak self] result in
-      
-      guard let strongSelf = self else { return }
-      
-      switch result {
-      case .success(let searchResults):
-        do {
-          try strongSelf.hitsViewModel.update(searchResults)
-        } catch let error {
-          print(error)
-        }
-        
-      case .failure(let error):
-        print(error)
-      }
-
-      strongSelf.tableView.reloadData()
-    }
+    
+    hitsViewModel.connectSearcher(searcher)
   }
 
   // MARK: - Table View

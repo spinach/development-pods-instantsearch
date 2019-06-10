@@ -14,7 +14,7 @@ class SegmentedDemoViewController: UIViewController {
 
   let genderAttribute = Attribute("gender")
   
-  let searcher: SingleIndexSearcher<JSON>
+  let searcher: SingleIndexSearcher
 
   let genderViewModel: SelectableSegmentViewModel<Int, Filter.Facet>
   let segmentedController: SegmentedController<Filter.Facet>
@@ -55,7 +55,7 @@ private extension SegmentedDemoViewController {
   func setup() {
     genderViewModel.connectTo(searcher, attribute: genderAttribute, operator: .or)
     genderViewModel.connectController(segmentedController)
-    searchStateViewController.connect(to: searcher)
+    searchStateViewController.connectSearcher(searcher)
     searcher.filterState.notify(.add(filter: male, toGroupWithID: .or(name: genderAttribute.name)))
     searcher.search()
   }
