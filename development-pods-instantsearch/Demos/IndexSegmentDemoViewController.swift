@@ -9,7 +9,6 @@
 import UIKit
 import InstantSearchCore
 import InstantSearch
-//import SDWebImage
 
 class IndexSegmentDemoViewController: UIViewController, InstantSearchCore.HitsController {
 
@@ -20,6 +19,7 @@ class IndexSegmentDemoViewController: UIViewController, InstantSearchCore.HitsCo
   }
 
   func scrollToTop() {
+    guard tableView.numberOfRows(inSection: 0) > 0 else { return }
     tableView.scrollToRow(at: .zero, at: .top, animated: false)
   }
 
@@ -106,29 +106,29 @@ extension IndexSegmentDemoViewController {
     let searchBar = searchBarController.searchBar
     searchBar.translatesAutoresizingMaskIntoConstraints = false
     searchBar.searchBarStyle = .minimal
+    searchBar.heightAnchor.constraint(equalToConstant: 40).isActive = true
 
     tableView.translatesAutoresizingMaskIntoConstraints = false
     tableView.register(UITableViewCell.self, forCellReuseIdentifier: cellIdentifier)
     tableView.dataSource = self
     tableView.delegate = self
-
-    view.addSubview(searchBar)
+    
+    let stackView = UIStackView()
+    stackView.translatesAutoresizingMaskIntoConstraints = false
+    stackView.axis = .vertical
+    stackView.spacing = .px16
+    
+    stackView.addArrangedSubview(searchBar)
+    stackView.addArrangedSubview(tableView)
+    
+    view.addSubview(stackView)
 
     NSLayoutConstraint.activate([
-      searchBar.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 0),
-      searchBar.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 0),
-      searchBar.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: 0),
-      searchBar.heightAnchor.constraint(equalToConstant: 40),
-      ])
-
-    view.addSubview(tableView)
-
-    NSLayoutConstraint.activate([
-      tableView.topAnchor.constraint(equalTo: searchBar.bottomAnchor, constant: 0),
-      tableView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 0),
-      tableView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: 0),
-      tableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: 0),
-      ])
+      stackView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 0),
+      stackView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 0),
+      stackView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: 0),
+      stackView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: 0),
+    ])
 
   }
 
@@ -160,11 +160,7 @@ extension IndexSegmentDemoViewController: UITableViewDataSource {
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath)
     if let movie = hitsViewModel.hit(atIndex: indexPath.row) {
-      cell.textLabel?.text = movie.title
-      cell.detailTextLabel?.text = movie.genre.joined(separator: ", ")
-      //      cell.imageView?.sd_setImage(with: movie.image, completed: { (_, _, _, _) in
-      //        cell.setNeedsLayout()
-      //      })
+      CellConfigurator<Movie>.configure(cell, with: movie)
     }
     return cell
   }
