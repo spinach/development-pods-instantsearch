@@ -7,6 +7,7 @@ target 'development-pods-instantsearch' do
   pod 'InstantSearchCore', :path => '/Users/guydaher/Developer/Algolia/iOS/instantsearch-core-swift'
   pod 'InstantSearchClient', :path => '/Users/guydaher/Developer/Algolia/iOS/algoliasearch-client-swift'
   pod 'InstantSearch', :path => '/Users/guydaher/Developer/Algolia/iOS/instantsearch-ios'
+  pod 'SDWebImage'
 
   # Pods for development-pods-instantsearch
 

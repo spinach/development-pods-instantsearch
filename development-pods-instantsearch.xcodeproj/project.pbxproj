@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 51;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -19,6 +19,8 @@
 		AF939698229AC58900757257 /* FilterListDemoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF939697229AC58900757257 /* FilterListDemoViewController.swift */; };
 		AFE343872289C4B300829AC1 /* SegmentedDemoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFE343862289C4B300829AC1 /* SegmentedDemoViewController.swift */; };
 		AFE6E3D522ACF585005BA44D /* MultiIndexDemoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFE6E3D422ACF585005BA44D /* MultiIndexDemoViewController.swift */; };
+		E20E6D1C22A805AC00AC81BC /* FilterNumericComparisonDemoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E20E6D1B22A805AC00AC81BC /* FilterNumericComparisonDemoViewController.swift */; };
+		E20E6D1E22A808DA00AC81BC /* NumericTextFieldController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E20E6D1D22A808DA00AC81BC /* NumericTextFieldController.swift */; };
 		E24233DF223AAD1D008F24FB /* PotentialInstantSearch.swift in Sources */ = {isa = PBXBuildFile; fileRef = E24233DE223AAD1D008F24FB /* PotentialInstantSearch.swift */; };
 		E24DC9D1222EB72B006F1EED /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E24DC9D0222EB72B006F1EED /* AppDelegate.swift */; };
 		E24DC9D3222EB72B006F1EED /* SingleIndexDemoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E24DC9D2222EB72B006F1EED /* SingleIndexDemoViewController.swift */; };
@@ -30,7 +32,10 @@
 		E265DBEE2273341D002DC989 /* FacetListTableController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E265DBED2273341D002DC989 /* FacetListTableController.swift */; };
 		E28C38F22236A78A0070BE3D /* RefinementList.swift in Sources */ = {isa = PBXBuildFile; fileRef = E28C38F12236A78A0070BE3D /* RefinementList.swift */; };
 		E2B03F67229541F500DBE6D3 /* FacetSearchDemoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2B03F66229541F500DBE6D3 /* FacetSearchDemoViewController.swift */; };
+		E2CF1A5122A7CD4B00DE24FC /* NumericStepperController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2CF1A5022A7CD4B00DE24FC /* NumericStepperController.swift */; };
 		E2E09E3D223276C800F3056D /* Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2E09E3C223276C800F3056D /* Helpers.swift */; };
+		E2EFA5D922A94ADF008C9CAA /* IndexSegmentDemoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2EFA5D822A94ADF008C9CAA /* IndexSegmentDemoViewController.swift */; };
+		E2EFA5E122A95439008C9CAA /* SelectIndexController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2EFA5E022A95439008C9CAA /* SelectIndexController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -59,6 +64,8 @@
 		AFE6E3D422ACF585005BA44D /* MultiIndexDemoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultiIndexDemoViewController.swift; sourceTree = "<group>"; };
 		BE4725361587DFDC81F01BCB /* Pods_development_pods_instantsearch.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_development_pods_instantsearch.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C9A5A80DB939697E9B6CE6D3 /* Pods-development-pods-instantsearch.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-development-pods-instantsearch.debug.xcconfig"; path = "Target Support Files/Pods-development-pods-instantsearch/Pods-development-pods-instantsearch.debug.xcconfig"; sourceTree = "<group>"; };
+		E20E6D1B22A805AC00AC81BC /* FilterNumericComparisonDemoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterNumericComparisonDemoViewController.swift; sourceTree = "<group>"; };
+		E20E6D1D22A808DA00AC81BC /* NumericTextFieldController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NumericTextFieldController.swift; sourceTree = "<group>"; };
 		E24233DE223AAD1D008F24FB /* PotentialInstantSearch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PotentialInstantSearch.swift; sourceTree = "<group>"; };
 		E24DC9CD222EB72B006F1EED /* development-pods-instantsearch.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "development-pods-instantsearch.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		E24DC9D0222EB72B006F1EED /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -75,7 +82,10 @@
 		E28C38F12236A78A0070BE3D /* RefinementList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RefinementList.swift; sourceTree = "<group>"; };
 		E29E45712243FAAE005B358D /* SingleIndex.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = SingleIndex.playground; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		E2B03F66229541F500DBE6D3 /* FacetSearchDemoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FacetSearchDemoViewController.swift; sourceTree = "<group>"; };
+		E2CF1A5022A7CD4B00DE24FC /* NumericStepperController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NumericStepperController.swift; sourceTree = "<group>"; };
 		E2E09E3C223276C800F3056D /* Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Helpers.swift; sourceTree = "<group>"; };
+		E2EFA5D822A94ADF008C9CAA /* IndexSegmentDemoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IndexSegmentDemoViewController.swift; sourceTree = "<group>"; };
+		E2EFA5E022A95439008C9CAA /* SelectIndexController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectIndexController.swift; sourceTree = "<group>"; };
 		F2062212BAF0883D11154F15 /* Pods-development-pods-instantsearchTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-development-pods-instantsearchTests.debug.xcconfig"; path = "Target Support Files/Pods-development-pods-instantsearchTests/Pods-development-pods-instantsearchTests.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -120,6 +130,8 @@
 				AFE343862289C4B300829AC1 /* SegmentedDemoViewController.swift */,
 				E2B03F66229541F500DBE6D3 /* FacetSearchDemoViewController.swift */,
 				AF536C34227C78AD006DAE84 /* ToggleDemoViewController.swift */,
+				E20E6D1B22A805AC00AC81BC /* FilterNumericComparisonDemoViewController.swift */,
+				E2EFA5D822A94ADF008C9CAA /* IndexSegmentDemoViewController.swift */,
 			);
 			path = Demos;
 			sourceTree = "<group>";
@@ -147,6 +159,9 @@
 		E24DC9CF222EB72B006F1EED /* development-pods-instantsearch */ = {
 			isa = PBXGroup;
 			children = (
+				E2CF1A5022A7CD4B00DE24FC /* NumericStepperController.swift */,
+				E20E6D1D22A808DA00AC81BC /* NumericTextFieldController.swift */,
+				E2EFA5E022A95439008C9CAA /* SelectIndexController.swift */,
 				AF939699229AD21C00757257 /* Demos */,
 				E29E45712243FAAE005B358D /* SingleIndex.playground */,
 				E24DC9D0222EB72B006F1EED /* AppDelegate.swift */,
@@ -292,24 +307,11 @@
 			files = (
 			);
 			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-development-pods-instantsearch/Pods-development-pods-instantsearch-frameworks.sh",
-				"${BUILT_PRODUCTS_DIR}/InstantSearch/InstantSearch.framework",
-				"${BUILT_PRODUCTS_DIR}/InstantSearchClient/InstantSearchClient.framework",
-				"${BUILT_PRODUCTS_DIR}/InstantSearchCore/InstantSearchCore.framework",
-				"${BUILT_PRODUCTS_DIR}/SDWebImage/SDWebImage.framework",
-				"${BUILT_PRODUCTS_DIR}/Signals/Signals.framework",
+				"${PODS_ROOT}/Target Support Files/Pods-development-pods-instantsearch/Pods-development-pods-instantsearch-frameworks-${CONFIGURATION}-input-files.xcfilelist",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputFileListPaths = (
-			);
-			outputPaths = (
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/InstantSearch.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/InstantSearchClient.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/InstantSearchCore.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SDWebImage.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Signals.framework",
+				"${PODS_ROOT}/Target Support Files/Pods-development-pods-instantsearch/Pods-development-pods-instantsearch-frameworks-${CONFIGURATION}-output-files.xcfilelist",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -367,8 +369,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E20E6D1C22A805AC00AC81BC /* FilterNumericComparisonDemoViewController.swift in Sources */,
 				AF939675229700D500757257 /* FilterStateViewController.swift in Sources */,
 				AF939698229AC58900757257 /* FilterListDemoViewController.swift in Sources */,
+				E2EFA5D922A94ADF008C9CAA /* IndexSegmentDemoViewController.swift in Sources */,
+				E2CF1A5122A7CD4B00DE24FC /* NumericStepperController.swift in Sources */,
 				E2B03F67229541F500DBE6D3 /* FacetSearchDemoViewController.swift in Sources */,
 				E265DBEE2273341D002DC989 /* FacetListTableController.swift in Sources */,
 				AF536C37227C7C79006DAE84 /* RefinementListDemoViewController.swift in Sources */,
@@ -380,9 +385,11 @@
 				AF2B261922836430006DE798 /* SegmentedController.swift in Sources */,
 				AF939696229A917B00757257 /* DemoListViewController.swift in Sources */,
 				AF536C392280671B006DAE84 /* DemoHelper.swift in Sources */,
+				E2EFA5E122A95439008C9CAA /* SelectIndexController.swift in Sources */,
 				E24DC9D1222EB72B006F1EED /* AppDelegate.swift in Sources */,
 				AFE6E3D522ACF585005BA44D /* MultiIndexDemoViewController.swift in Sources */,
 				AF536C35227C78AD006DAE84 /* ToggleDemoViewController.swift in Sources */,
+				E20E6D1E22A808DA00AC81BC /* NumericTextFieldController.swift in Sources */,
 				E2E09E3D223276C800F3056D /* Helpers.swift in Sources */,
 				AFE343872289C4B300829AC1 /* SegmentedDemoViewController.swift in Sources */,
 			);

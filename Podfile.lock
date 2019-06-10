@@ -8,15 +8,20 @@ PODS:
   - InstantSearchCore (4.0.0):
     - InstantSearchClient (~> 6.0)
     - Signals (~> 6.0)
+  - SDWebImage (5.0.3):
+    - SDWebImage/Core (= 5.0.3)
+  - SDWebImage/Core (5.0.3)
   - Signals (6.0.1)
 
 DEPENDENCIES:
   - InstantSearch (from `/Users/guydaher/Developer/Algolia/iOS/instantsearch-ios`)
   - InstantSearchClient (from `/Users/guydaher/Developer/Algolia/iOS/algoliasearch-client-swift`)
   - InstantSearchCore (from `/Users/guydaher/Developer/Algolia/iOS/instantsearch-core-swift`)
+  - SDWebImage
 
 SPEC REPOS:
   https://github.com/cocoapods/specs.git:
+    - SDWebImage
     - Signals
 
 EXTERNAL SOURCES:
@@ -31,8 +36,9 @@ SPEC CHECKSUMS:
   InstantSearch: 2d2947ac43da7f774468326a6d9e13f2120cebfc
   InstantSearchClient: fa633b6c723c2e8e7f709b51164cd8a83cf906d5
   InstantSearchCore: 0c21e6f540cbf9850f37c79b8fa2d9100349f85b
+  SDWebImage: d4f87d7d36c8a4d9f9459dc282e0caa057fdf935
   Signals: 2c92e8639f97fe45678460840fabe2056b3190b4
 
-PODFILE CHECKSUM: c5b978a4bd7a8528e27f63aaf3f5baac5585c8b9
+PODFILE CHECKSUM: b55809ede5532d85fd18e96b87f8c95e87249984
 
 COCOAPODS: 1.7.0.rc.2
