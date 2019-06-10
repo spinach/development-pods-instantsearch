@@ -49,8 +49,12 @@ class MultiIndexDemoViewController: UIViewController, InstantSearchCore.MultiHit
   }
   
   func scrollToTop() {
-    guard multiHitsViewModel.numberOfHits(inSection: 0) > 0 else { return }
-    tableView.scrollToRow(at: IndexPath(), at: .top, animated: false)
+    let firstNonEmptySection = (0...tableView.numberOfSections - 1).filter { tableView.numberOfRows(inSection: $0) > 0 }.first
+    guard let existingFirstNonEmptySection = firstNonEmptySection else {
+      return
+    }
+    let indexPath = IndexPath(row: 0, section: existingFirstNonEmptySection)
+    tableView.scrollToRow(at: indexPath, at: .top, animated: false)
   }
   
   let multiHitsViewModel: MultiHitsViewModel

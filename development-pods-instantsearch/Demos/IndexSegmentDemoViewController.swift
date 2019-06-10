@@ -20,8 +20,7 @@ class IndexSegmentDemoViewController: UIViewController, InstantSearchCore.HitsCo
   }
 
   func scrollToTop() {
-    guard hitsViewModel.numberOfHits() > 0 else { return }
-    tableView.scrollToRow(at: IndexPath(), at: .top, animated: false)
+    tableView.scrollToRow(at: .zero, at: .top, animated: false)
   }
 
   typealias DataSource = HitsViewModel<Movie>

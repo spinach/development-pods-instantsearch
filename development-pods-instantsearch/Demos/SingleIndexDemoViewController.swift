@@ -24,6 +24,10 @@ struct Actor: Codable {
   let image_path: String
 }
 
+extension IndexPath {
+  static let zero = IndexPath(row: 0, section: 0)
+}
+
 class SingleIndexDemoViewController: UIViewController, InstantSearchCore.HitsController {
   
   var hitsSource: HitsViewModel<Movie>?
@@ -33,8 +37,8 @@ class SingleIndexDemoViewController: UIViewController, InstantSearchCore.HitsCon
   }
   
   func scrollToTop() {
-    guard hitsViewModel.numberOfHits() > 0 else { return }
-    tableView.scrollToRow(at: IndexPath(), at: .top, animated: false)
+    guard tableView.numberOfRows(inSection: 0) > 0 else { return }
+    tableView.scrollToRow(at: .zero, at: .top, animated: false)
   }
   
   typealias DataSource = HitsViewModel<Movie>
@@ -103,28 +107,28 @@ extension SingleIndexDemoViewController {
     let searchBar = searchBarController.searchBar
     searchBar.translatesAutoresizingMaskIntoConstraints = false
     searchBar.searchBarStyle = .minimal
+    
+    searchBar.heightAnchor.constraint(equalToConstant: 40).isActive = true
 
     tableView.translatesAutoresizingMaskIntoConstraints = false
     tableView.register(UITableViewCell.self, forCellReuseIdentifier: cellIdentifier)
     tableView.dataSource = self
     tableView.delegate = self
     
-    view.addSubview(searchBar)
-
-    NSLayoutConstraint.activate([
-      searchBar.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 0),
-      searchBar.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 0),
-      searchBar.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: 0),
-      searchBar.heightAnchor.constraint(equalToConstant: 40),
-    ])
+    let stackView = UIStackView()
+    stackView.spacing = .px16
+    stackView.axis = .vertical
+    stackView.translatesAutoresizingMaskIntoConstraints = false
+    stackView.addArrangedSubview(searchBar)
+    stackView.addArrangedSubview(tableView)
     
-    view.addSubview(tableView)
+    view.addSubview(stackView)
 
     NSLayoutConstraint.activate([
-      tableView.topAnchor.constraint(equalTo: searchBar.bottomAnchor, constant: 0),
-      tableView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 0),
-      tableView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: 0),
-      tableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: 0),
+      stackView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 0),
+      stackView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 0),
+      stackView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: 0),
+      stackView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: 0),
     ])
 
   }
