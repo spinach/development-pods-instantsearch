@@ -8,6 +8,7 @@
 
 import Foundation
 import UIKit
+import InstantSearch
 import InstantSearchCore
 
 class FilterNumericComparisonDemoViewController: UIViewController {
