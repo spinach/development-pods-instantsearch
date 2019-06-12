@@ -14,6 +14,7 @@ import InstantSearchCore
 class SearchStateViewController: UIViewController {
   
   let statsViewModel: StatsViewModel
+  let loadingViewModel: LoadingViewModel
   
   let mainStackView: UIStackView
   let titleLabel: UILabel
@@ -21,7 +22,7 @@ class SearchStateViewController: UIViewController {
   let activityIndicator: UIActivityIndicatorView
   let filterStateViewController: FilterStateViewController
   let clearRefinementsButton: UIButton
-  let loadableController: ActivityIndicatorController
+  let activityIndicatorController: ActivityIndicatorController
   let statsController: LabelStatsController
   let clearRefinementsController: ClearRefinementsController
   
@@ -32,12 +33,14 @@ class SearchStateViewController: UIViewController {
     self.activityIndicator = UIActivityIndicatorView(frame: .zero)
     self.filterStateViewController = FilterStateViewController()
     self.clearRefinementsButton = UIButton(frame: .zero)
-    self.loadableController = ActivityIndicatorController(activityIndicator: activityIndicator)
+    self.activityIndicatorController = ActivityIndicatorController(activityIndicator: activityIndicator)
     self.statsController = LabelStatsController(label: hitsCountLabel)
     self.clearRefinementsController = ClearRefinementsButtonController(button: clearRefinementsButton)
-    self.statsViewModel = StatsViewModel()
+    self.statsViewModel = .init()
+    self.loadingViewModel = .init()
     super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
-//    statsViewModel.connectController(statsController, presenter: { _ in return "" })
+//    statsViewModel.connectController(statsController)
+    loadingViewModel.connectController(activityIndicatorController)
   }
   
   required init?(coder aDecoder: NSCoder) {
@@ -168,12 +171,12 @@ extension SearchStateViewController {
   }
   
   func connectSearcher(_ searcher: SingleIndexSearcher) {
-//    loadableController.connectSearcher(searcher)
+    loadingViewModel.connectSearcher(searcher)
     statsViewModel.connectSearcher(searcher)
   }
   
   func connectFacetSearcher(_ facetSearcher: FacetSearcher) {
-//    loadableController.connectSearcher(facetSearcher)
+    loadingViewModel.connectSearcher(facetSearcher)
   }
   
 }

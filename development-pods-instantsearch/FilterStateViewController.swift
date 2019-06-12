@@ -38,7 +38,7 @@ class FilterStateViewController: UIViewController {
   }
   
   func connectTo(_ filterState: FilterState) {
-    filterState.onChange.subscribe(with: self, callback: refreshStateLabel)
+    filterState.onChange.subscribePast(with: self, callback: refreshStateLabel)
   }
   
 }
