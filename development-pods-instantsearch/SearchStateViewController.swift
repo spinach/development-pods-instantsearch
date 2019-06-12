@@ -39,7 +39,7 @@ class SearchStateViewController: UIViewController {
     self.statsViewModel = .init()
     self.loadingViewModel = .init()
     super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
-//    statsViewModel.connectController(statsController, presenter: { _ in return "" })
+    statsViewModel.connectController(statsController)
     loadingViewModel.connectController(activityIndicatorController)
   }
   
