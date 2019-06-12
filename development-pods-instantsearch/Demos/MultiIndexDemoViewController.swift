@@ -10,93 +10,48 @@ import Foundation
 import InstantSearchCore
 import InstantSearch
 import UIKit
-import SDWebImage
 
-class CellConfigurator<T> {
-  static func configure(_ cell: UITableViewCell, with item: T) {}
-}
-
-extension CellConfigurator where T == Movie {
-  
-  static func configure(_ cell: UITableViewCell, with movie: T) {
-    cell.textLabel?.text = movie.title
-    cell.detailTextLabel?.text = movie.genre.joined(separator: ", ")
-    cell.imageView?.sd_setImage(with: movie.image, completed: { (_, _, _, _) in
-      cell.setNeedsLayout()
-    })
-  }
-  
-}
-
-extension CellConfigurator where T == Actor {
-  
-  static func configure(_ cell: UITableViewCell, with actor: T) {
-    cell.textLabel?.text = actor.name
-    cell.detailTextLabel?.text = "rating: \(actor.rating)"
-    let baseImageURL = URL(string: "https://image.tmdb.org/t/p/w45")
-    let imageURL = baseImageURL?.appendingPathComponent(actor.image_path)
-    cell.imageView?.sd_setImage(with: imageURL, completed: { (_, _, _, _) in
-      cell.setNeedsLayout()
-    })
-  }
-  
-}
-
-class MultiIndexDemoViewController: UIViewController, InstantSearchCore.MultiHitsController {
+class MultiIndexDemoViewController: UIViewController, InstantSearchCore.MultiIndexHitsController {
   
   func reload() {
     tableView.reloadData()
   }
   
   func scrollToTop() {
-    let firstNonEmptySection = (0...tableView.numberOfSections - 1).filter { tableView.numberOfRows(inSection: $0) > 0 }.first
-    guard let existingFirstNonEmptySection = firstNonEmptySection else {
-      return
-    }
-    let indexPath = IndexPath(row: 0, section: existingFirstNonEmptySection)
-    tableView.scrollToRow(at: indexPath, at: .top, animated: false)
+    tableView.scrollToFirstNonEmptySection()
   }
-  
-  let multiHitsViewModel: MultiHitsViewModel
-  
-  let moviesHitsViewModel = HitsViewModel<Movie>(infiniteScrolling: .off, showItemsOnEmptyQuery: true)
-  let actorsHitsViewModel = HitsViewModel<Actor>(infiniteScrolling: .off, showItemsOnEmptyQuery: true)
 
+  weak var hitsSource: MultiIndexHitsSource?
   
-  var hitsSource: MultiHitsSource? {
-    get {
-      return multiHitsViewModel
-    }
-    
-    set {
-      
-    }
-  }
   let multiIndexSearcher: MultiIndexSearcher
   let searchBarController: SearchBarController
   let queryInputViewModel: QueryInputViewModel
+  let multiIndexHitsViewModel: MultiIndexHitsViewModel
   let tableView: UITableView
   let cellIdentifier = "CellID"
 
   init() {
-    let client: Client = .demo
-    let moviesIndex: Index = .demo(withName: "mobile_demo_movies")
-    let actorsIndex: Index = .demo(withName: "mobile_demo_actors")
-    self.tableView = .init(frame: .zero, style: .plain)
-    self.searchBarController = .init(searchBar: .init())
-    self.queryInputViewModel = QueryInputViewModel()
-    let actorsISD = IndexSearchData(index: actorsIndex)
+    tableView = .init(frame: .zero, style: .plain)
     
-    let moviesISD = IndexSearchData(index: moviesIndex)
-    multiIndexSearcher = MultiIndexSearcher(client: client, indexSearchDatas: [actorsISD, moviesISD])
+    let indices = [
+      Section.actors.index,
+      Section.movies.index,
+    ]
+    multiIndexSearcher = .init(client: .demo, indices: indices)
     
+    let hitsViewModels: [AnyHitsViewModel] = [
+      HitsViewModel<Actor>(infiniteScrolling: .off, showItemsOnEmptyQuery: true),
+      HitsViewModel<Movie>(infiniteScrolling: .off, showItemsOnEmptyQuery: true)
+    ]
     
-    self.multiHitsViewModel = MultiHitsViewModel(hitsViewModels: [actorsHitsViewModel, moviesHitsViewModel])
+    multiIndexHitsViewModel = .init(hitsViewModels: hitsViewModels)
+
+    searchBarController = .init(searchBar: .init())
+    queryInputViewModel = .init()
+    
     super.init(nibName: nil, bundle: nil)
     
-    tableView.register(UITableViewCell.self, forCellReuseIdentifier: cellIdentifier)
-    tableView.dataSource = self
-    tableView.delegate = self
+    setup()
   }
   
   required init?(coder aDecoder: NSCoder) {
@@ -105,43 +60,58 @@ class MultiIndexDemoViewController: UIViewController, InstantSearchCore.MultiHit
   
   override func viewDidLoad() {
     super.viewDidLoad()
-    multiHitsViewModel.connectSearcher(multiIndexSearcher)
-    multiHitsViewModel.connectController(self)
-    multiIndexSearcher.search()
+    configureTableView()
     setupUI()
-    queryInputViewModel.connectSearcher(multiIndexSearcher, searchAsYouType: true)
-    queryInputViewModel.connectController(searchBarController)
-    
   }
-
   
 }
 
 private extension MultiIndexDemoViewController {
   
-  func setupUI() {
-    view.backgroundColor = .white
-    tableView.translatesAutoresizingMaskIntoConstraints = false
+  func setup() {
+    queryInputViewModel.connectSearcher(multiIndexSearcher, searchAsYouType: true)
+    queryInputViewModel.connectController(searchBarController)
+
+    multiIndexHitsViewModel.connectSearcher(multiIndexSearcher)
+    multiIndexHitsViewModel.connectController(self)
     
-    let mainStackView = UIStackView()
-    mainStackView.translatesAutoresizingMaskIntoConstraints = false
-    mainStackView.axis = .vertical
-    mainStackView.distribution = .fill
-    
-    view.addSubview(mainStackView)
-    NSLayoutConstraint.activate([
-      mainStackView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-      mainStackView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
-      mainStackView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
-      mainStackView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
-    ])
-    
-    searchBarController.searchBar.heightAnchor.constraint(equalToConstant: 44).isActive = true
-    
-    mainStackView.addArrangedSubview(searchBarController.searchBar)
-    mainStackView.addArrangedSubview(tableView)
+    multiIndexSearcher.search()
   }
   
+  func configureTableView() {
+    tableView.translatesAutoresizingMaskIntoConstraints = false
+    tableView.register(UITableViewCell.self, forCellReuseIdentifier: cellIdentifier)
+    tableView.dataSource = self
+    tableView.delegate = self
+  }
+  
+  func setupUI() {
+    
+    view.backgroundColor = .white
+
+    
+    let stackView = UIStackView()
+    stackView.translatesAutoresizingMaskIntoConstraints = false
+    stackView.axis = .vertical
+    stackView.distribution = .fill
+    
+    view.addSubview(stackView)
+    
+    NSLayoutConstraint.activate([
+      stackView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+      stackView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+      stackView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
+      stackView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
+    ])
+    
+    searchBarController.searchBar.searchBarStyle = .minimal
+    searchBarController.searchBar.heightAnchor.constraint(equalToConstant: 44).isActive = true
+    
+    stackView.addArrangedSubview(searchBarController.searchBar)
+    stackView.addArrangedSubview(tableView)
+    
+  }
+
 }
 
 extension MultiIndexDemoViewController {
@@ -168,6 +138,16 @@ extension MultiIndexDemoViewController {
       }
     }
     
+    var index: Index {
+      switch self {
+      case .actors:
+        return .demo(withName: "mobile_demo_actors")
+        
+      case .movies:
+        return .demo(withName: "mobile_demo_movies")
+      }
+    }
+    
   }
   
 }
@@ -175,11 +155,11 @@ extension MultiIndexDemoViewController {
 extension MultiIndexDemoViewController: UITableViewDataSource {
   
   func numberOfSections(in tableView: UITableView) -> Int {
-    return multiHitsViewModel.numberOfSections()
+    return hitsSource?.numberOfSections() ?? 0
   }
   
   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    return multiHitsViewModel.numberOfHits(inSection: section)
+    return hitsSource?.numberOfHits(inSection: section) ?? 0
   }
   
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -187,14 +167,7 @@ extension MultiIndexDemoViewController: UITableViewDataSource {
   }
   
   func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-    switch section {
-    case 0:
-      return "Actors"
-    case 1:
-      return "Movies"
-    default:
-      return nil
-    }
+    return Section(section: section)?.title
   }
   
 }
@@ -202,31 +175,18 @@ extension MultiIndexDemoViewController: UITableViewDataSource {
 extension MultiIndexDemoViewController: UITableViewDelegate {
   
   func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-    guard let section = Section(indexPath: indexPath) else { return 0 }
-
-    switch section {
-    case .actors:
-      return 80
-      
-    case .movies:
-      return 80
-    }
-    
+    guard let _ = Section(indexPath: indexPath) else { return 0 }
+    return 80
   }
   
   func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
     guard let section = Section(indexPath: indexPath) else { return }
-    
     switch section {
     case .actors:
-      if let actor = try? multiHitsViewModel.hit(at: indexPath) as Actor? {
-        CellConfigurator<Actor>.configure(cell, with: actor)
-      }
-      
+      try? hitsSource?.hit(atIndex: indexPath.row, inSection: indexPath.section).flatMap(CellConfigurator<Actor>.configure(cell))
+
     case .movies:
-      if let movie = try? multiHitsViewModel.hit(at: indexPath) as Movie? {
-        CellConfigurator<Movie>.configure(cell, with: movie)
-      }
+      try? hitsSource?.hit(atIndex: indexPath.row, inSection: indexPath.section).flatMap(CellConfigurator<Movie>.configure(cell))
     }
   }
   

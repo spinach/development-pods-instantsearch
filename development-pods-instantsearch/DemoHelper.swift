@@ -26,3 +26,7 @@ struct DemoHelper {
   public static let appID = "latency"
   public static let apiKey = "1f6fd3a6fb973cb08419fe7d288fa4db"
 }
+
+extension IndexPath {
+  static let zero = IndexPath(row: 0, section: 0)
+}

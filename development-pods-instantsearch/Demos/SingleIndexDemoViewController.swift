@@ -11,26 +11,9 @@ import InstantSearchCore
 import InstantSearch
 import SDWebImage
 
-struct Movie: Codable {
-  let title: String
-  let year: Int
-  let image: URL
-  let genre: [String]
-}
-
-struct Actor: Codable {
-  let name: String
-  let rating: Int
-  let image_path: String
-}
-
-extension IndexPath {
-  static let zero = IndexPath(row: 0, section: 0)
-}
-
 class SingleIndexDemoViewController: UIViewController, InstantSearchCore.HitsController {
   
-  var hitsSource: HitsViewModel<Movie>?
+  weak var hitsSource: HitsViewModel<Movie>?
   
   func reload() {
     tableView.reloadData()
@@ -44,7 +27,6 @@ class SingleIndexDemoViewController: UIViewController, InstantSearchCore.HitsCon
   typealias DataSource = HitsViewModel<Movie>
 
   let searcher: SingleIndexSearcher
-  let filterState: FilterState
   let queryInputViewModel: QueryInputViewModel
   let searchBarController: SearchBarController
   let hitsViewModel: HitsViewModel<Movie>
@@ -55,11 +37,10 @@ class SingleIndexDemoViewController: UIViewController, InstantSearchCore.HitsCon
 
   override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
     self.searcher = SingleIndexSearcher(index: .demo(withName: "mobile_demo_movies"))
-    self.filterState = .init()
-    self.searchBarController = SearchBarController(searchBar: .init())
-    self.hitsViewModel = HitsViewModel()
-    self.queryInputViewModel = QueryInputViewModel()
-    self.tableView = UITableView(frame: .zero, style: .plain)
+    self.searchBarController = .init(searchBar: .init())
+    self.hitsViewModel = .init()
+    self.queryInputViewModel = .init()
+    self.tableView = .init(frame: .zero, style: .plain)
     super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
     setup()
   }
@@ -74,13 +55,11 @@ class SingleIndexDemoViewController: UIViewController, InstantSearchCore.HitsCon
   }
   
   private func setup() {
+    
     searcher.query = "quality sens"
     searcher.search()
     
-    searcher.connectFilterState(filterState)
-    
     hitsViewModel.connectSearcher(searcher)
-    hitsViewModel.connectFilterState(filterState)
     hitsViewModel.connectController(self)
     
     queryInputViewModel.connectController(searchBarController)
@@ -90,17 +69,9 @@ class SingleIndexDemoViewController: UIViewController, InstantSearchCore.HitsCon
 
 }
 
-class MovieTableDelegate: HitsTableViewDelegate<HitsViewModel<Movie>> {
+private extension SingleIndexDemoViewController {
   
-  @objc override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-    
-  }
-  
-}
-
-extension SingleIndexDemoViewController {
-  
-  fileprivate func setupUI() {
+  func setupUI() {
     
     view.backgroundColor = .white
     
@@ -138,18 +109,12 @@ extension SingleIndexDemoViewController {
 extension SingleIndexDemoViewController: UITableViewDataSource {
   
   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    return hitsViewModel.numberOfHits()
+    return hitsSource?.numberOfHits() ?? 0
   }
   
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath)
-    if let movie = hitsViewModel.hit(atIndex: indexPath.row) {
-      cell.textLabel?.text = movie.title
-      cell.detailTextLabel?.text = movie.genre.joined(separator: ", ")
-      cell.imageView?.sd_setImage(with: movie.image, completed: { (_, _, _, _) in
-        cell.setNeedsLayout()
-      })
-    }
+    hitsSource?.hit(atIndex: indexPath.row).flatMap(CellConfigurator<Movie>.configure(cell))
     return cell
   }
   

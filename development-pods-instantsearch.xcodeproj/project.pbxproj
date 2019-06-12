@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 51;
+	objectVersion = 50;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -17,13 +17,17 @@
 		AF939694229848B700757257 /* SearchStateViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF939693229848B700757257 /* SearchStateViewController.swift */; };
 		AF939696229A917B00757257 /* DemoListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF939695229A917B00757257 /* DemoListViewController.swift */; };
 		AF939698229AC58900757257 /* FilterListDemoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF939697229AC58900757257 /* FilterListDemoViewController.swift */; };
+		AFDF274622B0FE9200BA08CB /* ToggleDefaultDemoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFDF274522B0FE9200BA08CB /* ToggleDefaultDemoViewController.swift */; };
+		AFDF274822B13E1700BA08CB /* Movie.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFDF274722B13E1700BA08CB /* Movie.swift */; };
+		AFDF274A22B13E3A00BA08CB /* Actor.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFDF274922B13E3A00BA08CB /* Actor.swift */; };
+		AFDF274C22B13E9300BA08CB /* CellConfigurator.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFDF274B22B13E9300BA08CB /* CellConfigurator.swift */; };
+		AFDF274E22B1493700BA08CB /* UITableView+Convenience.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFDF274D22B1493700BA08CB /* UITableView+Convenience.swift */; };
 		AFE343872289C4B300829AC1 /* SegmentedDemoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFE343862289C4B300829AC1 /* SegmentedDemoViewController.swift */; };
 		AFE6E3D522ACF585005BA44D /* MultiIndexDemoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFE6E3D422ACF585005BA44D /* MultiIndexDemoViewController.swift */; };
 		E20E6D1C22A805AC00AC81BC /* FilterNumericComparisonDemoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E20E6D1B22A805AC00AC81BC /* FilterNumericComparisonDemoViewController.swift */; };
 		E24233DF223AAD1D008F24FB /* PotentialInstantSearch.swift in Sources */ = {isa = PBXBuildFile; fileRef = E24233DE223AAD1D008F24FB /* PotentialInstantSearch.swift */; };
 		E24DC9D1222EB72B006F1EED /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E24DC9D0222EB72B006F1EED /* AppDelegate.swift */; };
 		E24DC9D3222EB72B006F1EED /* SingleIndexDemoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E24DC9D2222EB72B006F1EED /* SingleIndexDemoViewController.swift */; };
-		E24DC9D5222EB72B006F1EED /* MultiIndex.swift in Sources */ = {isa = PBXBuildFile; fileRef = E24DC9D4222EB72B006F1EED /* MultiIndex.swift */; };
 		E24DC9D8222EB72B006F1EED /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E24DC9D6222EB72B006F1EED /* Main.storyboard */; };
 		E24DC9DA222EB72C006F1EED /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E24DC9D9222EB72C006F1EED /* Assets.xcassets */; };
 		E24DC9DD222EB72C006F1EED /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E24DC9DB222EB72C006F1EED /* LaunchScreen.storyboard */; };
@@ -57,6 +61,11 @@
 		AF939693229848B700757257 /* SearchStateViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchStateViewController.swift; sourceTree = "<group>"; };
 		AF939695229A917B00757257 /* DemoListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DemoListViewController.swift; sourceTree = "<group>"; };
 		AF939697229AC58900757257 /* FilterListDemoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterListDemoViewController.swift; sourceTree = "<group>"; };
+		AFDF274522B0FE9200BA08CB /* ToggleDefaultDemoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToggleDefaultDemoViewController.swift; sourceTree = "<group>"; };
+		AFDF274722B13E1700BA08CB /* Movie.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Movie.swift; sourceTree = "<group>"; };
+		AFDF274922B13E3A00BA08CB /* Actor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Actor.swift; sourceTree = "<group>"; };
+		AFDF274B22B13E9300BA08CB /* CellConfigurator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CellConfigurator.swift; sourceTree = "<group>"; };
+		AFDF274D22B1493700BA08CB /* UITableView+Convenience.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITableView+Convenience.swift"; sourceTree = "<group>"; };
 		AFE343862289C4B300829AC1 /* SegmentedDemoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SegmentedDemoViewController.swift; sourceTree = "<group>"; };
 		AFE6E3D422ACF585005BA44D /* MultiIndexDemoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultiIndexDemoViewController.swift; sourceTree = "<group>"; };
 		BE4725361587DFDC81F01BCB /* Pods_development_pods_instantsearch.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_development_pods_instantsearch.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -66,7 +75,6 @@
 		E24DC9CD222EB72B006F1EED /* development-pods-instantsearch.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "development-pods-instantsearch.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		E24DC9D0222EB72B006F1EED /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		E24DC9D2222EB72B006F1EED /* SingleIndexDemoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SingleIndexDemoViewController.swift; sourceTree = "<group>"; };
-		E24DC9D4222EB72B006F1EED /* MultiIndex.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultiIndex.swift; sourceTree = "<group>"; };
 		E24DC9D7222EB72B006F1EED /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		E24DC9D9222EB72C006F1EED /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		E24DC9DC222EB72C006F1EED /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -124,8 +132,11 @@
 				AFE343862289C4B300829AC1 /* SegmentedDemoViewController.swift */,
 				E2B03F66229541F500DBE6D3 /* FacetSearchDemoViewController.swift */,
 				AF536C34227C78AD006DAE84 /* ToggleDemoViewController.swift */,
+				AFDF274522B0FE9200BA08CB /* ToggleDefaultDemoViewController.swift */,
 				E20E6D1B22A805AC00AC81BC /* FilterNumericComparisonDemoViewController.swift */,
 				E2EFA5D822A94ADF008C9CAA /* IndexSegmentDemoViewController.swift */,
+				AFDF274722B13E1700BA08CB /* Movie.swift */,
+				AFDF274922B13E3A00BA08CB /* Actor.swift */,
 			);
 			path = Demos;
 			sourceTree = "<group>";
@@ -158,8 +169,9 @@
 				E24DC9D0222EB72B006F1EED /* AppDelegate.swift */,
 				AF536C382280671B006DAE84 /* DemoHelper.swift */,
 				AF939695229A917B00757257 /* DemoListViewController.swift */,
-				E24DC9D4222EB72B006F1EED /* MultiIndex.swift */,
 				E28C38F12236A78A0070BE3D /* RefinementList.swift */,
+				AFDF274B22B13E9300BA08CB /* CellConfigurator.swift */,
+				AFDF274D22B1493700BA08CB /* UITableView+Convenience.swift */,
 				E265DBED2273341D002DC989 /* FacetListTableController.swift */,
 				AF2B261822836430006DE798 /* SegmentedController.swift */,
 				E2E09E3C223276C800F3056D /* Helpers.swift */,
@@ -203,7 +215,7 @@
 				E24DC9C9222EB72B006F1EED /* Sources */,
 				E24DC9CA222EB72B006F1EED /* Frameworks */,
 				E24DC9CB222EB72B006F1EED /* Resources */,
-				36A23B0D2D28C3F39BEDD14A /* [CP] Embed Pods Frameworks */,
+				886AEE76837D414526D007A9 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -292,23 +304,6 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		36A23B0D2D28C3F39BEDD14A /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-development-pods-instantsearch/Pods-development-pods-instantsearch-frameworks-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-development-pods-instantsearch/Pods-development-pods-instantsearch-frameworks-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-development-pods-instantsearch/Pods-development-pods-instantsearch-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
 		76E808EAB902B56B4B5AF160 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -329,6 +324,36 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		886AEE76837D414526D007A9 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-development-pods-instantsearch/Pods-development-pods-instantsearch-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/InstantSearch/InstantSearch.framework",
+				"${BUILT_PRODUCTS_DIR}/InstantSearchClient/InstantSearchClient.framework",
+				"${BUILT_PRODUCTS_DIR}/InstantSearchCore/InstantSearchCore.framework",
+				"${BUILT_PRODUCTS_DIR}/SDWebImage/SDWebImage.framework",
+				"${BUILT_PRODUCTS_DIR}/Signals/Signals.framework",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/InstantSearch.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/InstantSearchClient.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/InstantSearchCore.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SDWebImage.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Signals.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-development-pods-instantsearch/Pods-development-pods-instantsearch-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		CA7AA3D35846B5898B247A45 /* [CP] Check Pods Manifest.lock */ = {
@@ -360,15 +385,18 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AFDF274622B0FE9200BA08CB /* ToggleDefaultDemoViewController.swift in Sources */,
 				E20E6D1C22A805AC00AC81BC /* FilterNumericComparisonDemoViewController.swift in Sources */,
 				AF939675229700D500757257 /* FilterStateViewController.swift in Sources */,
 				AF939698229AC58900757257 /* FilterListDemoViewController.swift in Sources */,
+				AFDF274822B13E1700BA08CB /* Movie.swift in Sources */,
 				E2EFA5D922A94ADF008C9CAA /* IndexSegmentDemoViewController.swift in Sources */,
 				E2B03F67229541F500DBE6D3 /* FacetSearchDemoViewController.swift in Sources */,
 				E265DBEE2273341D002DC989 /* FacetListTableController.swift in Sources */,
 				AF536C37227C7C79006DAE84 /* RefinementListDemoViewController.swift in Sources */,
-				E24DC9D5222EB72B006F1EED /* MultiIndex.swift in Sources */,
+				AFDF274A22B13E3A00BA08CB /* Actor.swift in Sources */,
 				E28C38F22236A78A0070BE3D /* RefinementList.swift in Sources */,
+				AFDF274C22B13E9300BA08CB /* CellConfigurator.swift in Sources */,
 				E24233DF223AAD1D008F24FB /* PotentialInstantSearch.swift in Sources */,
 				AF939694229848B700757257 /* SearchStateViewController.swift in Sources */,
 				E24DC9D3222EB72B006F1EED /* SingleIndexDemoViewController.swift in Sources */,
@@ -376,6 +404,7 @@
 				AF939696229A917B00757257 /* DemoListViewController.swift in Sources */,
 				AF536C392280671B006DAE84 /* DemoHelper.swift in Sources */,
 				E24DC9D1222EB72B006F1EED /* AppDelegate.swift in Sources */,
+				AFDF274E22B1493700BA08CB /* UITableView+Convenience.swift in Sources */,
 				AFE6E3D522ACF585005BA44D /* MultiIndexDemoViewController.swift in Sources */,
 				AF536C35227C78AD006DAE84 /* ToggleDemoViewController.swift in Sources */,
 				E2E09E3D223276C800F3056D /* Helpers.swift in Sources */,

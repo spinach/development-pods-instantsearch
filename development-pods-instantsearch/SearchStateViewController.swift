@@ -35,7 +35,7 @@ class SearchStateViewController: UIViewController {
     self.loadableController = ActivityIndicatorController(activityIndicator: activityIndicator)
     self.statsController = LabelStatsController(label: hitsCountLabel)
     self.clearRefinementsController = ClearRefinementsButtonController(button: clearRefinementsButton)
-    self.statsViewModel = StatsViewModel(item: .none)
+    self.statsViewModel = StatsViewModel()
     super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
 //    statsViewModel.connectController(statsController, presenter: { _ in return "" })
   }
@@ -168,12 +168,12 @@ extension SearchStateViewController {
   }
   
   func connectSearcher(_ searcher: SingleIndexSearcher) {
-    loadableController.connectTo(searcher)
+//    loadableController.connectSearcher(searcher)
     statsViewModel.connectSearcher(searcher)
   }
   
   func connectFacetSearcher(_ facetSearcher: FacetSearcher) {
-    loadableController.connectTo(facetSearcher)
+//    loadableController.connectSearcher(facetSearcher)
   }
   
 }
