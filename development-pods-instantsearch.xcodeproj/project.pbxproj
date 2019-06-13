@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		9BE878203D48991B58641B3C /* Pods_development_pods_instantsearchTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A3124C071D3F19C1B835884C /* Pods_development_pods_instantsearchTests.framework */; };
 		A174DB7FFFE740D94F373ED6 /* Pods_development_pods_instantsearch.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BE4725361587DFDC81F01BCB /* Pods_development_pods_instantsearch.framework */; };
+		AF21EE9E22B26187004A0542 /* StatsDemoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF21EE9D22B26187004A0542 /* StatsDemoViewController.swift */; };
 		AF2B261922836430006DE798 /* SegmentedController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF2B261822836430006DE798 /* SegmentedController.swift */; };
 		AF536C35227C78AD006DAE84 /* ToggleDemoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF536C34227C78AD006DAE84 /* ToggleDemoViewController.swift */; };
 		AF536C37227C7C79006DAE84 /* RefinementListDemoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF536C36227C7C79006DAE84 /* RefinementListDemoViewController.swift */; };
@@ -55,6 +56,7 @@
 		38057E60EE4A921AB878A260 /* Pods-development-pods-instantsearch.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-development-pods-instantsearch.release.xcconfig"; path = "Target Support Files/Pods-development-pods-instantsearch/Pods-development-pods-instantsearch.release.xcconfig"; sourceTree = "<group>"; };
 		6CF06BA2662866DC7F8CA6D5 /* Pods-development-pods-instantsearchTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-development-pods-instantsearchTests.release.xcconfig"; path = "Target Support Files/Pods-development-pods-instantsearchTests/Pods-development-pods-instantsearchTests.release.xcconfig"; sourceTree = "<group>"; };
 		A3124C071D3F19C1B835884C /* Pods_development_pods_instantsearchTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_development_pods_instantsearchTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		AF21EE9D22B26187004A0542 /* StatsDemoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatsDemoViewController.swift; sourceTree = "<group>"; };
 		AF2B261822836430006DE798 /* SegmentedController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SegmentedController.swift; sourceTree = "<group>"; };
 		AF536C34227C78AD006DAE84 /* ToggleDemoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToggleDemoViewController.swift; sourceTree = "<group>"; };
 		AF536C36227C7C79006DAE84 /* RefinementListDemoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RefinementListDemoViewController.swift; sourceTree = "<group>"; };
@@ -140,6 +142,7 @@
 				E20E6D1B22A805AC00AC81BC /* FilterNumericComparisonDemoViewController.swift */,
 				E2EFA5D822A94ADF008C9CAA /* IndexSegmentDemoViewController.swift */,
 				AFDF275122B23EB100BA08CB /* SearchInputDemoViewController.swift */,
+				AF21EE9D22B26187004A0542 /* StatsDemoViewController.swift */,
 				AFDF274722B13E1700BA08CB /* Movie.swift */,
 				AFDF274922B13E3A00BA08CB /* Actor.swift */,
 			);
@@ -399,6 +402,7 @@
 				E2EFA5D922A94ADF008C9CAA /* IndexSegmentDemoViewController.swift in Sources */,
 				E2B03F67229541F500DBE6D3 /* FacetSearchDemoViewController.swift in Sources */,
 				E265DBEE2273341D002DC989 /* FacetListTableController.swift in Sources */,
+				AF21EE9E22B26187004A0542 /* StatsDemoViewController.swift in Sources */,
 				AF536C37227C7C79006DAE84 /* RefinementListDemoViewController.swift in Sources */,
 				AFDF275422B243B200BA08CB /* HitsTableViewController.swift in Sources */,
 				AFDF274A22B13E3A00BA08CB /* Actor.swift in Sources */,

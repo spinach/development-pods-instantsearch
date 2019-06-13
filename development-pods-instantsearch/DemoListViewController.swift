@@ -36,6 +36,7 @@ struct Demo: Codable {
     case sortBy = "index_segment"
     case searchAsYouType = "search_as_you_type"
     case searchOnSubmit = "search_on_submit"
+    case stats = "stats"
   }
   
 }
@@ -126,22 +127,25 @@ class DemoListViewController: UIViewController {
       viewController = IndexSegmentDemoViewController()
       
     case .multiIndex:
-      return MultiIndexDemoViewController()
+      viewController = MultiIndexDemoViewController()
       
     case .facetFilterList:
-      return FilterListDemo.facet()
+      viewController = FilterListDemo.facet()
             
     case .numericFilterList:
-      return FilterListDemo.numeric()
+      viewController = FilterListDemo.numeric()
       
     case .tagFilterList:
-      return FilterListDemo.tag()
+      viewController = FilterListDemo.tag()
       
     case .searchOnSubmit:
-      return SearchInputDemoViewController(searchTriggeringMode: .searchOnSubmit)
+      viewController = SearchInputDemoViewController(searchTriggeringMode: .searchOnSubmit)
       
     case .searchAsYouType:
-      return SearchInputDemoViewController(searchTriggeringMode: .searchAsYouType)
+      viewController = SearchInputDemoViewController(searchTriggeringMode: .searchAsYouType)
+      
+    case .stats:
+      viewController = StatsDemoViewController()
     }
     
     return viewController
