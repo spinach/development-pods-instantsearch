@@ -69,7 +69,7 @@ class MultiIndexDemoViewController: UIViewController, InstantSearchCore.MultiInd
 private extension MultiIndexDemoViewController {
   
   func setup() {
-    queryInputViewModel.connectSearcher(multiIndexSearcher, searchAsYouType: true)
+    queryInputViewModel.connectSearcher(multiIndexSearcher, searchTriggeringMode: .searchAsYouType)
     queryInputViewModel.connectController(searchBarController)
 
     multiIndexHitsViewModel.connectSearcher(multiIndexSearcher)

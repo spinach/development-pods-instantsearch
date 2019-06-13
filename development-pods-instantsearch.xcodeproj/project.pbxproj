@@ -22,6 +22,8 @@
 		AFDF274A22B13E3A00BA08CB /* Actor.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFDF274922B13E3A00BA08CB /* Actor.swift */; };
 		AFDF274C22B13E9300BA08CB /* CellConfigurator.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFDF274B22B13E9300BA08CB /* CellConfigurator.swift */; };
 		AFDF274E22B1493700BA08CB /* UITableView+Convenience.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFDF274D22B1493700BA08CB /* UITableView+Convenience.swift */; };
+		AFDF275222B23EB100BA08CB /* SearchInputDemoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFDF275122B23EB100BA08CB /* SearchInputDemoViewController.swift */; };
+		AFDF275422B243B200BA08CB /* HitsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFDF275322B243B200BA08CB /* HitsTableViewController.swift */; };
 		AFE343872289C4B300829AC1 /* SegmentedDemoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFE343862289C4B300829AC1 /* SegmentedDemoViewController.swift */; };
 		AFE6E3D522ACF585005BA44D /* MultiIndexDemoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFE6E3D422ACF585005BA44D /* MultiIndexDemoViewController.swift */; };
 		E20E6D1C22A805AC00AC81BC /* FilterNumericComparisonDemoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E20E6D1B22A805AC00AC81BC /* FilterNumericComparisonDemoViewController.swift */; };
@@ -66,6 +68,8 @@
 		AFDF274922B13E3A00BA08CB /* Actor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Actor.swift; sourceTree = "<group>"; };
 		AFDF274B22B13E9300BA08CB /* CellConfigurator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CellConfigurator.swift; sourceTree = "<group>"; };
 		AFDF274D22B1493700BA08CB /* UITableView+Convenience.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITableView+Convenience.swift"; sourceTree = "<group>"; };
+		AFDF275122B23EB100BA08CB /* SearchInputDemoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchInputDemoViewController.swift; sourceTree = "<group>"; };
+		AFDF275322B243B200BA08CB /* HitsTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HitsTableViewController.swift; sourceTree = "<group>"; };
 		AFE343862289C4B300829AC1 /* SegmentedDemoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SegmentedDemoViewController.swift; sourceTree = "<group>"; };
 		AFE6E3D422ACF585005BA44D /* MultiIndexDemoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultiIndexDemoViewController.swift; sourceTree = "<group>"; };
 		BE4725361587DFDC81F01BCB /* Pods_development_pods_instantsearch.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_development_pods_instantsearch.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -135,6 +139,7 @@
 				AFDF274522B0FE9200BA08CB /* ToggleDefaultDemoViewController.swift */,
 				E20E6D1B22A805AC00AC81BC /* FilterNumericComparisonDemoViewController.swift */,
 				E2EFA5D822A94ADF008C9CAA /* IndexSegmentDemoViewController.swift */,
+				AFDF275122B23EB100BA08CB /* SearchInputDemoViewController.swift */,
 				AFDF274722B13E1700BA08CB /* Movie.swift */,
 				AFDF274922B13E3A00BA08CB /* Actor.swift */,
 			);
@@ -169,6 +174,7 @@
 				E24DC9D0222EB72B006F1EED /* AppDelegate.swift */,
 				AF536C382280671B006DAE84 /* DemoHelper.swift */,
 				AF939695229A917B00757257 /* DemoListViewController.swift */,
+				AFDF275322B243B200BA08CB /* HitsTableViewController.swift */,
 				E28C38F12236A78A0070BE3D /* RefinementList.swift */,
 				AFDF274B22B13E9300BA08CB /* CellConfigurator.swift */,
 				AFDF274D22B1493700BA08CB /* UITableView+Convenience.swift */,
@@ -394,6 +400,7 @@
 				E2B03F67229541F500DBE6D3 /* FacetSearchDemoViewController.swift in Sources */,
 				E265DBEE2273341D002DC989 /* FacetListTableController.swift in Sources */,
 				AF536C37227C7C79006DAE84 /* RefinementListDemoViewController.swift in Sources */,
+				AFDF275422B243B200BA08CB /* HitsTableViewController.swift in Sources */,
 				AFDF274A22B13E3A00BA08CB /* Actor.swift in Sources */,
 				E28C38F22236A78A0070BE3D /* RefinementList.swift in Sources */,
 				AFDF274C22B13E9300BA08CB /* CellConfigurator.swift in Sources */,
@@ -407,6 +414,7 @@
 				AFDF274E22B1493700BA08CB /* UITableView+Convenience.swift in Sources */,
 				AFE6E3D522ACF585005BA44D /* MultiIndexDemoViewController.swift in Sources */,
 				AF536C35227C78AD006DAE84 /* ToggleDemoViewController.swift in Sources */,
+				AFDF275222B23EB100BA08CB /* SearchInputDemoViewController.swift in Sources */,
 				E2E09E3D223276C800F3056D /* Helpers.swift in Sources */,
 				AFE343872289C4B300829AC1 /* SegmentedDemoViewController.swift in Sources */,
 			);

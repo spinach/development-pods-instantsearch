@@ -1,33 +1,38 @@
 //
-//  SingleIndexDemoViewController.swift
+//  SearchInputDemoViewController.swift
 //  development-pods-instantsearch
 //
-//  Created by Guy Daher on 05/03/2019.
+//  Created by Vladislav Fitc on 13/06/2019.
 //  Copyright © 2019 Algolia. All rights reserved.
 //
 
+import Foundation
 import UIKit
 import InstantSearchCore
 import InstantSearch
-import SDWebImage
 
-class SingleIndexDemoViewController: UIViewController {
+class SearchInputDemoViewController: UIViewController {
+  
+  let searchTriggeringMode: SearchTriggeringMode
   
   let stackView = UIStackView()
-  
   let searcher: SingleIndexSearcher
+  
   let queryInputViewModel: QueryInputViewModel
   let searchBarController: SearchBarController
+  
   let hitsViewModel: HitsViewModel<Movie>
   let hitsTableViewController: HitsTableViewController<Movie>
+
   
-  override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
+  init(searchTriggeringMode: SearchTriggeringMode) {
+    self.searchTriggeringMode = searchTriggeringMode
     self.searcher = SingleIndexSearcher(index: .demo(withName: "mobile_demo_movies"))
     self.searchBarController = .init(searchBar: .init())
     self.queryInputViewModel = .init()
-    self.hitsViewModel = .init()
+    self.hitsViewModel = .init(infiniteScrolling: .off, showItemsOnEmptyQuery: true)
     self.hitsTableViewController = HitsTableViewController()
-    super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
+    super.init(nibName: .none, bundle: .none)
     setup()
   }
   
@@ -46,14 +51,15 @@ class SingleIndexDemoViewController: UIViewController {
     hitsViewModel.connectController(hitsTableViewController)
     
     queryInputViewModel.connectController(searchBarController)
-    queryInputViewModel.connectSearcher(searcher, searchTriggeringMode: .searchAsYouType)
+    queryInputViewModel.connectSearcher(searcher, searchTriggeringMode: searchTriggeringMode)
     
     searcher.search()
+    
   }
-
+  
 }
 
-private extension SingleIndexDemoViewController {
+private extension SearchInputDemoViewController {
   
   func configureUI() {
     view.backgroundColor = .white
@@ -85,15 +91,18 @@ private extension SingleIndexDemoViewController {
     stackView.addArrangedSubview(hitsTableViewController.view)
     
     view.addSubview(stackView)
-
+    
     NSLayoutConstraint.activate([
       stackView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 0),
       stackView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 0),
       stackView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: 0),
       stackView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: 0),
-    ])
-
+      ])
+    
   }
   
 }
+
+
+
 
