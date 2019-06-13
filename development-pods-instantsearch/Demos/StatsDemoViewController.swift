@@ -26,7 +26,6 @@ class StatsDemoViewController: UIViewController {
   let labelStatsControllerMS: LabelStatsController
   let attributedLabelStatsController: AttributedLabelStatsController
   
-  
   init() {
     self.searcher = SingleIndexSearcher(index: .demo(withName: "mobile_demo_movies"))
     self.searchBarController = .init(searchBar: .init())
@@ -65,7 +64,7 @@ class StatsDemoViewController: UIViewController {
         return nil
       }
       let string = NSMutableAttributedString()
-      string.append(NSAttributedString(string: "\(stats.totalHitsCount)", attributes: [NSAttributedString.Key.font: UIFont(name: "zapfino", size: 15)!]))
+      string.append(NSAttributedString(string: "\(stats.totalHitsCount)", attributes: [NSAttributedString.Key.font: UIFont(name: "Chalkduster", size: 15)!]))
       string.append(NSAttributedString(string: "  hits"))
       return string
     }
@@ -144,7 +143,3 @@ private extension StatsDemoViewController {
   }
   
 }
-
-
-
-
