@@ -36,6 +36,7 @@
 		E28C38F22236A78A0070BE3D /* RefinementList.swift in Sources */ = {isa = PBXBuildFile; fileRef = E28C38F12236A78A0070BE3D /* RefinementList.swift */; };
 		E2B03F67229541F500DBE6D3 /* FacetSearchDemoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2B03F66229541F500DBE6D3 /* FacetSearchDemoViewController.swift */; };
 		E2E09E3D223276C800F3056D /* Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2E09E3C223276C800F3056D /* Helpers.swift */; };
+		E2EBE74222B15B0A00B91B23 /* CurrentFiltersDemoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2EBE74122B15B0A00B91B23 /* CurrentFiltersDemoViewController.swift */; };
 		E2EFA5D922A94ADF008C9CAA /* IndexSegmentDemoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2EFA5D822A94ADF008C9CAA /* IndexSegmentDemoViewController.swift */; };
 /* End PBXBuildFile section */
 
@@ -87,6 +88,7 @@
 		E29E45712243FAAE005B358D /* SingleIndex.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = SingleIndex.playground; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		E2B03F66229541F500DBE6D3 /* FacetSearchDemoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FacetSearchDemoViewController.swift; sourceTree = "<group>"; };
 		E2E09E3C223276C800F3056D /* Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Helpers.swift; sourceTree = "<group>"; };
+		E2EBE74122B15B0A00B91B23 /* CurrentFiltersDemoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentFiltersDemoViewController.swift; sourceTree = "<group>"; };
 		E2EFA5D822A94ADF008C9CAA /* IndexSegmentDemoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IndexSegmentDemoViewController.swift; sourceTree = "<group>"; };
 		F2062212BAF0883D11154F15 /* Pods-development-pods-instantsearchTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-development-pods-instantsearchTests.debug.xcconfig"; path = "Target Support Files/Pods-development-pods-instantsearchTests/Pods-development-pods-instantsearchTests.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -137,6 +139,7 @@
 				E2EFA5D822A94ADF008C9CAA /* IndexSegmentDemoViewController.swift */,
 				AFDF274722B13E1700BA08CB /* Movie.swift */,
 				AFDF274922B13E3A00BA08CB /* Actor.swift */,
+				E2EBE74122B15B0A00B91B23 /* CurrentFiltersDemoViewController.swift */,
 			);
 			path = Demos;
 			sourceTree = "<group>";
@@ -398,6 +401,7 @@
 				E28C38F22236A78A0070BE3D /* RefinementList.swift in Sources */,
 				AFDF274C22B13E9300BA08CB /* CellConfigurator.swift in Sources */,
 				E24233DF223AAD1D008F24FB /* PotentialInstantSearch.swift in Sources */,
+				E2EBE74222B15B0A00B91B23 /* CurrentFiltersDemoViewController.swift in Sources */,
 				AF939694229848B700757257 /* SearchStateViewController.swift in Sources */,
 				E24DC9D3222EB72B006F1EED /* SingleIndexDemoViewController.swift in Sources */,
 				AF2B261922836430006DE798 /* SegmentedController.swift in Sources */,
