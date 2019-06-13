@@ -70,7 +70,7 @@ private extension FacetSearchDemoViewController {
     searchStateViewController.connectFacetSearcher(facetSearcher)
 
     queryInputViewModel.connectController(searchBarController)
-    queryInputViewModel.connectSearcher(facetSearcher, searchAsYouType: true)
+    queryInputViewModel.connectSearcher(facetSearcher, searchTriggeringMode: .searchAsYouType)
     
     categoryListViewModel.connectFacetSearcher(facetSearcher)
     categoryListViewModel.connectFilterState(filterState, with: Attribute("brand"), operator: .or)

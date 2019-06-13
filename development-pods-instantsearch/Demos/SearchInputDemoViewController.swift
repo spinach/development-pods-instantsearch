@@ -1,40 +1,38 @@
 //
-//  SingleIndexDemoViewController.swift
+//  SearchInputDemoViewController.swift
 //  development-pods-instantsearch
 //
-//  Created by Guy Daher on 05/03/2019.
+//  Created by Vladislav Fitc on 13/06/2019.
 //  Copyright © 2019 Algolia. All rights reserved.
 //
 
+import Foundation
 import UIKit
 import InstantSearchCore
 import InstantSearch
-import SDWebImage
 
-class SingleIndexDemoViewController: UIViewController {
+class SearchInputDemoViewController: UIViewController {
+  
+  let searchTriggeringMode: SearchTriggeringMode
   
   let stackView = UIStackView()
-  
   let searcher: SingleIndexSearcher
   
   let queryInputViewModel: QueryInputViewModel
   let searchBarController: SearchBarController
   
-  let statsViewModel: StatsViewModel
-  let statsController: LabelStatsController
-  
   let hitsViewModel: HitsViewModel<Movie>
   let hitsTableViewController: HitsTableViewController<Movie>
+
   
-  override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
+  init(searchTriggeringMode: SearchTriggeringMode) {
+    self.searchTriggeringMode = searchTriggeringMode
     self.searcher = SingleIndexSearcher(index: .demo(withName: "mobile_demo_movies"))
-    self.queryInputViewModel = .init()
     self.searchBarController = .init(searchBar: .init())
-    self.statsViewModel = .init()
-    self.statsController = .init(label: .init())
-    self.hitsViewModel = .init()
+    self.queryInputViewModel = .init()
+    self.hitsViewModel = .init(infiniteScrolling: .off, showItemsOnEmptyQuery: true)
     self.hitsTableViewController = HitsTableViewController()
-    super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
+    super.init(nibName: .none, bundle: .none)
     setup()
   }
   
@@ -49,26 +47,23 @@ class SingleIndexDemoViewController: UIViewController {
   
   private func setup() {
     
-    queryInputViewModel.connectSearcher(searcher, searchTriggeringMode: .searchAsYouType)
-    queryInputViewModel.connectController(searchBarController)
-    
-    statsViewModel.connectSearcher(searcher)
-    statsViewModel.connectController(statsController)
-    
     hitsViewModel.connectSearcher(searcher)
     hitsViewModel.connectController(hitsTableViewController)
     
+    queryInputViewModel.connectController(searchBarController)
+    queryInputViewModel.connectSearcher(searcher, searchTriggeringMode: searchTriggeringMode)
+    
     searcher.search()
+    
   }
-
+  
 }
 
-private extension SingleIndexDemoViewController {
+private extension SearchInputDemoViewController {
   
   func configureUI() {
     view.backgroundColor = .white
     configureSearchBar()
-    configureStatsLabel()
     configureStackView()
     configureLayout()
   }
@@ -79,10 +74,6 @@ private extension SingleIndexDemoViewController {
     searchBar.searchBarStyle = .minimal
   }
   
-  func configureStatsLabel() {
-    statsController.label.translatesAutoresizingMaskIntoConstraints = false
-  }
-  
   func configureStackView() {
     stackView.spacing = .px16
     stackView.axis = .vertical
@@ -91,37 +82,27 @@ private extension SingleIndexDemoViewController {
   
   func configureLayout() {
     
+    searchBarController.searchBar.heightAnchor.constraint(equalToConstant: 40).isActive = true
+    
     addChild(hitsTableViewController)
     hitsTableViewController.didMove(toParent: self)
     
     stackView.addArrangedSubview(searchBarController.searchBar)
-    let statsContainer = UIView()
-    statsContainer.translatesAutoresizingMaskIntoConstraints = false
-    statsContainer.layoutMargins = UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 20)
-    statsContainer.addSubview(statsController.label)
-    NSLayoutConstraint.activate([
-      statsController.label.topAnchor.constraint(equalTo: statsContainer.layoutMarginsGuide.topAnchor),
-      statsController.label.bottomAnchor.constraint(equalTo: statsContainer.layoutMarginsGuide.bottomAnchor),
-      statsController.label.leadingAnchor.constraint(equalTo: statsContainer.layoutMarginsGuide.leadingAnchor),
-      statsController.label.trailingAnchor.constraint(equalTo: statsContainer.layoutMarginsGuide.trailingAnchor),
-    ])
-    stackView.addArrangedSubview(statsContainer)
     stackView.addArrangedSubview(hitsTableViewController.view)
     
     view.addSubview(stackView)
-
+    
     NSLayoutConstraint.activate([
       stackView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 0),
       stackView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 0),
       stackView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: 0),
       stackView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: 0),
-    ])
+      ])
     
-    searchBarController.searchBar.heightAnchor.constraint(equalToConstant: 40).isActive = true
-
-    statsController.label.heightAnchor.constraint(equalToConstant: 16).isActive = true
-
   }
   
 }
+
+
+
 

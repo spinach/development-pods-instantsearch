@@ -78,7 +78,7 @@ class IndexSegmentDemoViewController: UIViewController, InstantSearchCore.HitsCo
     hitsViewModel.connectController(self)
 
     queryInputViewModel.connectController(searchBarController)
-    queryInputViewModel.connectSearcher(searcher, searchAsYouType: true)
+    queryInputViewModel.connectSearcher(searcher, searchTriggeringMode: .searchAsYouType)
 
     indexSegmentViewModel.connectSearcher(searcher: searcher)
     indexSegmentViewModel.connectController(SelectIndexController(alertController: alert)) { (index) -> String in

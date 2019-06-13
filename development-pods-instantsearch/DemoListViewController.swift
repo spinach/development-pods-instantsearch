@@ -22,18 +22,22 @@ struct Demo: Codable {
   
   enum ID: String {
     case singleIndex = "paging_single_searcher"
+    case multiIndex = "nested_list"
     case sffv = "facet_list_search"
     case toggle = "filter_toggle"
     case toggleDefault = "filter_toggle_default"
     case facetList = "facet_list"
     case segmented = "filter_segment"
-    case allFilterList = "filter_list_all"
+//    case allFilterList = "filter_list_all"
     case facetFilterList = "filter_list_facet"
     case numericFilterList = "filter_list_numeric"
     case tagFilterList = "filter_list_tag"
     case filterNumericComparison = "filter_numeric_comparison"
     case sortBy = "index_segment"
     case currentFilters = "filter_current"
+    case searchAsYouType = "search_as_you_type"
+    case searchOnSubmit = "search_on_submit"
+    case stats = "stats"
   }
   
 }
@@ -126,18 +130,26 @@ class DemoListViewController: UIViewController {
     case .currentFilters:
       viewController = CurrentFiltersDemoViewController()
       
-    case .allFilterList:
-      return MultiIndexDemoViewController()
+    case .multiIndex:
+      viewController = MultiIndexDemoViewController()
       
     case .facetFilterList:
-      return FilterListDemo.facet()
+      viewController = FilterListDemo.facet()
             
     case .numericFilterList:
-      return FilterListDemo.numeric()
+      viewController = FilterListDemo.numeric()
       
     case .tagFilterList:
-      return FilterListDemo.tag()
-
+      viewController = FilterListDemo.tag()
+      
+    case .searchOnSubmit:
+      viewController = SearchInputDemoViewController(searchTriggeringMode: .searchOnSubmit)
+      
+    case .searchAsYouType:
+      viewController = SearchInputDemoViewController(searchTriggeringMode: .searchAsYouType)
+      
+    case .stats:
+      viewController = StatsDemoViewController()
     }
     
     return viewController
@@ -189,8 +201,6 @@ extension DemoListViewController: UITableViewDelegate {
   func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
     
     let demo = groupedDemos[indexPath.section].demos[indexPath.row]
-    
-    print(demo.index)
     
     guard let demoID = Demo.ID(rawValue: demo.objectID) else {
       let notImplementedAlertController = UIAlertController(title: nil, message: "This demo is not implemented yet", preferredStyle: .alert)
