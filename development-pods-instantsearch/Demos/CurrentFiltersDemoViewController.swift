@@ -10,6 +10,7 @@ import Foundation
 import InstantSearch
 import InstantSearchCore
 import UIKit
+import TagListView
 
 class CurrentFiltersDemoViewController: UIViewController {
 
@@ -18,25 +19,25 @@ class CurrentFiltersDemoViewController: UIViewController {
   let currentFiltersListViewModel2: CurrentFiltersViewModel
 
   let currentFiltersController: CurrentFilterListTableController
-  let currentFiltersController2: CurrentFilterListTableController
+  let currentFiltersController2: TagListController
 
   let searchStateViewController: SearchStateViewController
 
   let tableView: UITableView
-  let tableView2: UITableView
+  let tagListView: TagListView
 
   override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
     searchStateViewController = .init()
     filterState = .init()
 
     tableView = .init()
-    tableView2 = .init()
+    tagListView = .init()
 
     currentFiltersListViewModel = .init()
     currentFiltersListViewModel2 = .init()
 
     currentFiltersController = .init(tableView: tableView)
-    currentFiltersController2 = .init(tableView: tableView2)
+    currentFiltersController2 = .init(tagListView: tagListView)
 
     super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
   }
@@ -73,9 +74,13 @@ private extension CurrentFiltersDemoViewController {
 
     let filterFacet1 = Filter.Facet(attribute: "category", value: "table")
     let filterFacet2 = Filter.Facet(attribute: "category", value: "chair")
+    let filterFacet3 = Filter.Facet(attribute: "category", value: "clothes")
+    let filterFacet4 = Filter.Facet(attribute: "category", value: "kitchen")
 
     filterState.add(filterFacet1, toGroupWithID: groupFacets)
     filterState.add(filterFacet2, toGroupWithID: groupFacets)
+    filterState.add(filterFacet3, toGroupWithID: groupFacets)
+    filterState.add(filterFacet4, toGroupWithID: groupFacets)
 
     let filterNumeric1 = Filter.Numeric(attribute: "price", operator: .greaterThan, value: 10)
     let filterNumeric2 = Filter.Numeric(attribute: "price", operator: .lessThan, value: 20)
@@ -110,11 +115,11 @@ private extension CurrentFiltersDemoViewController {
     searchStateViewController.view.heightAnchor.constraint(equalToConstant: 150).isActive = true
 
     //tableView.heightAnchor.constraint(equalToConstant: 300).isActive = true
-    tableView2.heightAnchor.constraint(equalToConstant: 300).isActive = true
+    tagListView.heightAnchor.constraint(equalToConstant: 200).isActive = true
 
     mainStackView.addArrangedSubview(searchStateViewController.view)
     mainStackView.addArrangedSubview(tableView)
-    mainStackView.addArrangedSubview(tableView2)
+    mainStackView.addArrangedSubview(tagListView)
 
   }
 

@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 51;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -25,6 +25,7 @@
 		AFE343872289C4B300829AC1 /* SegmentedDemoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFE343862289C4B300829AC1 /* SegmentedDemoViewController.swift */; };
 		AFE6E3D522ACF585005BA44D /* MultiIndexDemoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFE6E3D422ACF585005BA44D /* MultiIndexDemoViewController.swift */; };
 		E20E6D1C22A805AC00AC81BC /* FilterNumericComparisonDemoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E20E6D1B22A805AC00AC81BC /* FilterNumericComparisonDemoViewController.swift */; };
+		E2146BE222B251B900927350 /* TagListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2146BE122B251B900927350 /* TagListViewController.swift */; };
 		E24233DF223AAD1D008F24FB /* PotentialInstantSearch.swift in Sources */ = {isa = PBXBuildFile; fileRef = E24233DE223AAD1D008F24FB /* PotentialInstantSearch.swift */; };
 		E24DC9D1222EB72B006F1EED /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E24DC9D0222EB72B006F1EED /* AppDelegate.swift */; };
 		E24DC9D3222EB72B006F1EED /* SingleIndexDemoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E24DC9D2222EB72B006F1EED /* SingleIndexDemoViewController.swift */; };
@@ -72,6 +73,7 @@
 		BE4725361587DFDC81F01BCB /* Pods_development_pods_instantsearch.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_development_pods_instantsearch.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C9A5A80DB939697E9B6CE6D3 /* Pods-development-pods-instantsearch.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-development-pods-instantsearch.debug.xcconfig"; path = "Target Support Files/Pods-development-pods-instantsearch/Pods-development-pods-instantsearch.debug.xcconfig"; sourceTree = "<group>"; };
 		E20E6D1B22A805AC00AC81BC /* FilterNumericComparisonDemoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterNumericComparisonDemoViewController.swift; sourceTree = "<group>"; };
+		E2146BE122B251B900927350 /* TagListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagListViewController.swift; sourceTree = "<group>"; };
 		E24233DE223AAD1D008F24FB /* PotentialInstantSearch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PotentialInstantSearch.swift; sourceTree = "<group>"; };
 		E24DC9CD222EB72B006F1EED /* development-pods-instantsearch.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "development-pods-instantsearch.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		E24DC9D0222EB72B006F1EED /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -144,6 +146,14 @@
 			path = Demos;
 			sourceTree = "<group>";
 		};
+		E2146BE022B251AC00927350 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				E2146BE122B251B900927350 /* TagListViewController.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
 		E24DC9C4222EB72B006F1EED = {
 			isa = PBXGroup;
 			children = (
@@ -167,6 +177,7 @@
 		E24DC9CF222EB72B006F1EED /* development-pods-instantsearch */ = {
 			isa = PBXGroup;
 			children = (
+				E2146BE022B251AC00927350 /* Views */,
 				AF939699229AD21C00757257 /* Demos */,
 				E29E45712243FAAE005B358D /* SingleIndex.playground */,
 				E24DC9D0222EB72B006F1EED /* AppDelegate.swift */,
@@ -313,24 +324,11 @@
 			files = (
 			);
 			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-development-pods-instantsearch/Pods-development-pods-instantsearch-frameworks.sh",
-				"${BUILT_PRODUCTS_DIR}/InstantSearch/InstantSearch.framework",
-				"${BUILT_PRODUCTS_DIR}/InstantSearchClient/InstantSearchClient.framework",
-				"${BUILT_PRODUCTS_DIR}/InstantSearchCore/InstantSearchCore.framework",
-				"${BUILT_PRODUCTS_DIR}/SDWebImage/SDWebImage.framework",
-				"${BUILT_PRODUCTS_DIR}/Signals/Signals.framework",
+				"${PODS_ROOT}/Target Support Files/Pods-development-pods-instantsearch/Pods-development-pods-instantsearch-frameworks-${CONFIGURATION}-input-files.xcfilelist",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputFileListPaths = (
-			);
-			outputPaths = (
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/InstantSearch.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/InstantSearchClient.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/InstantSearchCore.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SDWebImage.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Signals.framework",
+				"${PODS_ROOT}/Target Support Files/Pods-development-pods-instantsearch/Pods-development-pods-instantsearch-frameworks-${CONFIGURATION}-output-files.xcfilelist",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -403,6 +401,7 @@
 				E24233DF223AAD1D008F24FB /* PotentialInstantSearch.swift in Sources */,
 				E2EBE74222B15B0A00B91B23 /* CurrentFiltersDemoViewController.swift in Sources */,
 				AF939694229848B700757257 /* SearchStateViewController.swift in Sources */,
+				E2146BE222B251B900927350 /* TagListViewController.swift in Sources */,
 				E24DC9D3222EB72B006F1EED /* SingleIndexDemoViewController.swift in Sources */,
 				AF2B261922836430006DE798 /* SegmentedController.swift in Sources */,
 				AF939696229A917B00757257 /* DemoListViewController.swift in Sources */,
