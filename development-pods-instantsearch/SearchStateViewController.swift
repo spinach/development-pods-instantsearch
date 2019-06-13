@@ -15,6 +15,7 @@ class SearchStateViewController: UIViewController {
   
   let statsViewModel: StatsViewModel
   let loadingViewModel: LoadingViewModel
+  let filterClearViewModel: FilterClearViewModel
   
   let mainStackView: UIStackView
   let titleLabel: UILabel
@@ -24,7 +25,7 @@ class SearchStateViewController: UIViewController {
   let clearRefinementsButton: UIButton
   let activityIndicatorController: ActivityIndicatorController
   let statsController: LabelStatsController
-  let clearRefinementsController: ClearRefinementsController
+  let clearRefinementsController: FilterClearButtonController
   
   override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
     self.mainStackView = UIStackView(frame: .zero)
@@ -35,9 +36,10 @@ class SearchStateViewController: UIViewController {
     self.clearRefinementsButton = UIButton(frame: .zero)
     self.activityIndicatorController = ActivityIndicatorController(activityIndicator: activityIndicator)
     self.statsController = LabelStatsController(label: hitsCountLabel)
-    self.clearRefinementsController = ClearRefinementsButtonController(button: clearRefinementsButton)
+    self.clearRefinementsController = FilterClearButtonController(button: clearRefinementsButton)
     self.statsViewModel = .init()
     self.loadingViewModel = .init()
+    self.filterClearViewModel = .init()
     super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
 //    statsViewModel.connectController(statsController)
     loadingViewModel.connectController(activityIndicatorController)
@@ -167,7 +169,8 @@ extension SearchStateViewController {
   
   func connectFilterState(_ filterState: FilterState) {
     filterStateViewController.connectTo(filterState)
-    clearRefinementsController.connectTo(filterState)
+    filterClearViewModel.connectFilterState(filterState)
+    filterClearViewModel.connectController(clearRefinementsController)
   }
   
   func connectSearcher(_ searcher: SingleIndexSearcher) {

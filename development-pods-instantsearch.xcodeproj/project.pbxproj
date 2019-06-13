@@ -29,6 +29,7 @@
 		AFE6E3D522ACF585005BA44D /* MultiIndexDemoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFE6E3D422ACF585005BA44D /* MultiIndexDemoViewController.swift */; };
 		E20E6D1C22A805AC00AC81BC /* FilterNumericComparisonDemoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E20E6D1B22A805AC00AC81BC /* FilterNumericComparisonDemoViewController.swift */; };
 		E2146BE222B251B900927350 /* TagListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2146BE122B251B900927350 /* TagListViewController.swift */; };
+		E2146BEE22B2A18E00927350 /* ClearFiltersDemoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2146BED22B2A18E00927350 /* ClearFiltersDemoViewController.swift */; };
 		E24233DF223AAD1D008F24FB /* PotentialInstantSearch.swift in Sources */ = {isa = PBXBuildFile; fileRef = E24233DE223AAD1D008F24FB /* PotentialInstantSearch.swift */; };
 		E24DC9D1222EB72B006F1EED /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E24DC9D0222EB72B006F1EED /* AppDelegate.swift */; };
 		E24DC9D3222EB72B006F1EED /* SingleIndexDemoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E24DC9D2222EB72B006F1EED /* SingleIndexDemoViewController.swift */; };
@@ -80,6 +81,7 @@
 		C9A5A80DB939697E9B6CE6D3 /* Pods-development-pods-instantsearch.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-development-pods-instantsearch.debug.xcconfig"; path = "Target Support Files/Pods-development-pods-instantsearch/Pods-development-pods-instantsearch.debug.xcconfig"; sourceTree = "<group>"; };
 		E20E6D1B22A805AC00AC81BC /* FilterNumericComparisonDemoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterNumericComparisonDemoViewController.swift; sourceTree = "<group>"; };
 		E2146BE122B251B900927350 /* TagListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagListViewController.swift; sourceTree = "<group>"; };
+		E2146BED22B2A18E00927350 /* ClearFiltersDemoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClearFiltersDemoViewController.swift; sourceTree = "<group>"; };
 		E24233DE223AAD1D008F24FB /* PotentialInstantSearch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PotentialInstantSearch.swift; sourceTree = "<group>"; };
 		E24DC9CD222EB72B006F1EED /* development-pods-instantsearch.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "development-pods-instantsearch.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		E24DC9D0222EB72B006F1EED /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -150,6 +152,7 @@
 				AFDF274722B13E1700BA08CB /* Movie.swift */,
 				AFDF274922B13E3A00BA08CB /* Actor.swift */,
 				E2EBE74122B15B0A00B91B23 /* CurrentFiltersDemoViewController.swift */,
+				E2146BED22B2A18E00927350 /* ClearFiltersDemoViewController.swift */,
 			);
 			path = Demos;
 			sourceTree = "<group>";
@@ -409,6 +412,7 @@
 				AFDF274A22B13E3A00BA08CB /* Actor.swift in Sources */,
 				E28C38F22236A78A0070BE3D /* RefinementList.swift in Sources */,
 				AFDF274C22B13E9300BA08CB /* CellConfigurator.swift in Sources */,
+				E2146BEE22B2A18E00927350 /* ClearFiltersDemoViewController.swift in Sources */,
 				E24233DF223AAD1D008F24FB /* PotentialInstantSearch.swift in Sources */,
 				E2EBE74222B15B0A00B91B23 /* CurrentFiltersDemoViewController.swift in Sources */,
 				AF939694229848B700757257 /* SearchStateViewController.swift in Sources */,

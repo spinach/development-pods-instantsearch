@@ -38,6 +38,7 @@ struct Demo: Codable {
     case searchAsYouType = "search_as_you_type"
     case searchOnSubmit = "search_on_submit"
     case stats = "stats"
+    case clearFilters = "filter_clear"
   }
   
 }
@@ -129,6 +130,8 @@ class DemoListViewController: UIViewController {
 
     case .currentFilters:
       viewController = CurrentFiltersDemoViewController()
+    case .clearFilters:
+      viewController = ClearFiltersDemoViewController()
       
     case .multiIndex:
       viewController = MultiIndexDemoViewController()
