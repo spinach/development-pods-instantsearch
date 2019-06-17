@@ -183,10 +183,10 @@ extension MultiIndexDemoViewController: UITableViewDelegate {
     guard let section = Section(indexPath: indexPath) else { return }
     switch section {
     case .actors:
-      try? hitsSource?.hit(atIndex: indexPath.row, inSection: indexPath.section).flatMap(CellConfigurator<Actor>.configure(cell))
+      try? hitsSource?.hit(atIndex: indexPath.row, inSection: indexPath.section).flatMap(ActorCellConfigurator.configure(cell))
 
     case .movies:
-      try? hitsSource?.hit(atIndex: indexPath.row, inSection: indexPath.section).flatMap(CellConfigurator<Movie>.configure(cell))
+      try? hitsSource?.hit(atIndex: indexPath.row, inSection: indexPath.section).flatMap(MovieCellConfigurator.configure(cell))
     }
   }
   

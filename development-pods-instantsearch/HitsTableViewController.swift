@@ -10,13 +10,13 @@ import Foundation
 import UIKit
 import InstantSearchCore
 
-class HitsTableViewController<Hit: Codable>: UITableViewController, InstantSearchCore.HitsController {
+class HitsTableViewController<HitType: Codable>: UITableViewController, InstantSearchCore.HitsController {
   
-  typealias DataSource = HitsViewModel<Hit>
+  typealias DataSource = HitsViewModel<HitType>
   
   private let cellIdentifier = "CellID"
   
-  var hitsSource: HitsViewModel<Hit>?
+  var hitsSource: HitsViewModel<HitType>?
   
   init() {
     super.init(nibName: .none, bundle: .none)
@@ -43,8 +43,15 @@ class HitsTableViewController<Hit: Codable>: UITableViewController, InstantSearc
   
   override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath)
-    let hit = hitsSource?.hit(atIndex: indexPath.row) as? Movie
-    hit.flatMap(CellConfigurator.configure(cell))
+    let hit = hitsSource?.hit(atIndex: indexPath.row)
+    switch hit {
+    case let movie as Movie:
+      MovieCellConfigurator.configure(cell)(movie)
+    case let movieHit as Hit<Movie>:
+      MovieHitCellConfigurator.configure(cell)(movieHit)
+    default:
+      break
+    }
     return cell
   }
   

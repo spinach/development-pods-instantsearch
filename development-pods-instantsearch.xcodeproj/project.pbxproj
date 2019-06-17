@@ -3,13 +3,14 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 51;
+	objectVersion = 50;
 	objects = {
 
 /* Begin PBXBuildFile section */
 		9BE878203D48991B58641B3C /* Pods_development_pods_instantsearchTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A3124C071D3F19C1B835884C /* Pods_development_pods_instantsearchTests.framework */; };
 		A174DB7FFFE740D94F373ED6 /* Pods_development_pods_instantsearch.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BE4725361587DFDC81F01BCB /* Pods_development_pods_instantsearch.framework */; };
 		AF21EE9E22B26187004A0542 /* StatsDemoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF21EE9D22B26187004A0542 /* StatsDemoViewController.swift */; };
+		AF21EEC122B78F89004A0542 /* HighlightingDemoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF21EEC022B78F89004A0542 /* HighlightingDemoViewController.swift */; };
 		AF2B261922836430006DE798 /* SegmentedController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF2B261822836430006DE798 /* SegmentedController.swift */; };
 		AF536C35227C78AD006DAE84 /* ToggleDemoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF536C34227C78AD006DAE84 /* ToggleDemoViewController.swift */; };
 		AF536C37227C7C79006DAE84 /* RefinementListDemoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF536C36227C7C79006DAE84 /* RefinementListDemoViewController.swift */; };
@@ -59,6 +60,7 @@
 		6CF06BA2662866DC7F8CA6D5 /* Pods-development-pods-instantsearchTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-development-pods-instantsearchTests.release.xcconfig"; path = "Target Support Files/Pods-development-pods-instantsearchTests/Pods-development-pods-instantsearchTests.release.xcconfig"; sourceTree = "<group>"; };
 		A3124C071D3F19C1B835884C /* Pods_development_pods_instantsearchTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_development_pods_instantsearchTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		AF21EE9D22B26187004A0542 /* StatsDemoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatsDemoViewController.swift; sourceTree = "<group>"; };
+		AF21EEC022B78F89004A0542 /* HighlightingDemoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HighlightingDemoViewController.swift; sourceTree = "<group>"; };
 		AF2B261822836430006DE798 /* SegmentedController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SegmentedController.swift; sourceTree = "<group>"; };
 		AF536C34227C78AD006DAE84 /* ToggleDemoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToggleDemoViewController.swift; sourceTree = "<group>"; };
 		AF536C36227C7C79006DAE84 /* RefinementListDemoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RefinementListDemoViewController.swift; sourceTree = "<group>"; };
@@ -147,6 +149,7 @@
 				E2EFA5D822A94ADF008C9CAA /* IndexSegmentDemoViewController.swift */,
 				AFDF275122B23EB100BA08CB /* SearchInputDemoViewController.swift */,
 				AF21EE9D22B26187004A0542 /* StatsDemoViewController.swift */,
+				AF21EEC022B78F89004A0542 /* HighlightingDemoViewController.swift */,
 				AFDF274722B13E1700BA08CB /* Movie.swift */,
 				AFDF274922B13E3A00BA08CB /* Actor.swift */,
 				E2EBE74122B15B0A00B91B23 /* CurrentFiltersDemoViewController.swift */,
@@ -238,7 +241,7 @@
 				E24DC9C9222EB72B006F1EED /* Sources */,
 				E24DC9CA222EB72B006F1EED /* Frameworks */,
 				E24DC9CB222EB72B006F1EED /* Resources */,
-				6D98A5622C6AFF35B037346C /* [CP] Embed Pods Frameworks */,
+				8977E0022DFA31CE180C610A /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -327,23 +330,6 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		6D98A5622C6AFF35B037346C /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-development-pods-instantsearch/Pods-development-pods-instantsearch-frameworks-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-development-pods-instantsearch/Pods-development-pods-instantsearch-frameworks-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-development-pods-instantsearch/Pods-development-pods-instantsearch-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
 		76E808EAB902B56B4B5AF160 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -364,6 +350,38 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		8977E0022DFA31CE180C610A /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-development-pods-instantsearch/Pods-development-pods-instantsearch-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/InstantSearch/InstantSearch.framework",
+				"${BUILT_PRODUCTS_DIR}/InstantSearchClient/InstantSearchClient.framework",
+				"${BUILT_PRODUCTS_DIR}/InstantSearchCore/InstantSearchCore.framework",
+				"${BUILT_PRODUCTS_DIR}/SDWebImage/SDWebImage.framework",
+				"${BUILT_PRODUCTS_DIR}/Signals/Signals.framework",
+				"${BUILT_PRODUCTS_DIR}/TagListView/TagListView.framework",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/InstantSearch.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/InstantSearchClient.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/InstantSearchCore.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SDWebImage.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Signals.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/TagListView.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-development-pods-instantsearch/Pods-development-pods-instantsearch-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		CA7AA3D35846B5898B247A45 /* [CP] Check Pods Manifest.lock */ = {
@@ -402,6 +420,7 @@
 				AFDF274822B13E1700BA08CB /* Movie.swift in Sources */,
 				E2EFA5D922A94ADF008C9CAA /* IndexSegmentDemoViewController.swift in Sources */,
 				E2B03F67229541F500DBE6D3 /* FacetSearchDemoViewController.swift in Sources */,
+				AF21EEC122B78F89004A0542 /* HighlightingDemoViewController.swift in Sources */,
 				E265DBEE2273341D002DC989 /* FacetListTableController.swift in Sources */,
 				AF21EE9E22B26187004A0542 /* StatsDemoViewController.swift in Sources */,
 				AF536C37227C7C79006DAE84 /* RefinementListDemoViewController.swift in Sources */,
