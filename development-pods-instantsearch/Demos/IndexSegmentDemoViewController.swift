@@ -159,7 +159,7 @@ extension IndexSegmentDemoViewController: UITableViewDataSource {
 
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath)
-    hitsViewModel.hit(atIndex: indexPath.row).flatMap(CellConfigurator.configure(cell))
+    hitsViewModel.hit(atIndex: indexPath.row).flatMap(MovieCellConfigurator.configure(cell))
     return cell
   }
 

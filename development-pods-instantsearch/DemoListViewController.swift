@@ -37,9 +37,10 @@ struct Demo: Codable {
     case currentFilters = "filter_current"
     case searchAsYouType = "search_as_you_type"
     case searchOnSubmit = "search_on_submit"
-    case stats = "stats"
     case clearFilters = "filter_clear"
     case filterNumericRange = "filter_numeric_range"
+    case stats
+    case highlighting
   }
   
 }
@@ -157,6 +158,9 @@ class DemoListViewController: UIViewController {
       
     case .stats:
       viewController = StatsDemoViewController()
+      
+    case .highlighting:
+      viewController = HighlightingDemoViewController()
     }
     
     return viewController

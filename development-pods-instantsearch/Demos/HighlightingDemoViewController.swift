@@ -1,8 +1,8 @@
 //
-//  SearchInputDemoViewController.swift
+//  HighlightingDemoViewController.swift
 //  development-pods-instantsearch
 //
-//  Created by Vladislav Fitc on 13/06/2019.
+//  Created by Vladislav Fitc on 17/06/2019.
 //  Copyright © 2019 Algolia. All rights reserved.
 //
 
@@ -11,30 +11,27 @@ import UIKit
 import InstantSearchCore
 import InstantSearch
 
-class SearchInputDemoViewController: UIViewController {
+class HighlightingDemoViewController: UIViewController {
   
-  typealias HitType = Movie
-  
-  let searchTriggeringMode: SearchTriggeringMode
+  typealias HitType = Hit<Movie>
   
   let stackView = UIStackView()
+
   let searcher: SingleIndexSearcher
-  
+
   let queryInputViewModel: QueryInputViewModel
   let searchBarController: SearchBarController
   
   let hitsViewModel: HitsViewModel<HitType>
   let hitsTableViewController: HitsTableViewController<HitType>
-
   
-  init(searchTriggeringMode: SearchTriggeringMode) {
-    self.searchTriggeringMode = searchTriggeringMode
+  override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
     self.searcher = SingleIndexSearcher(index: .demo(withName: "mobile_demo_movies"))
-    self.searchBarController = .init(searchBar: .init())
     self.queryInputViewModel = .init()
-    self.hitsViewModel = .init(infiniteScrolling: .off, showItemsOnEmptyQuery: true)
+    self.searchBarController = .init(searchBar: .init())
+    self.hitsViewModel = .init()
     self.hitsTableViewController = HitsTableViewController()
-    super.init(nibName: .none, bundle: .none)
+    super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
     setup()
   }
   
@@ -49,19 +46,19 @@ class SearchInputDemoViewController: UIViewController {
   
   private func setup() {
     
+    queryInputViewModel.connectSearcher(searcher, searchTriggeringMode: .searchAsYouType)
+    queryInputViewModel.connectController(searchBarController)
+        
     hitsViewModel.connectSearcher(searcher)
     hitsViewModel.connectController(hitsTableViewController)
     
-    queryInputViewModel.connectController(searchBarController)
-    queryInputViewModel.connectSearcher(searcher, searchTriggeringMode: searchTriggeringMode)
-    
     searcher.search()
-    
   }
+
   
 }
 
-private extension SearchInputDemoViewController {
+private extension HighlightingDemoViewController {
   
   func configureUI() {
     view.backgroundColor = .white
@@ -84,8 +81,6 @@ private extension SearchInputDemoViewController {
   
   func configureLayout() {
     
-    searchBarController.searchBar.heightAnchor.constraint(equalToConstant: 40).isActive = true
-    
     addChild(hitsTableViewController)
     hitsTableViewController.didMove(toParent: self)
     
@@ -101,10 +96,8 @@ private extension SearchInputDemoViewController {
       stackView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: 0),
       ])
     
+    searchBarController.searchBar.heightAnchor.constraint(equalToConstant: 40).isActive = true
+    
   }
   
 }
-
-
-
-
