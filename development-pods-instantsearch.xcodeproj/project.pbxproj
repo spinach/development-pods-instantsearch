@@ -30,6 +30,8 @@
 		E20E6D1C22A805AC00AC81BC /* FilterNumericComparisonDemoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E20E6D1B22A805AC00AC81BC /* FilterNumericComparisonDemoViewController.swift */; };
 		E2146BE222B251B900927350 /* TagListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2146BE122B251B900927350 /* TagListViewController.swift */; };
 		E2146BEE22B2A18E00927350 /* ClearFiltersDemoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2146BED22B2A18E00927350 /* ClearFiltersDemoViewController.swift */; };
+		E2146C1022B3DADE00927350 /* FilterNumericRangeDemoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2146C0F22B3DADE00927350 /* FilterNumericRangeDemoViewController.swift */; };
+		E2146C1222B3DE4400927350 /* NumericRangeController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2146C1122B3DE4400927350 /* NumericRangeController.swift */; };
 		E24233DF223AAD1D008F24FB /* PotentialInstantSearch.swift in Sources */ = {isa = PBXBuildFile; fileRef = E24233DE223AAD1D008F24FB /* PotentialInstantSearch.swift */; };
 		E24DC9D1222EB72B006F1EED /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E24DC9D0222EB72B006F1EED /* AppDelegate.swift */; };
 		E24DC9D3222EB72B006F1EED /* SingleIndexDemoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E24DC9D2222EB72B006F1EED /* SingleIndexDemoViewController.swift */; };
@@ -82,6 +84,8 @@
 		E20E6D1B22A805AC00AC81BC /* FilterNumericComparisonDemoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterNumericComparisonDemoViewController.swift; sourceTree = "<group>"; };
 		E2146BE122B251B900927350 /* TagListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagListViewController.swift; sourceTree = "<group>"; };
 		E2146BED22B2A18E00927350 /* ClearFiltersDemoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClearFiltersDemoViewController.swift; sourceTree = "<group>"; };
+		E2146C0F22B3DADE00927350 /* FilterNumericRangeDemoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterNumericRangeDemoViewController.swift; sourceTree = "<group>"; };
+		E2146C1122B3DE4400927350 /* NumericRangeController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NumericRangeController.swift; sourceTree = "<group>"; };
 		E24233DE223AAD1D008F24FB /* PotentialInstantSearch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PotentialInstantSearch.swift; sourceTree = "<group>"; };
 		E24DC9CD222EB72B006F1EED /* development-pods-instantsearch.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "development-pods-instantsearch.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		E24DC9D0222EB72B006F1EED /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -153,6 +157,7 @@
 				AFDF274922B13E3A00BA08CB /* Actor.swift */,
 				E2EBE74122B15B0A00B91B23 /* CurrentFiltersDemoViewController.swift */,
 				E2146BED22B2A18E00927350 /* ClearFiltersDemoViewController.swift */,
+				E2146C0F22B3DADE00927350 /* FilterNumericRangeDemoViewController.swift */,
 			);
 			path = Demos;
 			sourceTree = "<group>";
@@ -208,6 +213,7 @@
 				E24DC9DE222EB72C006F1EED /* Info.plist */,
 				AF939674229700D500757257 /* FilterStateViewController.swift */,
 				AF939693229848B700757257 /* SearchStateViewController.swift */,
+				E2146C1122B3DE4400927350 /* NumericRangeController.swift */,
 			);
 			path = "development-pods-instantsearch";
 			sourceTree = "<group>";
@@ -406,6 +412,7 @@
 				E2EFA5D922A94ADF008C9CAA /* IndexSegmentDemoViewController.swift in Sources */,
 				E2B03F67229541F500DBE6D3 /* FacetSearchDemoViewController.swift in Sources */,
 				E265DBEE2273341D002DC989 /* FacetListTableController.swift in Sources */,
+				E2146C1022B3DADE00927350 /* FilterNumericRangeDemoViewController.swift in Sources */,
 				AF21EE9E22B26187004A0542 /* StatsDemoViewController.swift in Sources */,
 				AF536C37227C7C79006DAE84 /* RefinementListDemoViewController.swift in Sources */,
 				AFDF275422B243B200BA08CB /* HitsTableViewController.swift in Sources */,
@@ -424,6 +431,7 @@
 				E24DC9D1222EB72B006F1EED /* AppDelegate.swift in Sources */,
 				AFDF274E22B1493700BA08CB /* UITableView+Convenience.swift in Sources */,
 				AFE6E3D522ACF585005BA44D /* MultiIndexDemoViewController.swift in Sources */,
+				E2146C1222B3DE4400927350 /* NumericRangeController.swift in Sources */,
 				AF536C35227C78AD006DAE84 /* ToggleDemoViewController.swift in Sources */,
 				AFDF275222B23EB100BA08CB /* SearchInputDemoViewController.swift in Sources */,
 				E2E09E3D223276C800F3056D /* Helpers.swift in Sources */,

@@ -13,6 +13,7 @@ PODS:
   - SDWebImage/Core (5.0.3)
   - Signals (6.0.1)
   - TagListView (1.4.0)
+  - WARangeSlider (1.1.1)
 
 DEPENDENCIES:
   - InstantSearch (from `/Users/guydaher/Developer/Algolia/iOS/instantsearch-ios`)
@@ -20,12 +21,14 @@ DEPENDENCIES:
   - InstantSearchCore (from `/Users/guydaher/Developer/Algolia/iOS/instantsearch-core-swift`)
   - SDWebImage
   - TagListView (~> 1.0)
+  - WARangeSlider (~> 1.0)
 
 SPEC REPOS:
   https://github.com/cocoapods/specs.git:
     - SDWebImage
     - Signals
     - TagListView
+    - WARangeSlider
 
 EXTERNAL SOURCES:
   InstantSearch:
@@ -42,7 +45,8 @@ SPEC CHECKSUMS:
   SDWebImage: d4f87d7d36c8a4d9f9459dc282e0caa057fdf935
   Signals: 2c92e8639f97fe45678460840fabe2056b3190b4
   TagListView: 987b0bdbb16cd9d9e7c0e2ec32aff37ecba8b173
+  WARangeSlider: 54b3e0853b8d16c444fd539005901aecee86837d
 
-PODFILE CHECKSUM: 4f8da39dcf2bc59d56825c1198e70fb37d178687
+PODFILE CHECKSUM: 4dc74460c788f2c8320e175dbbb76c28df707d20
 
 COCOAPODS: 1.7.0.rc.2

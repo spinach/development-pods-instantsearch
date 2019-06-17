@@ -39,6 +39,7 @@ struct Demo: Codable {
     case searchOnSubmit = "search_on_submit"
     case stats = "stats"
     case clearFilters = "filter_clear"
+    case filterNumericRange = "filter_numeric_range"
   }
   
 }
@@ -124,6 +125,9 @@ class DemoListViewController: UIViewController {
 
     case .filterNumericComparison:
       viewController = FilterNumericComparisonDemoViewController()
+
+    case .filterNumericRange:
+      viewController = FilterNumericRangeDemoViewController()
 
     case .sortBy:
       viewController = IndexSegmentDemoViewController()

@@ -167,6 +167,7 @@ if [[ "$CONFIGURATION" == "Debug" ]]; then
   install_framework "${BUILT_PRODUCTS_DIR}/SDWebImage/SDWebImage.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/Signals/Signals.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/TagListView/TagListView.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/WARangeSlider/WARangeSlider.framework"
 fi
 if [[ "$CONFIGURATION" == "Release" ]]; then
   install_framework "${BUILT_PRODUCTS_DIR}/InstantSearch/InstantSearch.framework"
@@ -175,6 +176,7 @@ if [[ "$CONFIGURATION" == "Release" ]]; then
   install_framework "${BUILT_PRODUCTS_DIR}/SDWebImage/SDWebImage.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/Signals/Signals.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/TagListView/TagListView.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/WARangeSlider/WARangeSlider.framework"
 fi
 if [ "${COCOAPODS_PARALLEL_CODE_SIGN}" == "true" ]; then
   wait
