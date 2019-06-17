@@ -43,19 +43,6 @@ open class TagListController: NSObject, ItemListController, TagListViewDelegate 
     }
   }
 
-  // MARK: - UITableViewDelegate
-
-  open func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-    onRemoveItem?(items[indexPath.row])
-  }
-
-//  public func tagPressed(_ title: String, tagView: TagView, sender: TagListView) {
-//    let tag = tagView.tag
-//    let item = items[tag]
-//
-//    onRemoveItem?(item)
-//  }
-
   public func tagRemoveButtonPressed(_ title: String, tagView: TagView, sender: TagListView) {
     let tag = tagView.tag
     let item = items[tag]

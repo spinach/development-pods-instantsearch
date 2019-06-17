@@ -19,15 +19,11 @@ class FilterNumericRangeDemoViewController: UIViewController {
   let searcher: SingleIndexSearcher
   let filterState: FilterState
 
-  let numberViewModel: NumberViewModel<Int>
-  let numberViewModel2: NumberViewModel<Int>
-  let numberViewModel3: NumberRangeViewModel<Double>
-  let numberViewModel4: NumberRangeViewModel<Double>
+  let sliderViewModel1: NumberRangeViewModel<Double>
+  let sliderViewModel2: NumberRangeViewModel<Double>
 
   let searchStateViewController: SearchStateViewController
 
-  let numericTextFieldController1: NumericTextFieldController
-  let numericTextFieldController2: NumericTextFieldController
   let numericRangeController1: NumericRangeController
   let numericRangeController2: NumericRangeController
 
@@ -42,18 +38,15 @@ class FilterNumericRangeDemoViewController: UIViewController {
   override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
     self.searcher = SingleIndexSearcher(index: .demo(withName:"mobile_demo_filter_numeric_comparison"))
     self.filterState = .init()
-    numberViewModel = .init()
-    numberViewModel2 = .init()
-    numberViewModel3 = .init()
-    numberViewModel4 = .init()
+
+    sliderViewModel1 = .init()
+    sliderViewModel2 = .init()
 
     let textField = UITextField()
     let textField2 = UITextField()
     textField.keyboardType = .numberPad
     textField2.keyboardType = .numberPad
 
-    numericTextFieldController1 = NumericTextFieldController(textField: textField)
-    numericTextFieldController2 = NumericTextFieldController(textField: textField2)
     numericRangeController1 = NumericRangeController(rangeSlider: .init())
     numericRangeController2 = NumericRangeController(rangeSlider: .init())
 
@@ -80,21 +73,13 @@ private extension FilterNumericRangeDemoViewController {
 
     searcher.connectFilterState(filterState)
 
-    numberViewModel.connectFilterState(filterState, attribute: priceAttribute, operator: .greaterThanOrEqual)
-    numberViewModel.connectView(view: numericTextFieldController1)
-    numberViewModel.connectSearcher(searcher, attribute: priceAttribute)
+    sliderViewModel1.connectFilterState(filterState, attribute: priceAttribute)
+    sliderViewModel1.connectController(numericRangeController1)
+    sliderViewModel1.connectSearcher(searcher, attribute: priceAttribute)
 
-    numberViewModel2.connectFilterState(filterState, attribute: priceAttribute, operator: .lessThanOrEqual)
-    numberViewModel2.connectView(view: numericTextFieldController2)
-    numberViewModel2.connectSearcher(searcher, attribute: priceAttribute)
-
-    numberViewModel3.connectFilterState(filterState, attribute: priceAttribute)
-    numberViewModel3.connectView(view: numericRangeController1)
-    numberViewModel3.connectSearcher(searcher, attribute: priceAttribute)
-
-    numberViewModel4.connectFilterState(filterState, attribute: priceAttribute)
-    numberViewModel4.connectView(view: numericRangeController2)
-    numberViewModel4.connectSearcher(searcher, attribute: priceAttribute)
+    sliderViewModel2.connectFilterState(filterState, attribute: priceAttribute)
+    sliderViewModel2.connectController(numericRangeController2)
+    sliderViewModel2.connectSearcher(searcher, attribute: priceAttribute)
 
     searchStateViewController.connectSearcher(searcher)
     searchStateViewController.connectFilterState(filterState)
@@ -113,22 +98,6 @@ private extension FilterNumericRangeDemoViewController {
     mainStackView.addArrangedSubview(searchStateViewController.view)
     searchStateViewController.view.widthAnchor.constraint(equalTo: mainStackView.widthAnchor, multiplier: 1).isActive = true
 
-    numericTextFieldController1.textField.layer.borderWidth = 1
-    numericTextFieldController1.textField.layer.borderColor = UIColor.gray.cgColor
-    numericTextFieldController1.textField.heightAnchor.constraint(equalToConstant: 40).isActive = true
-
-    mainStackView.addArrangedSubview(numericTextFieldController1.textField)
-
-    numericTextFieldController1.textField.widthAnchor.constraint(equalTo: mainStackView.widthAnchor, multiplier: 0.4).isActive = true
-
-    numericTextFieldController2.textField.layer.borderWidth = 1
-    numericTextFieldController2.textField.layer.borderColor = UIColor.gray.cgColor
-    numericTextFieldController2.textField.heightAnchor.constraint(equalToConstant: 40).isActive = true
-
-    mainStackView.addArrangedSubview(numericTextFieldController2.textField)
-
-    numericTextFieldController2.textField.widthAnchor.constraint(equalTo: mainStackView.widthAnchor, multiplier: 0.4).isActive = true
-
     configureHorizontalStackView(sliderStackView1)
     configureHorizontalStackView(sliderStackView2)
 
@@ -142,7 +111,12 @@ private extension FilterNumericRangeDemoViewController {
     sliderStackView1.addArrangedSubview(sliderLower1)
     sliderStackView1.addArrangedSubview(numericRangeController1.rangerSlider)
     sliderStackView1.addArrangedSubview(sliderUpper1)
-    numericRangeController1.rangerSlider.addTarget(self, action: #selector(onSlider1ValueChanged), for: .valueChanged)
+    sliderViewModel1.onItemChanged.subscribePast(with: self) { (range) in
+      guard let range = range else { return }
+      self.sliderLower1.text = "\(range.lowerBound.rounded(toPlaces: 2))"
+      self.sliderUpper1.text = "\(range.upperBound.rounded(toPlaces: 2))"
+    }
+
     sliderStackView1.heightAnchor.constraint(equalToConstant: 50).isActive = true
     mainStackView.addArrangedSubview(sliderStackView1)
 
@@ -151,7 +125,11 @@ private extension FilterNumericRangeDemoViewController {
     sliderStackView2.addArrangedSubview(sliderLower2)
     sliderStackView2.addArrangedSubview(numericRangeController2.rangerSlider)
     sliderStackView2.addArrangedSubview(sliderUpper2)
-    numericRangeController2.rangerSlider.addTarget(self, action: #selector(onSlider2ValueChanged), for: .valueChanged)
+    sliderViewModel2.onItemChanged.subscribePast(with: self) { (range) in
+      guard let range = range else { return }
+      self.sliderLower2.text = "\(range.lowerBound.rounded(toPlaces: 2))"
+      self.sliderUpper2.text = "\(range.upperBound.rounded(toPlaces: 2))"
+    }
     mainStackView.addArrangedSubview(sliderStackView2)
 
     let spacerView = UIView()
@@ -169,8 +147,7 @@ private extension FilterNumericRangeDemoViewController {
   }
 
   @objc func onSlider1ValueChanged(sender: RangeSlider) {
-    sliderLower1.text = "\(sender.lowerValue.rounded(toPlaces: 2))"
-    sliderUpper1.text = "\(sender.upperValue.rounded(toPlaces: 2))"
+
   }
 
   @objc func onSlider2ValueChanged(sender: RangeSlider) {

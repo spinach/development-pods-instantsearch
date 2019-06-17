@@ -74,15 +74,15 @@ private extension FilterNumericComparisonDemoViewController {
     searcher.connectFilterState(filterState)
     
     numberViewModel.connectFilterState(filterState, attribute: yearAttribute, operator: .greaterThanOrEqual)
-    numberViewModel.connectView(view: numericTextFieldController1)
+    numberViewModel.connectController(numericTextFieldController1)
     numberViewModel.connectSearcher(searcher, attribute: yearAttribute)
 
     numberViewModel2.connectFilterState(filterState, attribute: yearAttribute, operator: .greaterThanOrEqual)
-    numberViewModel2.connectView(view: numericTextFieldController2)
+    numberViewModel2.connectController(numericTextFieldController2)
     numberViewModel2.connectSearcher(searcher, attribute: yearAttribute)
 
     numberViewModel3.connectFilterState(filterState, attribute: priceAttribute, operator: .greaterThanOrEqual)
-    numberViewModel3.connectView(view: numericStepperController)
+    numberViewModel3.connectController(numericStepperController)
     numberViewModel3.connectSearcher(searcher, attribute: priceAttribute)
 
     searchStateViewController.connectSearcher(searcher)
