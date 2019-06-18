@@ -93,15 +93,8 @@ class DemoListViewController: UIViewController {
     view.backgroundColor = .white
     tableView.translatesAutoresizingMaskIntoConstraints = false
     view.addSubview(tableView)
-    NSLayoutConstraint.activate([
-      tableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-      tableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
-      tableView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
-      tableView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
-    ])
-    
+    tableView.pin(to: view.safeAreaLayoutGuide)
     searcher.search()
-    
   }
   
   func viewController(for index: Demo.ID) -> UIViewController {

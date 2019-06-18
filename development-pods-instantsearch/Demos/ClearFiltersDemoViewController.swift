@@ -86,10 +86,11 @@ class ClearFiltersDemoViewController: UIViewController {
   func configureButton(_ button: UIButton, text: String) {
     button.translatesAutoresizingMaskIntoConstraints = false
     button.setTitle(text, for: .normal)
-    button.titleEdgeInsets = .init(top: 0, left: 5, bottom: 0, right: -5)
-    button.setTitleColor(.black, for: .normal)
-    button.setImage(UIImage(named: "square"), for: .normal)
-    button.setImage(UIImage(named: "check-square"), for: .selected)
+    button.contentEdgeInsets = .init(top: 5, left: 5, bottom: 5, right: 5)
+    button.setTitleColor(.darkGray, for: .normal)
+    button.layer.borderWidth = 1
+    button.layer.borderColor = UIColor.darkGray.cgColor
+    button.layer.cornerRadius = 10
   }
 
   func configureMainStackView() {
@@ -104,12 +105,7 @@ class ClearFiltersDemoViewController: UIViewController {
 
     view.addSubview(mainStackView)
 
-    NSLayoutConstraint.activate([
-      mainStackView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-      mainStackView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
-      mainStackView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
-      mainStackView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
-      ])
+    mainStackView.pin(to: view.safeAreaLayoutGuide)
 
     addChild(searchStateViewController)
 
