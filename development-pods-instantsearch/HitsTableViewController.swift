@@ -14,13 +14,12 @@ class HitsTableViewController<HitType: Codable>: UITableViewController, InstantS
   
   typealias DataSource = HitsViewModel<HitType>
   
-  private let cellIdentifier = "CellID"
+  let cellIdentifier = "CellID"
   
   var hitsSource: HitsViewModel<HitType>?
   
   init() {
     super.init(nibName: .none, bundle: .none)
-    tableView.register(UITableViewCell.self, forCellReuseIdentifier: cellIdentifier)
   }
   
   required init?(coder aDecoder: NSCoder) {
@@ -46,7 +45,7 @@ class HitsTableViewController<HitType: Codable>: UITableViewController, InstantS
     let hit = hitsSource?.hit(atIndex: indexPath.row)
     switch hit {
     case let movie as Movie:
-      MovieCellConfigurator.configure(cell)(movie)
+      (cell as? UIView & MovieCell).flatMap(MovieCellViewState().configure)?(movie)
     case let movieHit as Hit<Movie>:
       MovieHitCellConfigurator.configure(cell)(movieHit)
     default:

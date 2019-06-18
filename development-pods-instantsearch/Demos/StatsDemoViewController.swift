@@ -107,12 +107,7 @@ private extension StatsDemoViewController {
     statsMSContainer.layoutMargins = UIEdgeInsets(top: 4, left: 20, bottom: 4, right: 20)
     labelStatsControllerMS.label.translatesAutoresizingMaskIntoConstraints = false
     statsMSContainer.addSubview(labelStatsControllerMS.label)
-    NSLayoutConstraint.activate([
-      labelStatsControllerMS.label.topAnchor.constraint(equalTo: statsMSContainer.layoutMarginsGuide.topAnchor),
-      labelStatsControllerMS.label.bottomAnchor.constraint(equalTo: statsMSContainer.layoutMarginsGuide.bottomAnchor),
-      labelStatsControllerMS.label.leadingAnchor.constraint(equalTo: statsMSContainer.layoutMarginsGuide.leadingAnchor),
-      labelStatsControllerMS.label.trailingAnchor.constraint(equalTo: statsMSContainer.layoutMarginsGuide.trailingAnchor),
-    ])
+    labelStatsControllerMS.label.pin(to: statsMSContainer.layoutMarginsGuide)
     stackView.addArrangedSubview(statsMSContainer)
     
     let attributedStatsContainer = UIView()
@@ -121,24 +116,14 @@ private extension StatsDemoViewController {
     attributedStatsContainer.layoutMargins = UIEdgeInsets(top: 4, left: 20, bottom: 4, right: 20)
     attributedLabelStatsController.label.translatesAutoresizingMaskIntoConstraints = false
     attributedStatsContainer.addSubview(attributedLabelStatsController.label)
-    NSLayoutConstraint.activate([
-      attributedLabelStatsController.label.topAnchor.constraint(equalTo: attributedStatsContainer.layoutMarginsGuide.topAnchor),
-      attributedLabelStatsController.label.bottomAnchor.constraint(equalTo: attributedStatsContainer.layoutMarginsGuide.bottomAnchor),
-      attributedLabelStatsController.label.leadingAnchor.constraint(equalTo: attributedStatsContainer.layoutMarginsGuide.leadingAnchor),
-      attributedLabelStatsController.label.trailingAnchor.constraint(equalTo: attributedStatsContainer.layoutMarginsGuide.trailingAnchor),
-      ])
-
+    attributedLabelStatsController.label.pin(to: attributedStatsContainer.layoutMarginsGuide)
+    
     stackView.addArrangedSubview(attributedStatsContainer)
     stackView.addArrangedSubview(UIView())
     
     view.addSubview(stackView)
     
-    NSLayoutConstraint.activate([
-      stackView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 0),
-      stackView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 0),
-      stackView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: 0),
-      stackView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: 0),
-    ])
+    stackView.pin(to: view.safeAreaLayoutGuide)
     
   }
   

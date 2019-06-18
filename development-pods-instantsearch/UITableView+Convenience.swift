@@ -12,12 +12,22 @@ import UIKit
 extension UITableView {
   
   func scrollToFirstNonEmptySection() {
-    let firstNonEmptySection = (0...numberOfSections - 1).filter { numberOfRows(inSection: $0) > 0 }.first
-    guard let existingFirstNonEmptySection = firstNonEmptySection else {
-      return
-    }
-    let indexPath = IndexPath(row: 0, section: existingFirstNonEmptySection)
-    scrollToRow(at: indexPath, at: .top, animated: false)
+    (0..<numberOfSections)
+      .first(where: { numberOfRows(inSection: $0) > 0 })
+      .flatMap { IndexPath(row: 0, section: $0) }
+      .flatMap { scrollToRow(at: $0, at: .top, animated: false) }
+  }
+  
+}
+
+extension UICollectionView {
+  
+  func scrollToFirstNonEmptySection() {
+    (0..<numberOfSections)
+      .first(where: { numberOfItems(inSection: $0) > 0 })
+      .flatMap { IndexPath(item: 0, section: $0) }
+      .flatMap { scrollToItem(at: $0, at: .top, animated: false) }
+    
   }
   
 }

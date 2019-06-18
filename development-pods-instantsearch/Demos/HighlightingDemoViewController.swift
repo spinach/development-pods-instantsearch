@@ -46,6 +46,8 @@ class HighlightingDemoViewController: UIViewController {
   
   private func setup() {
     
+    hitsTableViewController.tableView.register(MovieTableViewCell.self, forCellReuseIdentifier: hitsTableViewController.cellIdentifier)
+    
     queryInputViewModel.connectSearcher(searcher, searchTriggeringMode: .searchAsYouType)
     queryInputViewModel.connectController(searchBarController)
         
@@ -89,12 +91,7 @@ private extension HighlightingDemoViewController {
     
     view.addSubview(stackView)
     
-    NSLayoutConstraint.activate([
-      stackView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 0),
-      stackView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 0),
-      stackView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: 0),
-      stackView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: 0),
-      ])
+    stackView.pin(to: view.safeAreaLayoutGuide)
     
     searchBarController.searchBar.heightAnchor.constraint(equalToConstant: 40).isActive = true
     

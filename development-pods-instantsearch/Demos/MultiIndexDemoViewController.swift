@@ -14,11 +14,13 @@ import UIKit
 class MultiIndexDemoViewController: UIViewController, InstantSearchCore.MultiIndexHitsController {
   
   func reload() {
-    tableView.reloadData()
+    moviesCollectionView.reloadData()
+    actorsCollectionView.reloadData()
   }
   
   func scrollToTop() {
-    tableView.scrollToFirstNonEmptySection()
+    moviesCollectionView.scrollToFirstNonEmptySection()
+    actorsCollectionView.scrollToFirstNonEmptySection()
   }
 
   weak var hitsSource: MultiIndexHitsSource?
@@ -27,21 +29,28 @@ class MultiIndexDemoViewController: UIViewController, InstantSearchCore.MultiInd
   let searchBarController: SearchBarController
   let queryInputViewModel: QueryInputViewModel
   let multiIndexHitsViewModel: MultiIndexHitsViewModel
-  let tableView: UITableView
+  let moviesCollectionView: UICollectionView
+  let actorsCollectionView: UICollectionView
   let cellIdentifier = "CellID"
 
   init() {
-    tableView = .init(frame: .zero, style: .plain)
+    let flowLayout = UICollectionViewFlowLayout()
+    flowLayout.scrollDirection = .horizontal
+    moviesCollectionView = .init(frame: .zero, collectionViewLayout: flowLayout)
+    
+    let actorsFlowLayout = UICollectionViewFlowLayout()
+    actorsFlowLayout.scrollDirection = .horizontal
+    actorsCollectionView = .init(frame: .zero, collectionViewLayout: actorsFlowLayout)
     
     let indices = [
-      Section.actors.index,
       Section.movies.index,
+      Section.actors.index,
     ]
     multiIndexSearcher = .init(client: .demo, indices: indices)
     
     let hitsViewModels: [AnyHitsViewModel] = [
-      HitsViewModel<Actor>(infiniteScrolling: .off, showItemsOnEmptyQuery: true),
-      HitsViewModel<Movie>(infiniteScrolling: .off, showItemsOnEmptyQuery: true)
+      HitsViewModel<Movie>(infiniteScrolling: .on(withOffset: 10), showItemsOnEmptyQuery: true),
+      HitsViewModel<Actor>(infiniteScrolling: .on(withOffset: 10), showItemsOnEmptyQuery: true),
     ]
     
     multiIndexHitsViewModel = .init(hitsViewModels: hitsViewModels)
@@ -60,13 +69,25 @@ class MultiIndexDemoViewController: UIViewController, InstantSearchCore.MultiInd
   
   override func viewDidLoad() {
     super.viewDidLoad()
-    configureTableView()
     setupUI()
   }
   
 }
 
 private extension MultiIndexDemoViewController {
+  
+  func section(for collectionView: UICollectionView) -> Section? {
+    switch collectionView {
+    case moviesCollectionView:
+      return .movies
+      
+    case actorsCollectionView:
+      return .actors
+
+    default:
+      return .none
+    }
+  }
   
   func setup() {
     queryInputViewModel.connectSearcher(multiIndexSearcher, searchTriggeringMode: .searchAsYouType)
@@ -78,37 +99,64 @@ private extension MultiIndexDemoViewController {
     multiIndexSearcher.search()
   }
   
-  func configureTableView() {
-    tableView.translatesAutoresizingMaskIntoConstraints = false
-    tableView.register(UITableViewCell.self, forCellReuseIdentifier: cellIdentifier)
-    tableView.dataSource = self
-    tableView.delegate = self
+  func configure(_ collectionView: UICollectionView) {
+    collectionView.translatesAutoresizingMaskIntoConstraints = false
+    collectionView.dataSource = self
+    collectionView.delegate = self
+    collectionView.backgroundColor = .clear
+  }
+  
+  func configureCollectionView() {
+    moviesCollectionView.register(MovieCollectionViewCell.self, forCellWithReuseIdentifier: Section.movies.cellIdentifier)
+    actorsCollectionView.register(ActorCollectionViewCell.self, forCellWithReuseIdentifier: Section.actors.cellIdentifier)
+    configure(moviesCollectionView)
+    configure(actorsCollectionView)
   }
   
   func setupUI() {
     
-    view.backgroundColor = .white
+    configureCollectionView()
 
+    view.backgroundColor = UIColor(hexString: "#f7f8fa")
     
     let stackView = UIStackView()
     stackView.translatesAutoresizingMaskIntoConstraints = false
     stackView.axis = .vertical
-    stackView.distribution = .fill
+    stackView.spacing = .px16 / 2
     
     view.addSubview(stackView)
     
-    NSLayoutConstraint.activate([
-      stackView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-      stackView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
-      stackView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
-      stackView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
-    ])
+    stackView.pin(to: view.safeAreaLayoutGuide)
     
     searchBarController.searchBar.searchBarStyle = .minimal
     searchBarController.searchBar.heightAnchor.constraint(equalToConstant: 44).isActive = true
     
+    moviesCollectionView.translatesAutoresizingMaskIntoConstraints = false
+    moviesCollectionView.heightAnchor.constraint(equalToConstant: 200).isActive = true
+    
+    actorsCollectionView.translatesAutoresizingMaskIntoConstraints = false
+    actorsCollectionView.heightAnchor.constraint(equalToConstant: 50).isActive = true
+    
+    let moviesTitleLabel = UILabel(frame: .zero)
+    moviesTitleLabel.text = "   Movies"
+    moviesTitleLabel.font = .systemFont(ofSize: 15, weight: .black)
+    moviesTitleLabel.heightAnchor.constraint(equalToConstant: 20).isActive = true
+    
+    let actorsTitleLabel = UILabel(frame: .zero)
+    actorsTitleLabel.text = "   Actors"
+    actorsTitleLabel.font = .systemFont(ofSize: 15, weight: .black)
+    actorsTitleLabel.heightAnchor.constraint(equalToConstant: 20).isActive = true
+    
     stackView.addArrangedSubview(searchBarController.searchBar)
-    stackView.addArrangedSubview(tableView)
+    stackView.addArrangedSubview(moviesTitleLabel)
+    stackView.addArrangedSubview(moviesCollectionView)
+    let spacer = UIView()
+    spacer.translatesAutoresizingMaskIntoConstraints = false
+    spacer.heightAnchor.constraint(equalToConstant: 20).isActive = true
+    stackView.addSubview(spacer)
+    stackView.addArrangedSubview(actorsTitleLabel)
+    stackView.addArrangedSubview(actorsCollectionView)
+    stackView.addArrangedSubview(UIView())
     
   }
 
@@ -118,8 +166,8 @@ extension MultiIndexDemoViewController {
   
   enum Section: Int {
     
-    case actors
     case movies
+    case actors
     
     init?(section: Int) {
       self.init(rawValue: section)
@@ -148,46 +196,73 @@ extension MultiIndexDemoViewController {
       }
     }
     
+    var cellIdentifier: String {
+      switch self {
+      case .actors:
+        return "actorCell"
+      case .movies:
+        return "movieCell"
+      }
+    }
+    
   }
   
 }
 
-extension MultiIndexDemoViewController: UITableViewDataSource {
+extension MultiIndexDemoViewController: UICollectionViewDataSource {
   
-  func numberOfSections(in tableView: UITableView) -> Int {
-    return hitsSource?.numberOfSections() ?? 0
+  func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    guard let section = self.section(for: collectionView) else { return 0 }
+    return hitsSource?.numberOfHits(inSection: section.rawValue) ?? 0
   }
   
-  func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    return hitsSource?.numberOfHits(inSection: section) ?? 0
-  }
-  
-  func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-    return tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath)
-  }
-  
-  func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-    return Section(section: section)?.title
-  }
-  
-}
-
-extension MultiIndexDemoViewController: UITableViewDelegate {
-  
-  func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-    guard let _ = Section(indexPath: indexPath) else { return 0 }
-    return 80
-  }
-  
-  func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-    guard let section = Section(indexPath: indexPath) else { return }
+  func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+    
+    guard let section = self.section(for: collectionView) else { return UICollectionViewCell() }
+    
+    let cell = collectionView.dequeueReusableCell(withReuseIdentifier: section.cellIdentifier, for: indexPath)
+    
     switch section {
-    case .actors:
-      try? hitsSource?.hit(atIndex: indexPath.row, inSection: indexPath.section).flatMap(ActorCellConfigurator.configure(cell))
-
     case .movies:
-      try? hitsSource?.hit(atIndex: indexPath.row, inSection: indexPath.section).flatMap(MovieCellConfigurator.configure(cell))
+      if let movie: Movie = try? hitsSource?.hit(atIndex: indexPath.row, inSection: section.rawValue) {
+        (cell as? MovieCollectionViewCell).flatMap(MovieCellViewState().configure)?(movie)
+      }
+      
+    case .actors:
+      if let actor: Actor = try? hitsSource?.hit(atIndex: indexPath.row, inSection: section.rawValue) {
+        (cell as? ActorCollectionViewCell).flatMap(ActorCollectionViewCellViewState().configure)?(actor)
+      }
+    }
+
+    return cell
+  }
+  
+}
+
+extension MultiIndexDemoViewController: UICollectionViewDelegateFlowLayout {
+  
+  func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
+    return UIEdgeInsets(top: 5, left: 5, bottom: 5, right: 5)
+  }
+  
+  func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
+    return 10
+  }
+
+  func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
+    return 10
+  }
+  
+  func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+    guard let section = section(for: collectionView) else { return .zero }
+    switch section {
+    case .movies:
+      return CGSize(width: collectionView.bounds.width / 2 - 10, height: collectionView.bounds.height - 10)
+
+    case .actors:
+      return CGSize(width: collectionView.bounds.width / 3, height: 40)
     }
   }
-  
+
 }
+
