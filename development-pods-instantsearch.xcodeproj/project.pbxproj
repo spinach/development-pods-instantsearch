@@ -16,6 +16,7 @@
 		AF21EEC722B95716004A0542 /* MovieCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF21EEC622B95716004A0542 /* MovieCell.swift */; };
 		AF21EEC922B9572C004A0542 /* MovieTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF21EEC822B9572C004A0542 /* MovieTableViewCell.swift */; };
 		AF21EECB22B9574E004A0542 /* UIView+Layout.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF21EECA22B9574E004A0542 /* UIView+Layout.swift */; };
+		AF21EECD22BA3B83004A0542 /* RefinementPersistentListDemoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF21EECC22BA3B83004A0542 /* RefinementPersistentListDemoViewController.swift */; };
 		AF2B261922836430006DE798 /* SegmentedController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF2B261822836430006DE798 /* SegmentedController.swift */; };
 		AF536C35227C78AD006DAE84 /* ToggleDemoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF536C34227C78AD006DAE84 /* ToggleDemoViewController.swift */; };
 		AF536C37227C7C79006DAE84 /* RefinementListDemoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF536C36227C7C79006DAE84 /* RefinementListDemoViewController.swift */; };
@@ -46,7 +47,6 @@
 		E24DC9DD222EB72C006F1EED /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E24DC9DB222EB72C006F1EED /* LaunchScreen.storyboard */; };
 		E24DC9E8222EB72C006F1EED /* development_pods_instantsearchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E24DC9E7222EB72C006F1EED /* development_pods_instantsearchTests.swift */; };
 		E265DBEE2273341D002DC989 /* FacetListTableController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E265DBED2273341D002DC989 /* FacetListTableController.swift */; };
-		E28C38F22236A78A0070BE3D /* RefinementList.swift in Sources */ = {isa = PBXBuildFile; fileRef = E28C38F12236A78A0070BE3D /* RefinementList.swift */; };
 		E2B03F67229541F500DBE6D3 /* FacetSearchDemoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2B03F66229541F500DBE6D3 /* FacetSearchDemoViewController.swift */; };
 		E2E09E3D223276C800F3056D /* Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2E09E3C223276C800F3056D /* Helpers.swift */; };
 		E2EBE74222B15B0A00B91B23 /* CurrentFiltersDemoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2EBE74122B15B0A00B91B23 /* CurrentFiltersDemoViewController.swift */; };
@@ -74,6 +74,7 @@
 		AF21EEC622B95716004A0542 /* MovieCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieCell.swift; sourceTree = "<group>"; };
 		AF21EEC822B9572C004A0542 /* MovieTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieTableViewCell.swift; sourceTree = "<group>"; };
 		AF21EECA22B9574E004A0542 /* UIView+Layout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Layout.swift"; sourceTree = "<group>"; };
+		AF21EECC22BA3B83004A0542 /* RefinementPersistentListDemoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RefinementPersistentListDemoViewController.swift; sourceTree = "<group>"; };
 		AF2B261822836430006DE798 /* SegmentedController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SegmentedController.swift; sourceTree = "<group>"; };
 		AF536C34227C78AD006DAE84 /* ToggleDemoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToggleDemoViewController.swift; sourceTree = "<group>"; };
 		AF536C36227C7C79006DAE84 /* RefinementListDemoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RefinementListDemoViewController.swift; sourceTree = "<group>"; };
@@ -110,7 +111,6 @@
 		E24DC9E7222EB72C006F1EED /* development_pods_instantsearchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = development_pods_instantsearchTests.swift; sourceTree = "<group>"; };
 		E24DC9E9222EB72C006F1EED /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		E265DBED2273341D002DC989 /* FacetListTableController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FacetListTableController.swift; sourceTree = "<group>"; };
-		E28C38F12236A78A0070BE3D /* RefinementList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RefinementList.swift; sourceTree = "<group>"; };
 		E29E45712243FAAE005B358D /* SingleIndex.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = SingleIndex.playground; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		E2B03F66229541F500DBE6D3 /* FacetSearchDemoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FacetSearchDemoViewController.swift; sourceTree = "<group>"; };
 		E2E09E3C223276C800F3056D /* Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Helpers.swift; sourceTree = "<group>"; };
@@ -156,6 +156,7 @@
 				E24DC9D2222EB72B006F1EED /* SingleIndexDemoViewController.swift */,
 				AFE6E3D422ACF585005BA44D /* MultiIndexDemoViewController.swift */,
 				AF536C36227C7C79006DAE84 /* RefinementListDemoViewController.swift */,
+				AF21EECC22BA3B83004A0542 /* RefinementPersistentListDemoViewController.swift */,
 				AF939697229AC58900757257 /* FilterListDemoViewController.swift */,
 				AFE343862289C4B300829AC1 /* SegmentedDemoViewController.swift */,
 				E2B03F66229541F500DBE6D3 /* FacetSearchDemoViewController.swift */,
@@ -218,7 +219,6 @@
 				AF536C382280671B006DAE84 /* DemoHelper.swift */,
 				AF939695229A917B00757257 /* DemoListViewController.swift */,
 				AFDF275322B243B200BA08CB /* HitsTableViewController.swift */,
-				E28C38F12236A78A0070BE3D /* RefinementList.swift */,
 				AFDF274B22B13E9300BA08CB /* CellConfigurator.swift */,
 				AFDF274D22B1493700BA08CB /* UITableView+Convenience.swift */,
 				E265DBED2273341D002DC989 /* FacetListTableController.swift */,
@@ -454,9 +454,9 @@
 				E2146C1022B3DADE00927350 /* FilterNumericRangeDemoViewController.swift in Sources */,
 				AF21EE9E22B26187004A0542 /* StatsDemoViewController.swift in Sources */,
 				AF536C37227C7C79006DAE84 /* RefinementListDemoViewController.swift in Sources */,
+				AF21EECD22BA3B83004A0542 /* RefinementPersistentListDemoViewController.swift in Sources */,
 				AFDF275422B243B200BA08CB /* HitsTableViewController.swift in Sources */,
 				AFDF274A22B13E3A00BA08CB /* Actor.swift in Sources */,
-				E28C38F22236A78A0070BE3D /* RefinementList.swift in Sources */,
 				AFDF274C22B13E9300BA08CB /* CellConfigurator.swift in Sources */,
 				E2146BEE22B2A18E00927350 /* ClearFiltersDemoViewController.swift in Sources */,
 				AF21EEC322B94F40004A0542 /* MovieCollectionViewCell.swift in Sources */,

@@ -74,7 +74,7 @@ private extension FacetSearchDemoViewController {
     
     categoryListViewModel.connectFacetSearcher(facetSearcher)
     categoryListViewModel.connectFilterState(filterState, with: Attribute("brand"), operator: .or)
-    categoryListViewModel.connect(to: categoryController)
+    categoryListViewModel.connectController(categoryController)
     
   }
 

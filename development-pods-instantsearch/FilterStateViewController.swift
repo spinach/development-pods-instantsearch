@@ -32,7 +32,6 @@ class FilterStateViewController: UIViewController {
   }
   
   func refreshStateLabel(with filterState: FiltersReadable) {
-    debugPrint(filterState)
     stateLabel.attributedText = (filterState as! FilterGroupsConvertible).toFilterGroups().sqlFormWithSyntaxHighlighting(colorMap: colorMap)
     view.layoutIfNeeded()
   }

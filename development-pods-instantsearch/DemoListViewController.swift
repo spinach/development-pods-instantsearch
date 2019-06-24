@@ -27,6 +27,7 @@ struct Demo: Codable {
     case toggle = "filter_toggle"
     case toggleDefault = "filter_toggle_default"
     case facetList = "facet_list"
+    case facetListPersistentSelection = "facet_list_persistent"
     case segmented = "filter_segment"
 //    case allFilterList = "filter_list_all"
     case facetFilterList = "filter_list_facet"
@@ -103,8 +104,10 @@ class DemoListViewController: UIViewController {
     switch index {
     case .singleIndex:
       viewController = SingleIndexDemoViewController()
+      
     case .sffv:
       viewController = FacetSearchDemoViewController()
+      
     case .toggle:
       viewController = ToggleDemoViewController()
       
@@ -113,6 +116,9 @@ class DemoListViewController: UIViewController {
       
     case .facetList:
       viewController = RefinementListDemoViewController()
+      
+    case .facetListPersistentSelection:
+      viewController = RefinementPersistentListDemoViewController()
       
     case .segmented:
       viewController = SegmentedDemoViewController()

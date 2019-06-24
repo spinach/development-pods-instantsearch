@@ -10,37 +10,51 @@ import Foundation
 import UIKit
 import InstantSearchCore
 
+extension UIColor {
+  static let swBackground = UIColor(hexString: "#f7f8fa")
+}
+
 extension CGFloat {
   static let px16: CGFloat = 16
 }
-
-//TODO: FilterFormatter / Presenter
 
 class RefinementListDemoViewController: UIViewController {
   
   let searcher: SingleIndexSearcher
   let filterState: FilterState
-  var colorAViewModel: SelectableFacetsViewModel!
-  var colorBViewModel: SelectableFacetsViewModel!
-  var categoryViewModel: SelectableFacetsViewModel!
-  var promotionViewModel: SelectableFacetsViewModel!
+  let colorViewModel: SelectableFacetsViewModel
+  let categoryViewModel: SelectableFacetsViewModel
+  let promotionViewModel: SelectableFacetsViewModel
 
   let searchStateViewController: SearchStateViewController
-
+  let colorController: FacetListTableController
+  let categoryController: FacetListTableController
+  let promotionController: FacetListTableController
+  
   let colorAttribute = Attribute("color")
   let promotionAttribute = Attribute("promotions")
   let categoryAttribute = Attribute("category")
   
-  let topLeftTableView = UITableView()
-  let topRightTableView = UITableView()
-  let bottomLeftTableView = UITableView()
-  let bottomRightTableView = UITableView()
-  
   override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
-    searcher = SingleIndexSearcher(index: .demo(withName:"mobile_demo_facet_list"))
+    
+    searcher = .init(index: .demo(withName:"mobile_demo_facet_list"))
     searchStateViewController = .init()
     filterState = .init()
+    colorViewModel = .init(selectionMode: .single)
+    promotionViewModel = .init(selectionMode: .multiple)
+    categoryViewModel = .init(selectionMode: .multiple)
+    
+    let colorTitleDescriptor = TitleDescriptor(text: "And, IsRefined-AlphaAsc, I=3", color: .init(hexString: "#ffcc0000"))
+    colorController = FacetListTableController(tableView: .init(), titleDescriptor: colorTitleDescriptor)
+    
+    let promotionTitleDescriptor = TitleDescriptor(text: "And, CountDesc, I=5", color: .init(hexString: "#ff669900"))
+    promotionController = FacetListTableController(tableView: .init(), titleDescriptor: promotionTitleDescriptor)
+    
+    let categoryTitleDescriptor = TitleDescriptor(text: "Or, CountDesc-AlphaAsc, I=5", color: .init(hexString: "#ff0099cc"))
+    categoryController = .init(tableView: .init(), titleDescriptor: categoryTitleDescriptor)
+    
     super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
+    setup()
   }
   
   required init?(coder aDecoder: NSCoder) {
@@ -49,39 +63,7 @@ class RefinementListDemoViewController: UIViewController {
   
   override func viewDidLoad() {
     super.viewDidLoad()
-    
     setupUI()
-
-    // Top Left - Color A
-    colorAViewModel = FacetListViewModel(selectionMode: .single)
-    let colorAPresenter = FacetListPresenter(sortBy: [.isRefined, .alphabetical(order: .ascending)], limit: 5)
-    let colorATitleDescriptor = TitleDescriptor(text: "And, IsRefined-AlphaAsc, I=5", color: .init(hexString: "#ffcc0000"))
-    let colorAController = FacetListTableController(tableView: topLeftTableView, titleDescriptor: colorATitleDescriptor)
-    colorAViewModel.connect(to: colorAController, with: colorAPresenter)
-    
-    // Top right - Color B
-    colorBViewModel = FacetListViewModel(selectionMode: .single)
-    let colorBPresenter = FacetListPresenter(sortBy: [.alphabetical(order: .descending)], limit: 3)
-    let colorBTitleDescriptor = TitleDescriptor(text: "And, AlphaDesc, I=3", color: .init(hexString: "#ffcc0000"))
-    let colorBController = FacetListTableController(tableView: topRightTableView, titleDescriptor: colorBTitleDescriptor)
-    colorBViewModel.connect(to: colorBController, with: colorBPresenter)
-    
-    // Bottom Left - Promotion
-    promotionViewModel = FacetListViewModel()
-    let promotionPresenter = FacetListPresenter(sortBy: [.count(order: .descending)], limit: 5)
-    let promotionTitleDescriptor = TitleDescriptor(text: "And, CountDesc, I=5", color: .init(hexString: "#ff669900"))
-    let promotionController = FacetListTableController(tableView: bottomLeftTableView, titleDescriptor: promotionTitleDescriptor)
-    promotionViewModel.connect(to: promotionController, with: promotionPresenter)
-    
-    // Bottom Right - Category
-    categoryViewModel = FacetListViewModel()
-    let categoryRefinementListPresenter = FacetListPresenter(sortBy: [.count(order: .descending), .alphabetical(order: .ascending)])
-    let categoryTitleDescriptor = TitleDescriptor(text: "Or, CountDesc-AlphaAsc, I=5", color: .init(hexString: "#ff0099cc"))
-    let categoryController = FacetListTableController(tableView: bottomRightTableView, titleDescriptor: categoryTitleDescriptor)
-    categoryViewModel.connect(to: categoryController, with: categoryRefinementListPresenter)
-
-    setup()
-
   }
 
 }
@@ -89,28 +71,37 @@ class RefinementListDemoViewController: UIViewController {
 private extension RefinementListDemoViewController {
   
   func setup() {
-    // predefined filter
-    let greenColor = Filter.Facet(attribute: colorAttribute, stringValue: "green")
-    let groupID = FilterGroup.ID.and(name: colorAttribute.name)
     
-    searcher.connectFilterState(filterState)
-    
-    filterState.notify(.add(filter: greenColor, toGroupWithID: groupID))
-    
-    colorAViewModel.connectSearcher(searcher, with: colorAttribute)
-    colorBViewModel.connectSearcher(searcher, with: colorAttribute)
+    // Color
+    colorViewModel.connectSearcher(searcher, with: colorAttribute)
+    colorViewModel.connectFilterState(filterState, with: colorAttribute, operator: .and)
+    let colorPresenter = FacetListPresenter(sortBy: [.isRefined, .alphabetical(order: .ascending)], limit: 3)
+    colorViewModel.connectController(colorController, with: colorPresenter)
+
+    // Promotion
     promotionViewModel.connectSearcher(searcher, with: promotionAttribute)
-    categoryViewModel.connectSearcher(searcher, with: categoryAttribute)
-        
-    colorAViewModel.connectFilterState(filterState, with: colorAttribute, operator: .and)
-    colorBViewModel.connectFilterState(filterState, with: colorAttribute, operator: .and)
     promotionViewModel.connectFilterState(filterState, with: promotionAttribute, operator: .and)
+    let promotionPresenter = FacetListPresenter(sortBy: [.count(order: .descending)], limit: 5)
+
+    promotionViewModel.connectController(promotionController, with: promotionPresenter)
+
+    // Category
+    categoryViewModel.connectSearcher(searcher, with: categoryAttribute)
     categoryViewModel.connectFilterState(filterState, with: categoryAttribute, operator: .or)
+    let categoryRefinementListPresenter = FacetListPresenter(sortBy: [.count(order: .descending), .alphabetical(order: .ascending)], showEmptyFacets: false)
+    categoryViewModel.connectController(categoryController, with: categoryRefinementListPresenter)
     
     searchStateViewController.connectSearcher(searcher)
     searchStateViewController.connectFilterState(filterState)
     
+    // Predefined filter
+    let greenColor = Filter.Facet(attribute: colorAttribute, stringValue: "green")
+    let groupID = FilterGroup.ID.and(name: colorAttribute.name)
+    filterState.notify(.add(filter: greenColor, toGroupWithID: groupID))
+    
+    searcher.connectFilterState(filterState)
     searcher.search()
+    
   }
   
 }
@@ -119,7 +110,7 @@ extension RefinementListDemoViewController {
   
   func setupUI() {
     
-    view.backgroundColor = .white
+    view.backgroundColor = .swBackground
     
     let mainStackView = UIStackView()
     mainStackView.axis = .vertical
@@ -133,30 +124,22 @@ extension RefinementListDemoViewController {
     mainStackView.addArrangedSubview(searchStateViewController.view)
     
     let gridStackView = UIStackView()
-    gridStackView.axis = .vertical
+    gridStackView.axis = .horizontal
     gridStackView.spacing = .px16
     gridStackView.distribution = .fillEqually
     
     gridStackView.translatesAutoresizingMaskIntoConstraints = false
     
-    let firstRow = UIStackView()
-    firstRow.axis = .horizontal
-    firstRow.spacing = .px16
-    firstRow.distribution = .fillEqually
+    let firstColumn = UIStackView()
+    firstColumn.axis = .vertical
+    firstColumn.spacing = .px16
+    firstColumn.distribution = .fillEqually
     
-    firstRow.addArrangedSubview(topLeftTableView)
-    firstRow.addArrangedSubview(topRightTableView)
+    firstColumn.addArrangedSubview(colorController.tableView)
+    firstColumn.addArrangedSubview(promotionController.tableView)
     
-    let secondRowStackView = UIStackView()
-    secondRowStackView.axis = .horizontal
-    secondRowStackView.spacing = .px16
-    secondRowStackView.distribution = .fillEqually
-    
-    secondRowStackView.addArrangedSubview(bottomLeftTableView)
-    secondRowStackView.addArrangedSubview(bottomRightTableView)
-    
-    gridStackView.addArrangedSubview(firstRow)
-    gridStackView.addArrangedSubview(secondRowStackView)
+    gridStackView.addArrangedSubview(firstColumn)
+    gridStackView.addArrangedSubview(categoryController.tableView)
     
     mainStackView.addArrangedSubview(gridStackView)
     
@@ -164,14 +147,18 @@ extension RefinementListDemoViewController {
     
     mainStackView.pin(to: view.safeAreaLayoutGuide)
     
-    [topLeftTableView, topRightTableView, bottomLeftTableView, bottomRightTableView].forEach {
-      $0.register(UITableViewCell.self, forCellReuseIdentifier: "CellId")
-      $0.alwaysBounceVertical = false
-      $0.tableFooterView = UIView(frame: .zero)
-      $0.backgroundColor = UIColor(hexString: "#f7f8fa")
+    [
+      colorController,
+      promotionController,
+      categoryController
+    ]
+      .map { $0.tableView }
+      .forEach {
+        $0.register(UITableViewCell.self, forCellReuseIdentifier: "CellId")
+        $0.alwaysBounceVertical = false
+        $0.tableFooterView = UIView(frame: .zero)
+        $0.backgroundColor = .swBackground
     }
-    
-    gridStackView.addBackground(color: .white)
     
   }
   
