@@ -49,8 +49,8 @@ class MultiIndexDemoViewController: UIViewController, InstantSearchCore.MultiInd
     multiIndexSearcher = .init(client: .demo, indices: indices)
     
     let hitsViewModels: [AnyHitsViewModel] = [
-      HitsViewModel<Movie>(infiniteScrolling: .on(withOffset: 10), showItemsOnEmptyQuery: true),
-      HitsViewModel<Actor>(infiniteScrolling: .on(withOffset: 10), showItemsOnEmptyQuery: true),
+      HitsViewModel<Hit<Movie>>(infiniteScrolling: .on(withOffset: 10), showItemsOnEmptyQuery: true),
+      HitsViewModel<Hit<Actor>>(infiniteScrolling: .on(withOffset: 10), showItemsOnEmptyQuery: true),
     ]
     
     multiIndexHitsViewModel = .init(hitsViewModels: hitsViewModels)
@@ -224,13 +224,13 @@ extension MultiIndexDemoViewController: UICollectionViewDataSource {
     
     switch section {
     case .movies:
-      if let movie: Movie = try? hitsSource?.hit(atIndex: indexPath.row, inSection: section.rawValue) {
-        (cell as? MovieCollectionViewCell).flatMap(MovieCellViewState().configure)?(movie)
+      if let movie: Hit<Movie> = try? hitsSource?.hit(atIndex: indexPath.row, inSection: section.rawValue) {
+        (cell as? MovieCollectionViewCell).flatMap(MovieHitCellViewState().configure)?(movie)
       }
       
     case .actors:
-      if let actor: Actor = try? hitsSource?.hit(atIndex: indexPath.row, inSection: section.rawValue) {
-        (cell as? ActorCollectionViewCell).flatMap(ActorCollectionViewCellViewState().configure)?(actor)
+      if let actor: Hit<Actor> = try? hitsSource?.hit(atIndex: indexPath.row, inSection: section.rawValue) {
+        (cell as? ActorCollectionViewCell).flatMap(ActorHitCollectionViewCellViewState().configure)?(actor)
       }
     }
 

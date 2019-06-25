@@ -27,6 +27,29 @@ struct MovieCellViewState {
   
 }
 
+struct MovieHitCellViewState {
+  
+  func configure(_ cell: UIView & MovieCell) -> (Hit<Movie>) -> () {
+    return { movieHit in
+      let movie = movieHit.object
+      cell.artworkImageView.sd_setImage(with: movie.image) { (_, _, _, _) in
+        DispatchQueue.main.async {
+          cell.setNeedsLayout()
+        }
+      }
+      
+      if let highlightedTitles = movieHit.highlightResult?["title"] {
+        cell.titleLabel.attributedText = NSAttributedString(highlightedResults: highlightedTitles, separator: NSAttributedString(string: ", "), attributes: [.foregroundColor: UIColor.red])
+      }
+
+      cell.genreLabel.text = movie.genre.joined(separator: ", ")
+      cell.yearLabel.text = String(movie.year)
+    }
+  }
+
+  
+}
+
 struct ActorCollectionViewCellViewState {
   
   func configure(_ cell: ActorCollectionViewCell) -> (Actor) -> () {
@@ -36,6 +59,19 @@ struct ActorCollectionViewCellViewState {
   }
   
 }
+
+struct ActorHitCollectionViewCellViewState {
+  
+  func configure(_ cell: ActorCollectionViewCell) -> (Hit<Actor>) -> () {
+    return { actorHit in
+      if let highlightedNames = actorHit.highlightResult?["name"] {
+        cell.nameLabel.attributedText = NSAttributedString(highlightedResults: highlightedNames, separator: NSAttributedString(string: ", "), attributes: [.foregroundColor: UIColor.red])
+      }
+    }
+  }
+  
+}
+
 
 
 protocol CellConfigurable {
