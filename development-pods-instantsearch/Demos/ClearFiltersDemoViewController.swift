@@ -117,9 +117,16 @@ class ClearFiltersDemoViewController: UIViewController {
       searchStateViewController.view.widthAnchor.constraint(equalTo: mainStackView.widthAnchor, multiplier: 0.98)
       ])
 
+    let buttonsStackView = UIStackView()
+    buttonsStackView.translatesAutoresizingMaskIntoConstraints = false
+    buttonsStackView.axis = .horizontal
+    buttonsStackView.spacing = .px16
+    buttonsStackView.distribution = .equalCentering
 
-    mainStackView.addArrangedSubview(clearColorsController.button)
-    mainStackView.addArrangedSubview(clearExceptColorsController.button)
+    buttonsStackView.addArrangedSubview(clearColorsController.button)
+    buttonsStackView.addArrangedSubview(clearExceptColorsController.button)
+    
+    mainStackView.addArrangedSubview(buttonsStackView)
     mainStackView.addArrangedSubview(.init())
 
   }

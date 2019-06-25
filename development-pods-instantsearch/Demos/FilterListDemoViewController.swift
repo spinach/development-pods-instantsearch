@@ -23,8 +23,14 @@ struct FilterListDemo {
   }
   
   static func numeric() -> FilterListDemoViewController<Filter.Numeric> {
-    
-    let numericFilters: [Filter.Numeric] = [5, 10, 50, 100, 500].map { .init(attribute: "price", operator: .lessThanOrEqual, value: $0) }
+        
+    let numericFilters: [Filter.Numeric] = [
+      .init(attribute: "price", operator: .lessThan, value: 5),
+      .init(attribute: "price", range: 5...10),
+      .init(attribute: "price", range: 10...25),
+      .init(attribute: "price", range: 25...100),
+      .init(attribute: "price", operator: .greaterThan, value: 100)
+    ]
     
     return FilterListDemoViewController<Filter.Numeric>(items: numericFilters, selectionMode: .single)
     

@@ -10,26 +10,16 @@ import UIKit
 import InstantSearchCore
 import InstantSearch
 
-class IndexSegmentDemoViewController: UIViewController, InstantSearchCore.HitsController {
-
-  var hitsSource: HitsViewModel<Movie>?
-
-  func reload() {
-    tableView.reloadData()
-  }
-
-  func scrollToTop() {
-    guard tableView.numberOfRows(inSection: 0) > 0 else { return }
-    tableView.scrollToRow(at: .zero, at: .top, animated: false)
-  }
-
-  typealias DataSource = HitsViewModel<Movie>
+class IndexSegmentDemoViewController: UIViewController {
+  
+  typealias HitType = Movie
 
   let searcher: SingleIndexSearcher
   let filterState: FilterState
   let queryInputViewModel: QueryInputViewModel
   let searchBarController: SearchBarController
-  let hitsViewModel: HitsViewModel<Movie>
+  let hitsViewModel: HitsViewModel<HitType>
+  let hitsTableViewController: HitsTableViewController<HitType>
   let indexSegmentViewModel: IndexSegmentViewModel
 
   let indexTitle: Index = .demo(withName: "mobile_demo_movies")
@@ -38,7 +28,6 @@ class IndexSegmentDemoViewController: UIViewController, InstantSearchCore.HitsCo
 
   let indexes: [Int: Index]
 
-  let tableView: UITableView
   let alert = UIAlertController(title: "Change Index", message: "Please select a new index", preferredStyle: .actionSheet)
 
   private let cellIdentifier = "CellID"
@@ -47,15 +36,15 @@ class IndexSegmentDemoViewController: UIViewController, InstantSearchCore.HitsCo
     self.searcher = SingleIndexSearcher(index: .demo(withName: "mobile_demo_movies"))
     self.filterState = .init()
     self.searchBarController = SearchBarController(searchBar: .init())
-    self.hitsViewModel = HitsViewModel()
-    self.queryInputViewModel = QueryInputViewModel()
+    self.hitsViewModel = .init()
+    self.hitsTableViewController = .init()
+    self.queryInputViewModel = .init()
     indexes = [
       0 : indexTitle,
       1 : indexYearAsc,
       2 : indexYearDesc
     ]
     indexSegmentViewModel = IndexSegmentViewModel(items: indexes)
-    self.tableView = UITableView(frame: .zero, style: .plain)
     super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
     setup()
   }
@@ -75,7 +64,7 @@ class IndexSegmentDemoViewController: UIViewController, InstantSearchCore.HitsCo
 
     hitsViewModel.connectSearcher(searcher)
     hitsViewModel.connectFilterState(filterState)
-    hitsViewModel.connectController(self)
+    hitsViewModel.connectController(hitsTableViewController)
 
     queryInputViewModel.connectController(searchBarController)
     queryInputViewModel.connectSearcher(searcher, searchTriggeringMode: .searchAsYouType)
@@ -108,10 +97,13 @@ extension IndexSegmentDemoViewController {
     searchBar.searchBarStyle = .minimal
     searchBar.heightAnchor.constraint(equalToConstant: 40).isActive = true
 
+    addChild(hitsTableViewController)
+    hitsTableViewController.didMove(toParent: self)
+  
+    let tableView = hitsTableViewController.tableView!
+    
     tableView.translatesAutoresizingMaskIntoConstraints = false
-    tableView.register(UITableViewCell.self, forCellReuseIdentifier: cellIdentifier)
-    tableView.dataSource = self
-    tableView.delegate = self
+    tableView.register(MovieTableViewCell.self, forCellReuseIdentifier: cellIdentifier)
     
     let stackView = UIStackView()
     stackView.translatesAutoresizingMaskIntoConstraints = false
@@ -128,44 +120,8 @@ extension IndexSegmentDemoViewController {
   }
 
   @objc func editButtonTapped(sender: UIBarButtonItem) {
-
-//    alert.addAction(UIAlertAction(title: "Main", style: .default , handler:{ (UIAlertAction)in
-//      print("User click mobile_demo_movies")
-//    }))
-//
-//    alert.addAction(UIAlertAction(title: "Year Ascending", style: .default , handler:{ (UIAlertAction)in
-//      print("User click mobile_demo_movies_year_asc")
-//    }))
-//
-//    alert.addAction(UIAlertAction(title: "Year Descending", style: .default , handler:{ (UIAlertAction)in
-//      print("User click mobile_demo_movies_year_desc")
-//    }))
-
     self.present(alert, animated: true, completion: nil)
   }
 
 }
-
-extension IndexSegmentDemoViewController: UITableViewDataSource {
-
-  func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    return hitsViewModel.numberOfHits()
-  }
-
-  func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-    let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath)
-    hitsViewModel.hit(atIndex: indexPath.row).flatMap(MovieCellConfigurator.configure(cell))
-    return cell
-  }
-
-}
-
-extension IndexSegmentDemoViewController: UITableViewDelegate {
-
-  func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-    return 80
-  }
-
-}
-
 
