@@ -17,6 +17,7 @@
 		AF21EEC922B9572C004A0542 /* MovieTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF21EEC822B9572C004A0542 /* MovieTableViewCell.swift */; };
 		AF21EECB22B9574E004A0542 /* UIView+Layout.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF21EECA22B9574E004A0542 /* UIView+Layout.swift */; };
 		AF21EECD22BA3B83004A0542 /* RefinementPersistentListDemoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF21EECC22BA3B83004A0542 /* RefinementPersistentListDemoViewController.swift */; };
+		AF21EED922C21788004A0542 /* LoadingDemoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF21EED822C21788004A0542 /* LoadingDemoViewController.swift */; };
 		AF2B261922836430006DE798 /* SegmentedController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF2B261822836430006DE798 /* SegmentedController.swift */; };
 		AF536C35227C78AD006DAE84 /* ToggleDemoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF536C34227C78AD006DAE84 /* ToggleDemoViewController.swift */; };
 		AF536C37227C7C79006DAE84 /* RefinementListDemoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF536C36227C7C79006DAE84 /* RefinementListDemoViewController.swift */; };
@@ -75,6 +76,7 @@
 		AF21EEC822B9572C004A0542 /* MovieTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieTableViewCell.swift; sourceTree = "<group>"; };
 		AF21EECA22B9574E004A0542 /* UIView+Layout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Layout.swift"; sourceTree = "<group>"; };
 		AF21EECC22BA3B83004A0542 /* RefinementPersistentListDemoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RefinementPersistentListDemoViewController.swift; sourceTree = "<group>"; };
+		AF21EED822C21788004A0542 /* LoadingDemoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingDemoViewController.swift; sourceTree = "<group>"; };
 		AF2B261822836430006DE798 /* SegmentedController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SegmentedController.swift; sourceTree = "<group>"; };
 		AF536C34227C78AD006DAE84 /* ToggleDemoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToggleDemoViewController.swift; sourceTree = "<group>"; };
 		AF536C36227C7C79006DAE84 /* RefinementListDemoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RefinementListDemoViewController.swift; sourceTree = "<group>"; };
@@ -167,6 +169,7 @@
 				AFDF275122B23EB100BA08CB /* SearchInputDemoViewController.swift */,
 				AF21EE9D22B26187004A0542 /* StatsDemoViewController.swift */,
 				AF21EEC022B78F89004A0542 /* HighlightingDemoViewController.swift */,
+				AF21EED822C21788004A0542 /* LoadingDemoViewController.swift */,
 				AFDF274722B13E1700BA08CB /* Movie.swift */,
 				AFDF274922B13E3A00BA08CB /* Actor.swift */,
 				E2EBE74122B15B0A00B91B23 /* CurrentFiltersDemoViewController.swift */,
@@ -476,6 +479,7 @@
 				AFDF275222B23EB100BA08CB /* SearchInputDemoViewController.swift in Sources */,
 				E2E09E3D223276C800F3056D /* Helpers.swift in Sources */,
 				AF21EECB22B9574E004A0542 /* UIView+Layout.swift in Sources */,
+				AF21EED922C21788004A0542 /* LoadingDemoViewController.swift in Sources */,
 				AFE343872289C4B300829AC1 /* SegmentedDemoViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

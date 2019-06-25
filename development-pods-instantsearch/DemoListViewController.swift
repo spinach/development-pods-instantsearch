@@ -42,6 +42,7 @@ struct Demo: Codable {
     case filterNumericRange = "filter_numeric_range"
     case stats
     case highlighting
+    case loading
   }
   
 }
@@ -160,6 +161,9 @@ class DemoListViewController: UIViewController {
       
     case .highlighting:
       viewController = HighlightingDemoViewController()
+      
+    case .loading:
+      viewController = LoadingDemoViewController()
     }
     
     return viewController
