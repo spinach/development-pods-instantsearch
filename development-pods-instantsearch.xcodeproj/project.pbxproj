@@ -47,7 +47,6 @@
 		E24DC9DA222EB72C006F1EED /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E24DC9D9222EB72C006F1EED /* Assets.xcassets */; };
 		E24DC9DD222EB72C006F1EED /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E24DC9DB222EB72C006F1EED /* LaunchScreen.storyboard */; };
 		E24DC9E8222EB72C006F1EED /* development_pods_instantsearchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E24DC9E7222EB72C006F1EED /* development_pods_instantsearchTests.swift */; };
-		E25D634C22D36D8D008CD0FD /* HierarchicalTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E25D634B22D36D8D008CD0FD /* HierarchicalTableViewController.swift */; };
 		E25D634E22D37144008CD0FD /* HierarchicalDemoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E25D634D22D37144008CD0FD /* HierarchicalDemoViewController.swift */; };
 		E265DBEE2273341D002DC989 /* FacetListTableController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E265DBED2273341D002DC989 /* FacetListTableController.swift */; };
 		E2B03F67229541F500DBE6D3 /* FacetSearchDemoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2B03F66229541F500DBE6D3 /* FacetSearchDemoViewController.swift */; };
@@ -114,7 +113,6 @@
 		E24DC9E3222EB72C006F1EED /* development-pods-instantsearchTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "development-pods-instantsearchTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		E24DC9E7222EB72C006F1EED /* development_pods_instantsearchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = development_pods_instantsearchTests.swift; sourceTree = "<group>"; };
 		E24DC9E9222EB72C006F1EED /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		E25D634B22D36D8D008CD0FD /* HierarchicalTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HierarchicalTableViewController.swift; sourceTree = "<group>"; };
 		E25D634D22D37144008CD0FD /* HierarchicalDemoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HierarchicalDemoViewController.swift; sourceTree = "<group>"; };
 		E265DBED2273341D002DC989 /* FacetListTableController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FacetListTableController.swift; sourceTree = "<group>"; };
 		E29E45712243FAAE005B358D /* SingleIndex.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = SingleIndex.playground; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
@@ -240,7 +238,6 @@
 				AF939674229700D500757257 /* FilterStateViewController.swift */,
 				AF939693229848B700757257 /* SearchStateViewController.swift */,
 				E2146C1122B3DE4400927350 /* NumericRangeController.swift */,
-				E25D634B22D36D8D008CD0FD /* HierarchicalTableViewController.swift */,
 			);
 			path = "development-pods-instantsearch";
 			sourceTree = "<group>";
@@ -470,7 +467,6 @@
 				E2E09E3D223276C800F3056D /* Helpers.swift in Sources */,
 				AF21EECB22B9574E004A0542 /* UIView+Layout.swift in Sources */,
 				AF21EED922C21788004A0542 /* LoadingDemoViewController.swift in Sources */,
-				E25D634C22D36D8D008CD0FD /* HierarchicalTableViewController.swift in Sources */,
 				AFE343872289C4B300829AC1 /* SegmentedDemoViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

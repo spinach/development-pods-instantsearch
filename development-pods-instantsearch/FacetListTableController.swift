@@ -51,6 +51,7 @@ extension FacetListTableController: UITableViewDataSource {
   }
   
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    //TODO: Move CellId to a variable.
     let cell = tableView.dequeueReusableCell(withIdentifier: "CellId", for: indexPath)
     
     let selectableRefinement: RefinementFacet = selectableItems[indexPath.row]

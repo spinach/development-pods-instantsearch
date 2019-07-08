@@ -8,6 +8,7 @@
 
 import Foundation
 import InstantSearchCore
+import InstantSearch
 import UIKit
 
 class HierarchicalDemoViewController: UIViewController {
@@ -30,11 +31,14 @@ class HierarchicalDemoViewController: UIViewController {
   let hierarchicalViewModel: HierarchicalViewModel
   let hierarchicalTableViewController: HierarchicalTableViewController
 
+  let tableViewController: UITableViewController
+
   override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
     searcher = SingleIndexSearcher(index: .demo(withName: "mobile_demo_hierarchical"))
     filterState = .init()
     hierarchicalViewModel = HierarchicalViewModel(hierarchicalAttributes: order, separator: " > ")
-    hierarchicalTableViewController = .init(style: .plain)
+    tableViewController = .init(style: .plain)
+    hierarchicalTableViewController = .init(tableView: tableViewController.tableView)
     super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
     setup()
   }
@@ -52,15 +56,15 @@ class HierarchicalDemoViewController: UIViewController {
     searcher.connectFilterState(filterState)
     hierarchicalViewModel.connectSearcher(searcher: searcher)
     hierarchicalViewModel.connectFilterState(filterState)
-    hierarchicalViewModel.connectController(hierarchicalTableViewController)
+    hierarchicalViewModel.connectController(hierarchicalTableViewController, presenter: DefaultHierarchicalPresenter.present)
     searcher.search()
   }
 
   func setupUI() {
-    addChild(hierarchicalTableViewController)
-    hierarchicalTableViewController.didMove(toParent: self)
-    view.addSubview(hierarchicalTableViewController.view)
-    hierarchicalTableViewController.view.pin(to: view.safeAreaLayoutGuide)
+    addChild(tableViewController)
+    tableViewController.didMove(toParent: self)
+    view.addSubview(tableViewController.view)
+    tableViewController.view.pin(to: view.safeAreaLayoutGuide)
   }
 
 
