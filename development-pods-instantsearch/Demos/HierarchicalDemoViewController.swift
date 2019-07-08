@@ -63,6 +63,7 @@ class HierarchicalDemoViewController: UIViewController {
   func setupUI() {
     addChild(tableViewController)
     tableViewController.didMove(toParent: self)
+    tableViewController.view.translatesAutoresizingMaskIntoConstraints = false
     view.addSubview(tableViewController.view)
     tableViewController.view.pin(to: view.safeAreaLayoutGuide)
   }
