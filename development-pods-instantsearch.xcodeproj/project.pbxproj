@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 51;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -47,6 +47,8 @@
 		E24DC9DA222EB72C006F1EED /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E24DC9D9222EB72C006F1EED /* Assets.xcassets */; };
 		E24DC9DD222EB72C006F1EED /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E24DC9DB222EB72C006F1EED /* LaunchScreen.storyboard */; };
 		E24DC9E8222EB72C006F1EED /* development_pods_instantsearchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E24DC9E7222EB72C006F1EED /* development_pods_instantsearchTests.swift */; };
+		E25D634C22D36D8D008CD0FD /* HierarchicalTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E25D634B22D36D8D008CD0FD /* HierarchicalTableViewController.swift */; };
+		E25D634E22D37144008CD0FD /* HierarchicalDemoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E25D634D22D37144008CD0FD /* HierarchicalDemoViewController.swift */; };
 		E265DBEE2273341D002DC989 /* FacetListTableController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E265DBED2273341D002DC989 /* FacetListTableController.swift */; };
 		E2B03F67229541F500DBE6D3 /* FacetSearchDemoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2B03F66229541F500DBE6D3 /* FacetSearchDemoViewController.swift */; };
 		E2E09E3D223276C800F3056D /* Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2E09E3C223276C800F3056D /* Helpers.swift */; };
@@ -112,6 +114,8 @@
 		E24DC9E3222EB72C006F1EED /* development-pods-instantsearchTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "development-pods-instantsearchTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		E24DC9E7222EB72C006F1EED /* development_pods_instantsearchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = development_pods_instantsearchTests.swift; sourceTree = "<group>"; };
 		E24DC9E9222EB72C006F1EED /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		E25D634B22D36D8D008CD0FD /* HierarchicalTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HierarchicalTableViewController.swift; sourceTree = "<group>"; };
+		E25D634D22D37144008CD0FD /* HierarchicalDemoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HierarchicalDemoViewController.swift; sourceTree = "<group>"; };
 		E265DBED2273341D002DC989 /* FacetListTableController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FacetListTableController.swift; sourceTree = "<group>"; };
 		E29E45712243FAAE005B358D /* SingleIndex.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = SingleIndex.playground; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		E2B03F66229541F500DBE6D3 /* FacetSearchDemoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FacetSearchDemoViewController.swift; sourceTree = "<group>"; };
@@ -175,6 +179,7 @@
 				E2EBE74122B15B0A00B91B23 /* CurrentFiltersDemoViewController.swift */,
 				E2146BED22B2A18E00927350 /* ClearFiltersDemoViewController.swift */,
 				E2146C0F22B3DADE00927350 /* FilterNumericRangeDemoViewController.swift */,
+				E25D634D22D37144008CD0FD /* HierarchicalDemoViewController.swift */,
 			);
 			path = Demos;
 			sourceTree = "<group>";
@@ -235,6 +240,7 @@
 				AF939674229700D500757257 /* FilterStateViewController.swift */,
 				AF939693229848B700757257 /* SearchStateViewController.swift */,
 				E2146C1122B3DE4400927350 /* NumericRangeController.swift */,
+				E25D634B22D36D8D008CD0FD /* HierarchicalTableViewController.swift */,
 			);
 			path = "development-pods-instantsearch";
 			sourceTree = "<group>";
@@ -385,28 +391,11 @@
 			files = (
 			);
 			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-development-pods-instantsearch/Pods-development-pods-instantsearch-frameworks.sh",
-				"${BUILT_PRODUCTS_DIR}/InstantSearch/InstantSearch.framework",
-				"${BUILT_PRODUCTS_DIR}/InstantSearchClient/InstantSearchClient.framework",
-				"${BUILT_PRODUCTS_DIR}/InstantSearchCore/InstantSearchCore.framework",
-				"${BUILT_PRODUCTS_DIR}/SDWebImage/SDWebImage.framework",
-				"${BUILT_PRODUCTS_DIR}/Signals/Signals.framework",
-				"${BUILT_PRODUCTS_DIR}/TagListView/TagListView.framework",
-				"${BUILT_PRODUCTS_DIR}/WARangeSlider/WARangeSlider.framework",
+				"${PODS_ROOT}/Target Support Files/Pods-development-pods-instantsearch/Pods-development-pods-instantsearch-frameworks-${CONFIGURATION}-input-files.xcfilelist",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputFileListPaths = (
-			);
-			outputPaths = (
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/InstantSearch.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/InstantSearchClient.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/InstantSearchCore.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SDWebImage.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Signals.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/TagListView.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/WARangeSlider.framework",
+				"${PODS_ROOT}/Target Support Files/Pods-development-pods-instantsearch/Pods-development-pods-instantsearch-frameworks-${CONFIGURATION}-output-files.xcfilelist",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -466,6 +455,7 @@
 				E24233DF223AAD1D008F24FB /* PotentialInstantSearch.swift in Sources */,
 				E2EBE74222B15B0A00B91B23 /* CurrentFiltersDemoViewController.swift in Sources */,
 				AF939694229848B700757257 /* SearchStateViewController.swift in Sources */,
+				E25D634E22D37144008CD0FD /* HierarchicalDemoViewController.swift in Sources */,
 				E2146BE222B251B900927350 /* TagListViewController.swift in Sources */,
 				E24DC9D3222EB72B006F1EED /* SingleIndexDemoViewController.swift in Sources */,
 				AF2B261922836430006DE798 /* SegmentedController.swift in Sources */,
@@ -480,6 +470,7 @@
 				E2E09E3D223276C800F3056D /* Helpers.swift in Sources */,
 				AF21EECB22B9574E004A0542 /* UIView+Layout.swift in Sources */,
 				AF21EED922C21788004A0542 /* LoadingDemoViewController.swift in Sources */,
+				E25D634C22D36D8D008CD0FD /* HierarchicalTableViewController.swift in Sources */,
 				AFE343872289C4B300829AC1 /* SegmentedDemoViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

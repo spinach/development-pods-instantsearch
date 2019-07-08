@@ -43,6 +43,7 @@ struct Demo: Codable {
     case stats
     case highlighting
     case loading
+    case hierarchical = "filter_hierarchical"
   }
   
 }
@@ -164,6 +165,9 @@ class DemoListViewController: UIViewController {
       
     case .loading:
       viewController = LoadingDemoViewController()
+
+    case .hierarchical:
+      viewController = HierarchicalDemoViewController()
     }
     
     return viewController
