@@ -56,7 +56,7 @@ class HierarchicalDemoViewController: UIViewController {
     searcher.connectFilterState(filterState)
     hierarchicalViewModel.connectSearcher(searcher: searcher)
     hierarchicalViewModel.connectFilterState(filterState)
-    hierarchicalViewModel.connectController(hierarchicalTableViewController, presenter: DefaultHierarchicalPresenter.present)
+    hierarchicalViewModel.connectController(hierarchicalTableViewController)
     searcher.search()
   }
 
