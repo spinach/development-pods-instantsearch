@@ -78,9 +78,9 @@ private extension ToggleDemoViewController {
   
   func setup() {
     searcher.connectFilterState(filterState)
-    couponViewModel.connectTo(filterState, operator: .or)
-    sizeConstraintViewModel.connectTo(filterState, operator: .or)
-    vintageViewModel.connectTo(filterState, operator: .or)
+    couponViewModel.connectFilterState(filterState, operator: .or)
+    sizeConstraintViewModel.connectFilterState(filterState, operator: .or)
+    vintageViewModel.connectFilterState(filterState, operator: .or)
     searchStateViewController.connectSearcher(searcher)
     searchStateViewController.connectFilterState(filterState)
     searcher.search()

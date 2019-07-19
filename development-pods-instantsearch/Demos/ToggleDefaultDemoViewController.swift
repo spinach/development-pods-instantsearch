@@ -50,10 +50,10 @@ class ToggleDefaultDemoViewController: UIViewController {
   
   func setup() {
     
-    let popularDeselected = Filter.Facet(attribute: "popular", boolValue: false)
+    //let popularDeselected = Filter.Facet(attribute: "popular", boolValue: false)
 
     searcher.connectFilterState(filterState)
-    popularViewModel.connectTo(filterState, operator: .or, default: popularDeselected)
+    popularViewModel.connectFilterState(filterState)
     
     searchStateViewController.connectSearcher(searcher)
     searchStateViewController.connectFilterState(filterState)

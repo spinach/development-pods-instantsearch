@@ -31,8 +31,8 @@ class FilterStateViewController: UIViewController {
     stateLabel.numberOfLines = 0
   }
   
-  func refreshStateLabel(with filterState: FiltersReadable) {
-    stateLabel.attributedText = (filterState as! FilterGroupsConvertible).toFilterGroups().sqlFormWithSyntaxHighlighting(colorMap: colorMap)
+  func refreshStateLabel(with filterState: ReadOnlyFiltersContainer) {
+    stateLabel.attributedText = (filterState as! ReadOnlyFiltersContainer).toFilterGroups().sqlFormWithSyntaxHighlighting(colorMap: colorMap)
     view.layoutIfNeeded()
   }
   

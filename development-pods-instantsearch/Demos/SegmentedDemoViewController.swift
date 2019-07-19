@@ -66,7 +66,7 @@ private extension SegmentedDemoViewController {
     searchStateViewController.connectSearcher(searcher)
     searchStateViewController.connectFilterState(filterState)
     
-    filterState.notify(.add(filter: male, toGroupWithID: .or(name: genderAttribute.name)))
+    filterState.notify(.add(filter: male, toGroupWithID: .or(name: genderAttribute.name, filterType: .facet)))
     
   }
   

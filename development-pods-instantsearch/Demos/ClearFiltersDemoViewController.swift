@@ -53,7 +53,7 @@ class ClearFiltersDemoViewController: UIViewController {
   func setup() {
 
 
-    let groupColor = FilterGroup.ID.or(name: "color")
+    let groupColor = FilterGroup.ID.or(name: "color", filterType: .facet)
     let groupCategory = FilterGroup.ID.and(name: "category")
 
 

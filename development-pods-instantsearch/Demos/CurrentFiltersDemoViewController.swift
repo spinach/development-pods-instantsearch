@@ -58,7 +58,7 @@ private extension CurrentFiltersDemoViewController {
 
   func setup() {
 
-    let groupFacets = FilterGroup.ID.or(name: "filterFacets")
+    let groupFacets = FilterGroup.ID.or(name: "filterFacets", filterType: .facet)
     let groupNumerics = FilterGroup.ID.and(name: "filterNumerics")
 
 
