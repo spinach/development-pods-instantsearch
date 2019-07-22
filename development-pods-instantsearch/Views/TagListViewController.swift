@@ -21,8 +21,6 @@ open class TagListController: NSObject, ItemListController, TagListViewDelegate 
 
   public var items: [FilterAndID] = []
 
-  public var filterFormatter: FilterPresenter?
-
   public init(tagListView: TagListView) {
     self.tagListView = tagListView
     super.init()
@@ -30,14 +28,13 @@ open class TagListController: NSObject, ItemListController, TagListViewDelegate 
     setupUI()
   }
 
-  open func setItems(_ item: Set<FilterAndID>) {
+  open func setItems(_ item: [FilterAndID]) {
     items = Array(item)
   }
 
   open func reload() {
     tagListView.removeAllTags()
-    let filterPresenter = self.filterFormatter ?? DefaultFilterPresenter.present
-    let tagViews = tagListView.addTags(items.map { filterPresenter($0.filter) })
+    let tagViews = tagListView.addTags(items.map { $0.text })
     for (index, tagView) in tagViews.enumerated() {
       tagView.tag = index
     }
