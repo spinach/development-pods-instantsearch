@@ -28,7 +28,7 @@ class HierarchicalDemoViewController: UIViewController {
 
   let searcher: SingleIndexSearcher
   let filterState: FilterState
-  let hierarchicalViewModel: HierarchicalViewModel
+  let hierarchicalInteractor: HierarchicalInteractor
   let hierarchicalTableViewController: HierarchicalTableViewController
 
   let tableViewController: UITableViewController
@@ -36,7 +36,7 @@ class HierarchicalDemoViewController: UIViewController {
   override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
     searcher = SingleIndexSearcher(index: .demo(withName: "mobile_demo_hierarchical"))
     filterState = .init()
-    hierarchicalViewModel = HierarchicalViewModel(hierarchicalAttributes: order, separator: " > ")
+    hierarchicalInteractor = HierarchicalInteractor(hierarchicalAttributes: order, separator: " > ")
     tableViewController = .init(style: .plain)
     hierarchicalTableViewController = .init(tableView: tableViewController.tableView)
     super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
@@ -54,9 +54,9 @@ class HierarchicalDemoViewController: UIViewController {
 
   func setup() {
     searcher.connectFilterState(filterState)
-    hierarchicalViewModel.connectSearcher(searcher: searcher)
-    hierarchicalViewModel.connectFilterState(filterState)
-    hierarchicalViewModel.connectController(hierarchicalTableViewController)
+    hierarchicalInteractor.connectSearcher(searcher: searcher)
+    hierarchicalInteractor.connectFilterState(filterState)
+    hierarchicalInteractor.connectController(hierarchicalTableViewController)
     searcher.search()
   }
 

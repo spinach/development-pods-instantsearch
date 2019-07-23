@@ -9,7 +9,7 @@
 ////import Foundation
 ////import InstantSearchCore
 ////
-//extension HitsViewModel {
+//extension HitsInteractor {
 //
 //  func connectTo(_ searcher: SingleIndexSearcher<RecordType>) {
 //    searcher.onSearchResults.subscribe(with: self) { [weak self] (queryMetada, result) in
@@ -21,7 +21,7 @@
 //      }
 //    }
 //
-//    searcher.connectTo(hitsViewModel: self)
+//    searcher.connectTo(hitsInteractor: self)
 //  }
 //
 //  func connectTo(_ tableView: UITableView) {
@@ -33,8 +33,8 @@
 //}
 //
 //extension SingleIndexSearcher {
-//  func connectTo<T>(hitsViewModel: HitsViewModel<T>) {
-//    hitsViewModel.onNewPage.subscribe(with: self) { [weak self] (page) in
+//  func connectTo<T>(hitsInteractor: HitsInteractor<T>) {
+//    hitsInteractor.onNewPage.subscribe(with: self) { [weak self] (page) in
 //      self?.query.page = UInt(page)
 //      self?.search()
 //    }
@@ -52,8 +52,8 @@
 //}
 //
 //extension HitsWidget {
-//  func connectTo<T>(hitsViewModel: HitsViewModel<T>) {
-//    hitsViewModel.onUpdate.subscribePast(with: self) { [weak self] _ in
+//  func connectTo<T>(hitsInteractor: HitsInteractor<T>) {
+//    hitsInteractor.onUpdate.subscribePast(with: self) { [weak self] _ in
 //      self?.reload()
 //    }
 //  }

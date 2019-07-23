@@ -27,8 +27,8 @@ class MultiIndexDemoViewController: UIViewController, InstantSearchCore.MultiInd
   
   let multiIndexSearcher: MultiIndexSearcher
   let searchBarController: SearchBarController
-  let queryInputViewModel: QueryInputViewModel
-  let multiIndexHitsViewModel: MultiIndexHitsViewModel
+  let queryInputInteractor: QueryInputInteractor
+  let multiIndexHitsInteractor: MultiIndexHitsInteractor
   let moviesCollectionView: UICollectionView
   let actorsCollectionView: UICollectionView
   let cellIdentifier = "CellID"
@@ -48,15 +48,15 @@ class MultiIndexDemoViewController: UIViewController, InstantSearchCore.MultiInd
     ]
     multiIndexSearcher = .init(client: .demo, indices: indices)
     
-    let hitsViewModels: [AnyHitsViewModel] = [
-      HitsViewModel<Hit<Movie>>(infiniteScrolling: .on(withOffset: 10), showItemsOnEmptyQuery: true),
-      HitsViewModel<Hit<Actor>>(infiniteScrolling: .on(withOffset: 10), showItemsOnEmptyQuery: true),
+    let hitsInteractors: [AnyHitsInteractor] = [
+      HitsInteractor<Hit<Movie>>(infiniteScrolling: .on(withOffset: 10), showItemsOnEmptyQuery: true),
+      HitsInteractor<Hit<Actor>>(infiniteScrolling: .on(withOffset: 10), showItemsOnEmptyQuery: true),
     ]
     
-    multiIndexHitsViewModel = .init(hitsViewModels: hitsViewModels)
+    multiIndexHitsInteractor = .init(hitsInteractors: hitsInteractors)
 
     searchBarController = .init(searchBar: .init())
-    queryInputViewModel = .init()
+    queryInputInteractor = .init()
     
     super.init(nibName: nil, bundle: nil)
     
@@ -90,11 +90,11 @@ private extension MultiIndexDemoViewController {
   }
   
   func setup() {
-    queryInputViewModel.connectSearcher(multiIndexSearcher, searchTriggeringMode: .searchAsYouType)
-    queryInputViewModel.connectController(searchBarController)
+    queryInputInteractor.connectSearcher(multiIndexSearcher, searchTriggeringMode: .searchAsYouType)
+    queryInputInteractor.connectController(searchBarController)
 
-    multiIndexHitsViewModel.connectSearcher(multiIndexSearcher)
-    multiIndexHitsViewModel.connectController(self)
+    multiIndexHitsInteractor.connectSearcher(multiIndexSearcher)
+    multiIndexHitsInteractor.connectController(self)
     
     multiIndexSearcher.search()
   }

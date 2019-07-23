@@ -17,7 +17,7 @@ class ToggleDefaultDemoViewController: UIViewController {
   let filterState: FilterState
   let searchStateViewController: SearchStateViewController
   
-  let popularViewModel: SelectableViewModel<Filter.Facet>
+  let popularInteractor: SelectableInteractor<Filter.Facet>
   
   let mainStackView = UIStackView()
   
@@ -30,7 +30,7 @@ class ToggleDefaultDemoViewController: UIViewController {
     searchStateViewController = .init()
     
     let popularFacet = Filter.Facet(attribute: "popular", boolValue: true)
-    popularViewModel = SelectableViewModel<Filter.Facet>(item: popularFacet)
+    popularInteractor = SelectableInteractor<Filter.Facet>(item: popularFacet)
     popularButtonController = SelectableFilterButtonController(button: .init())
     
     super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
@@ -53,12 +53,12 @@ class ToggleDefaultDemoViewController: UIViewController {
     //let popularDeselected = Filter.Facet(attribute: "popular", boolValue: false)
 
     searcher.connectFilterState(filterState)
-    popularViewModel.connectFilterState(filterState)
+    popularInteractor.connectFilterState(filterState)
     
     searchStateViewController.connectSearcher(searcher)
     searchStateViewController.connectFilterState(filterState)
     
-    popularViewModel.connectController(popularButtonController)
+    popularInteractor.connectController(popularButtonController)
     
     searcher.search()
 

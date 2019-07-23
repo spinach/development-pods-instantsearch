@@ -15,8 +15,8 @@ import TagListView
 class CurrentFiltersDemoViewController: UIViewController {
 
   let filterState: FilterState
-  let currentFiltersListViewModel: CurrentFiltersViewModel
-  let currentFiltersListViewModel2: CurrentFiltersViewModel
+  let currentFiltersListInteractor: CurrentFiltersInteractor
+  let currentFiltersListInteractor2: CurrentFiltersInteractor
 
   let currentFiltersController: CurrentFilterListTableController
   let currentFiltersController2: TagListController
@@ -33,8 +33,8 @@ class CurrentFiltersDemoViewController: UIViewController {
     tableView = .init()
     tagListView = .init()
 
-    currentFiltersListViewModel = .init()
-    currentFiltersListViewModel2 = .init()
+    currentFiltersListInteractor = .init()
+    currentFiltersListInteractor2 = .init()
 
     currentFiltersController = .init(tableView: tableView)
     currentFiltersController2 = .init(tagListView: tagListView)
@@ -62,11 +62,11 @@ private extension CurrentFiltersDemoViewController {
     let groupNumerics = FilterGroup.ID.and(name: "filterNumerics")
 
 
-    currentFiltersListViewModel.connectFilterState(filterState)
-    currentFiltersListViewModel.connectController(currentFiltersController)
+    currentFiltersListInteractor.connectFilterState(filterState)
+    currentFiltersListInteractor.connectController(currentFiltersController)
 
-    currentFiltersListViewModel2.connectFilterState(filterState, filterGroupID: groupFacets)
-    currentFiltersListViewModel2.connectController(currentFiltersController2)
+    currentFiltersListInteractor2.connectFilterState(filterState, filterGroupID: groupFacets)
+    currentFiltersListInteractor2.connectController(currentFiltersController2)
 
 
     searchStateViewController.connectFilterState(filterState)

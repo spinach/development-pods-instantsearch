@@ -13,9 +13,9 @@ import InstantSearchCore
 
 class SearchStateViewController: UIViewController {
   
-  let statsViewModel: StatsViewModel
-  let loadingViewModel: LoadingViewModel
-  let filterClearViewModel: FilterClearViewModel
+  let statsInteractor: StatsInteractor
+  let loadingInteractor: LoadingInteractor
+  let filterClearInteractor: FilterClearInteractor
   
   let mainStackView: UIStackView
   let titleLabel: UILabel
@@ -37,12 +37,12 @@ class SearchStateViewController: UIViewController {
     self.activityIndicatorController = ActivityIndicatorController(activityIndicator: activityIndicator)
     self.statsController = LabelStatsController(label: hitsCountLabel)
     self.clearRefinementsController = FilterClearButtonController(button: clearRefinementsButton)
-    self.statsViewModel = .init()
-    self.loadingViewModel = .init()
-    self.filterClearViewModel = .init()
+    self.statsInteractor = .init()
+    self.loadingInteractor = .init()
+    self.filterClearInteractor = .init()
     super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
-//    statsViewModel.connectController(statsController)
-    loadingViewModel.connectController(activityIndicatorController)
+//    statsInteractor.connectController(statsController)
+    loadingInteractor.connectController(activityIndicatorController)
   }
   
   required init?(coder aDecoder: NSCoder) {
@@ -169,17 +169,17 @@ extension SearchStateViewController {
   
   func connectFilterState(_ filterState: FilterState) {
     filterStateViewController.connectTo(filterState)
-    filterClearViewModel.connectFilterState(filterState)
-    filterClearViewModel.connectController(clearRefinementsController)
+    filterClearInteractor.connectFilterState(filterState)
+    filterClearInteractor.connectController(clearRefinementsController)
   }
   
   func connectSearcher(_ searcher: SingleIndexSearcher) {
-    loadingViewModel.connectSearcher(searcher)
-    statsViewModel.connectSearcher(searcher)
+    loadingInteractor.connectSearcher(searcher)
+    statsInteractor.connectSearcher(searcher)
   }
   
   func connectFacetSearcher(_ facetSearcher: FacetSearcher) {
-    loadingViewModel.connectSearcher(facetSearcher)
+    loadingInteractor.connectSearcher(facetSearcher)
   }
   
 }

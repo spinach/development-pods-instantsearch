@@ -12,11 +12,11 @@ import InstantSearchCore
 
 class HitsTableViewController<HitType: Codable>: UITableViewController, InstantSearchCore.HitsController {
   
-  typealias DataSource = HitsViewModel<HitType>
+  typealias DataSource = HitsInteractor<HitType>
   
   let cellIdentifier = "CellID"
   
-  var hitsSource: HitsViewModel<HitType>?
+  var hitsSource: HitsInteractor<HitType>?
   
   init() {
     super.init(nibName: .none, bundle: .none)

@@ -17,10 +17,10 @@ class FacetSearchDemoViewController: UIViewController {
   let facetSearcher: FacetSearcher
   let searchBarController: SearchBarController
   let categoryController: FacetListTableController
-  let categoryListViewModel: SelectableFacetsViewModel
+  let categoryListInteractor: SelectableFacetsInteractor
   let searchStateViewController: SearchStateViewController
   
-  let queryInputViewModel: QueryInputViewModel
+  let queryInputInteractor: QueryInputInteractor
   
   override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
     
@@ -30,8 +30,8 @@ class FacetSearchDemoViewController: UIViewController {
     filterState = .init()
     facetSearcher = FacetSearcher(index: index, facetName: Attribute("brand").name)
     
-    queryInputViewModel = QueryInputViewModel()
-    categoryListViewModel = FacetListViewModel(selectionMode: .multiple)
+    queryInputInteractor = QueryInputInteractor()
+    categoryListInteractor = FacetListInteractor(selectionMode: .multiple)
 
     searchBarController = SearchBarController(searchBar: .init())
     searchStateViewController = SearchStateViewController()
@@ -69,12 +69,12 @@ private extension FacetSearchDemoViewController {
     searchStateViewController.connectFilterState(filterState)
     searchStateViewController.connectFacetSearcher(facetSearcher)
 
-    queryInputViewModel.connectController(searchBarController)
-    queryInputViewModel.connectSearcher(facetSearcher, searchTriggeringMode: .searchAsYouType)
+    queryInputInteractor.connectController(searchBarController)
+    queryInputInteractor.connectSearcher(facetSearcher, searchTriggeringMode: .searchAsYouType)
     
-    categoryListViewModel.connectFacetSearcher(facetSearcher)
-    categoryListViewModel.connectFilterState(filterState, with: Attribute("brand"), operator: .or)
-    categoryListViewModel.connectController(categoryController)
+    categoryListInteractor.connectFacetSearcher(facetSearcher)
+    categoryListInteractor.connectFilterState(filterState, with: Attribute("brand"), operator: .or)
+    categoryListInteractor.connectController(categoryController)
     
   }
 

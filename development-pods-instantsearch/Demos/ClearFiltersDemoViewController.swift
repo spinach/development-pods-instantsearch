@@ -16,8 +16,8 @@ class ClearFiltersDemoViewController: UIViewController {
   let filterState: FilterState
   let searchStateViewController: SearchStateViewController
 
-  let clearColorsViewModel: FilterClearViewModel
-  let clearExceptColorsViewModel: FilterClearViewModel
+  let clearColorsInteractor: FilterClearInteractor
+  let clearExceptColorsInteractor: FilterClearInteractor
 
   let clearColorsController: FilterClearButtonController
   let clearExceptColorsController: FilterClearButtonController
@@ -29,8 +29,8 @@ class ClearFiltersDemoViewController: UIViewController {
     filterState = .init()
     searchStateViewController = .init()
 
-    clearColorsViewModel = .init()
-    clearExceptColorsViewModel = .init()
+    clearColorsInteractor = .init()
+    clearExceptColorsInteractor = .init()
 
     clearColorsController = .init(button: .init())
     clearExceptColorsController = .init(button: .init())
@@ -65,11 +65,11 @@ class ClearFiltersDemoViewController: UIViewController {
     filterState.addAll(filters: [redFacet, greenFacet], toGroupWithID: groupColor)
     filterState.notifyChange()
 
-    clearColorsViewModel.connectFilterState(filterState, filterGroupIDs: [groupColor], clearMode: .specified)
-    clearExceptColorsViewModel.connectFilterState(filterState, filterGroupIDs: [groupColor], clearMode: .except)
+    clearColorsInteractor.connectFilterState(filterState, filterGroupIDs: [groupColor], clearMode: .specified)
+    clearExceptColorsInteractor.connectFilterState(filterState, filterGroupIDs: [groupColor], clearMode: .except)
 
-    clearColorsViewModel.connectController(clearColorsController)
-    clearExceptColorsViewModel.connectController(clearExceptColorsController)
+    clearColorsInteractor.connectController(clearColorsController)
+    clearExceptColorsInteractor.connectController(clearExceptColorsController)
 
     searchStateViewController.connectFilterState(filterState)
 

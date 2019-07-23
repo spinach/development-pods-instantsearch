@@ -19,8 +19,8 @@ class FilterNumericRangeDemoViewController: UIViewController {
   let searcher: SingleIndexSearcher
   let filterState: FilterState
 
-  let sliderViewModel1: NumberRangeViewModel<Double>
-  let sliderViewModel2: NumberRangeViewModel<Double>
+  let sliderInteractor1: NumberRangeInteractor<Double>
+  let sliderInteractor2: NumberRangeInteractor<Double>
 
   let searchStateViewController: SearchStateViewController
 
@@ -39,8 +39,8 @@ class FilterNumericRangeDemoViewController: UIViewController {
     self.searcher = SingleIndexSearcher(index: .demo(withName:"mobile_demo_filter_numeric_comparison"))
     self.filterState = .init()
 
-    sliderViewModel1 = .init()
-    sliderViewModel2 = .init()
+    sliderInteractor1 = .init()
+    sliderInteractor2 = .init()
 
     let textField = UITextField()
     let textField2 = UITextField()
@@ -73,13 +73,13 @@ private extension FilterNumericRangeDemoViewController {
 
     searcher.connectFilterState(filterState)
 
-    sliderViewModel1.connectFilterState(filterState, attribute: priceAttribute)
-    sliderViewModel1.connectController(numericRangeController1)
-    sliderViewModel1.connectSearcher(searcher, attribute: priceAttribute)
+    sliderInteractor1.connectFilterState(filterState, attribute: priceAttribute)
+    sliderInteractor1.connectController(numericRangeController1)
+    sliderInteractor1.connectSearcher(searcher, attribute: priceAttribute)
 
-    sliderViewModel2.connectFilterState(filterState, attribute: priceAttribute)
-    sliderViewModel2.connectController(numericRangeController2)
-    sliderViewModel2.connectSearcher(searcher, attribute: priceAttribute)
+    sliderInteractor2.connectFilterState(filterState, attribute: priceAttribute)
+    sliderInteractor2.connectController(numericRangeController2)
+    sliderInteractor2.connectSearcher(searcher, attribute: priceAttribute)
 
     searchStateViewController.connectSearcher(searcher)
     searchStateViewController.connectFilterState(filterState)
@@ -111,7 +111,7 @@ private extension FilterNumericRangeDemoViewController {
     sliderStackView1.addArrangedSubview(sliderLower1)
     sliderStackView1.addArrangedSubview(numericRangeController1.rangerSlider)
     sliderStackView1.addArrangedSubview(sliderUpper1)
-    sliderViewModel1.onItemChanged.subscribePast(with: self) { (range) in
+    sliderInteractor1.onItemChanged.subscribePast(with: self) { (range) in
       guard let range = range else { return }
       self.sliderLower1.text = "\(range.lowerBound.rounded(toPlaces: 2))"
       self.sliderUpper1.text = "\(range.upperBound.rounded(toPlaces: 2))"
@@ -125,7 +125,7 @@ private extension FilterNumericRangeDemoViewController {
     sliderStackView2.addArrangedSubview(sliderLower2)
     sliderStackView2.addArrangedSubview(numericRangeController2.rangerSlider)
     sliderStackView2.addArrangedSubview(sliderUpper2)
-    sliderViewModel2.onItemChanged.subscribePast(with: self) { (range) in
+    sliderInteractor2.onItemChanged.subscribePast(with: self) { (range) in
       guard let range = range else { return }
       self.sliderLower2.text = "\(range.lowerBound.rounded(toPlaces: 2))"
       self.sliderUpper2.text = "\(range.upperBound.rounded(toPlaces: 2))"

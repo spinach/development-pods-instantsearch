@@ -15,8 +15,8 @@ class RefinementPersistentListDemoViewController: UIViewController {
   let searcher: SingleIndexSearcher
   let filterState: FilterState
   
-  let colorViewModel: SelectableFacetsViewModel
-  let categoryViewModel: SelectableFacetsViewModel
+  let colorInteractor: SelectableFacetsInteractor
+  let categoryInteractor: SelectableFacetsInteractor
 
   let searchStateViewController: SearchStateViewController
   let colorListController: FacetListTableController
@@ -24,8 +24,8 @@ class RefinementPersistentListDemoViewController: UIViewController {
 
   override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
     searcher = .init(index: .demo(withName:"mobile_demo_facet_list"))
-    colorViewModel = .init(selectionMode: .multiple)
-    categoryViewModel = .init(selectionMode: .single)
+    colorInteractor = .init(selectionMode: .multiple)
+    categoryInteractor = .init(selectionMode: .single)
     colorListController = .init(tableView: .init(), titleDescriptor: .init(text: "Multiple choice", color: .red))
     categoryListController = .init(tableView: .init(), titleDescriptor: .init(text: "Single choice", color: .blue))
     searchStateViewController = .init()
@@ -51,14 +51,14 @@ private extension RefinementPersistentListDemoViewController {
     
     searcher.connectFilterState(filterState)
 
-    colorViewModel.connectSearcher(searcher, with: "color")
+    colorInteractor.connectSearcher(searcher, with: "color")
 //    let presenter = FacetListPresenter(showZero: false)
-    colorViewModel.connectController(colorListController, with: nil)
-    colorViewModel.connectFilterState(filterState, with: "color", operator: .or)
+    colorInteractor.connectController(colorListController, with: nil)
+    colorInteractor.connectFilterState(filterState, with: "color", operator: .or)
     
-    categoryViewModel.connectSearcher(searcher, with: "category")
-    categoryViewModel.connectController(categoryListController)
-    categoryViewModel.connectFilterState(filterState, with: "category", operator: .or)
+    categoryInteractor.connectSearcher(searcher, with: "category")
+    categoryInteractor.connectController(categoryListController)
+    categoryInteractor.connectFilterState(filterState, with: "category", operator: .or)
     
     searchStateViewController.connectSearcher(searcher)
     searchStateViewController.connectFilterState(filterState)

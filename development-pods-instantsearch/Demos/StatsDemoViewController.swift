@@ -19,18 +19,18 @@ class StatsDemoViewController: UIViewController {
   
   let searcher: SingleIndexSearcher
   
-  let queryInputViewModel: QueryInputViewModel
+  let queryInputInteractor: QueryInputInteractor
   let searchBarController: SearchBarController
   
-  let statsViewModel: StatsViewModel
+  let statsInteractor: StatsInteractor
   let labelStatsControllerMS: LabelStatsController
   let attributedLabelStatsController: AttributedLabelStatsController
   
   init() {
     self.searcher = SingleIndexSearcher(index: .demo(withName: "mobile_demo_movies"))
     self.searchBarController = .init(searchBar: .init())
-    self.queryInputViewModel = .init()
-    self.statsViewModel = .init()
+    self.queryInputInteractor = .init()
+    self.statsInteractor = .init()
     self.attributedLabelStatsController = AttributedLabelStatsController(label: .init())
     self.labelStatsControllerMS = LabelStatsController(label: .init())
     super.init(nibName: .none, bundle: .none)
@@ -48,18 +48,18 @@ class StatsDemoViewController: UIViewController {
   
   private func setup() {
     
-    queryInputViewModel.connectController(searchBarController)
-    queryInputViewModel.connectSearcher(searcher, searchTriggeringMode: .searchAsYouType)
+    queryInputInteractor.connectController(searchBarController)
+    queryInputInteractor.connectSearcher(searcher, searchTriggeringMode: .searchAsYouType)
     
-    statsViewModel.connectSearcher(searcher)
-    statsViewModel.connectController(labelStatsControllerMS) { stats -> String? in
+    statsInteractor.connectSearcher(searcher)
+    statsInteractor.connectController(labelStatsControllerMS) { stats -> String? in
       guard let stats = stats else {
         return nil
       }
       return "\(stats.totalHitsCount) hits in \(stats.processingTimeMS) ms"
     }
     
-    statsViewModel.connectController(attributedLabelStatsController) { stats -> NSAttributedString? in
+    statsInteractor.connectController(attributedLabelStatsController) { stats -> NSAttributedString? in
       guard let stats = stats else {
         return nil
       }

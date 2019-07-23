@@ -20,10 +20,10 @@ class SearchInputDemoViewController: UIViewController {
   let stackView = UIStackView()
   let searcher: SingleIndexSearcher
   
-  let queryInputViewModel: QueryInputViewModel
+  let queryInputInteractor: QueryInputInteractor
   let searchBarController: SearchBarController
   
-  let hitsViewModel: HitsViewModel<HitType>
+  let hitsInteractor: HitsInteractor<HitType>
   let hitsTableViewController: HitsTableViewController<HitType>
 
   
@@ -31,8 +31,8 @@ class SearchInputDemoViewController: UIViewController {
     self.searchTriggeringMode = searchTriggeringMode
     self.searcher = SingleIndexSearcher(index: .demo(withName: "mobile_demo_movies"))
     self.searchBarController = .init(searchBar: .init())
-    self.queryInputViewModel = .init()
-    self.hitsViewModel = .init(infiniteScrolling: .off, showItemsOnEmptyQuery: true)
+    self.queryInputInteractor = .init()
+    self.hitsInteractor = .init(infiniteScrolling: .off, showItemsOnEmptyQuery: true)
     self.hitsTableViewController = HitsTableViewController()
     super.init(nibName: .none, bundle: .none)
     setup()
@@ -51,11 +51,11 @@ class SearchInputDemoViewController: UIViewController {
     
     hitsTableViewController.tableView.register(MovieTableViewCell.self, forCellReuseIdentifier: hitsTableViewController.cellIdentifier)
     
-    hitsViewModel.connectSearcher(searcher)
-    hitsViewModel.connectController(hitsTableViewController)
+    hitsInteractor.connectSearcher(searcher)
+    hitsInteractor.connectController(hitsTableViewController)
     
-    queryInputViewModel.connectController(searchBarController)
-    queryInputViewModel.connectSearcher(searcher, searchTriggeringMode: searchTriggeringMode)
+    queryInputInteractor.connectController(searchBarController)
+    queryInputInteractor.connectSearcher(searcher, searchTriggeringMode: searchTriggeringMode)
     
     searcher.search()
     

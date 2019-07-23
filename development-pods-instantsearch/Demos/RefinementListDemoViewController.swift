@@ -22,9 +22,9 @@ class RefinementListDemoViewController: UIViewController {
   
   let searcher: SingleIndexSearcher
   let filterState: FilterState
-  let colorViewModel: SelectableFacetsViewModel
-  let categoryViewModel: SelectableFacetsViewModel
-  let promotionViewModel: SelectableFacetsViewModel
+  let colorInteractor: SelectableFacetsInteractor
+  let categoryInteractor: SelectableFacetsInteractor
+  let promotionInteractor: SelectableFacetsInteractor
 
   let searchStateViewController: SearchStateViewController
   let colorController: FacetListTableController
@@ -40,9 +40,9 @@ class RefinementListDemoViewController: UIViewController {
     searcher = .init(index: .demo(withName:"mobile_demo_facet_list"))
     searchStateViewController = .init()
     filterState = .init()
-    colorViewModel = .init(selectionMode: .single)
-    promotionViewModel = .init(selectionMode: .multiple)
-    categoryViewModel = .init(selectionMode: .multiple)
+    colorInteractor = .init(selectionMode: .single)
+    promotionInteractor = .init(selectionMode: .multiple)
+    categoryInteractor = .init(selectionMode: .multiple)
     
     let colorTitleDescriptor = TitleDescriptor(text: "And, IsRefined-AlphaAsc, I=3", color: .init(hexString: "#ffcc0000"))
     colorController = FacetListTableController(tableView: .init(), titleDescriptor: colorTitleDescriptor)
@@ -73,23 +73,23 @@ private extension RefinementListDemoViewController {
   func setup() {
     
     // Color
-    colorViewModel.connectSearcher(searcher, with: colorAttribute)
-    colorViewModel.connectFilterState(filterState, with: colorAttribute, operator: .and)
+    colorInteractor.connectSearcher(searcher, with: colorAttribute)
+    colorInteractor.connectFilterState(filterState, with: colorAttribute, operator: .and)
     let colorPresenter = FacetListPresenter(sortBy: [.isRefined, .alphabetical(order: .ascending)], limit: 3)
-    colorViewModel.connectController(colorController, with: colorPresenter)
+    colorInteractor.connectController(colorController, with: colorPresenter)
 
     // Promotion
-    promotionViewModel.connectSearcher(searcher, with: promotionAttribute)
-    promotionViewModel.connectFilterState(filterState, with: promotionAttribute, operator: .and)
+    promotionInteractor.connectSearcher(searcher, with: promotionAttribute)
+    promotionInteractor.connectFilterState(filterState, with: promotionAttribute, operator: .and)
     let promotionPresenter = FacetListPresenter(sortBy: [.count(order: .descending)], limit: 5)
 
-    promotionViewModel.connectController(promotionController, with: promotionPresenter)
+    promotionInteractor.connectController(promotionController, with: promotionPresenter)
 
     // Category
-    categoryViewModel.connectSearcher(searcher, with: categoryAttribute)
-    categoryViewModel.connectFilterState(filterState, with: categoryAttribute, operator: .or)
+    categoryInteractor.connectSearcher(searcher, with: categoryAttribute)
+    categoryInteractor.connectFilterState(filterState, with: categoryAttribute, operator: .or)
     let categoryRefinementListPresenter = FacetListPresenter(sortBy: [.count(order: .descending), .alphabetical(order: .ascending)], showEmptyFacets: false)
-    categoryViewModel.connectController(categoryController, with: categoryRefinementListPresenter)
+    categoryInteractor.connectController(categoryController, with: categoryRefinementListPresenter)
     
     searchStateViewController.connectSearcher(searcher)
     searchStateViewController.connectFilterState(filterState)

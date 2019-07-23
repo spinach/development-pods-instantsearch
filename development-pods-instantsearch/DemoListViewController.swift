@@ -53,7 +53,7 @@ class DemoListViewController: UIViewController {
   
   let searcher: SingleIndexSearcher
   let filterState: FilterState
-  let hitsViewModel: HitsViewModel<DemoHit>
+  let hitsInteractor: HitsInteractor<DemoHit>
   let searchBarController: SearchBarController
   
   let tableView: UITableView
@@ -64,13 +64,13 @@ class DemoListViewController: UIViewController {
   override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
     searcher = SingleIndexSearcher(index: .demo(withName: "mobile_demo_home"))
     filterState = .init()
-    hitsViewModel = HitsViewModel(infiniteScrolling: .on(withOffset: 10), showItemsOnEmptyQuery: true)
+    hitsInteractor = HitsInteractor(infiniteScrolling: .on(withOffset: 10), showItemsOnEmptyQuery: true)
     searchBarController = SearchBarController(searchBar: .init())
     groupedDemos = []
     
     searcher.connectFilterState(filterState)
-    hitsViewModel.connectSearcher(searcher)
-    hitsViewModel.connectFilterState(filterState)
+    hitsInteractor.connectSearcher(searcher)
+    hitsInteractor.connectFilterState(filterState)
     searchController = UISearchController(searchResultsController: .none)
     searchController.dimsBackgroundDuringPresentation = false
     self.tableView = UITableView()
@@ -81,7 +81,7 @@ class DemoListViewController: UIViewController {
     tableView.register(UITableViewCell.self, forCellReuseIdentifier: cellIdentifier)
     tableView.delegate = self
     tableView.dataSource = self
-    hitsViewModel.onResultsUpdated.subscribe(with: self) { results in
+    hitsInteractor.onResultsUpdated.subscribe(with: self) { results in
       let demos = (try? results.deserializeHits() as [DemoHit]) ?? []
       self.updateDemos(demos.map { $0.object })
     }

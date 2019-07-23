@@ -9,7 +9,7 @@ class MyViewController : UIViewController, UITableViewDataSource {
   private let ALGOLIA_INDEX_NAME = "bestbuy_promo"
   private let ALGOLIA_API_KEY = "1f6fd3a6fb973cb08419fe7d288fa4db"
 
-  let hitsViewModel = HitsViewModel<JSON>()
+  let hitsInteractor = HitsInteractor<JSON>()
 
   var tableView = UITableView()
   var activityIndicator = UIActivityIndicatorView()
@@ -71,7 +71,7 @@ class MyViewController : UIViewController, UITableViewDataSource {
 
       self.searcher.onSearchResults.subscribe(with: self) { [weak self] (queryMetada, result) in
         switch result {
-        case .success(let result): self?.hitsViewModel.update(result, with: queryMetada)
+        case .success(let result): self?.hitsInteractor.update(result, with: queryMetada)
         case .fail(let error):
           print(error)
           break
@@ -80,7 +80,7 @@ class MyViewController : UIViewController, UITableViewDataSource {
         self?.tableView.reloadData()
       }
 
-      self.hitsViewModel.onNewPage.subscribe(with: self) { [weak self] (page) in
+      self.hitsInteractor.onNewPage.subscribe(with: self) { [weak self] (page) in
         self?.searcher.query.page = UInt(page)
         self?.searcher.search()
       }
@@ -94,13 +94,13 @@ class MyViewController : UIViewController, UITableViewDataSource {
   }
 
   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    return hitsViewModel.numberOfRows()
+    return hitsInteractor.numberOfRows()
   }
 
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     let cell = tableView.dequeueReusableCell(withIdentifier: "CellId", for: indexPath)
 
-    let hit = hitsViewModel.hitForRow(indexPath.row)
+    let hit = hitsInteractor.hitForRow(indexPath.row)
     // TODO: the below should be done better
     let rawHit = [String: Any](hit!)
     cell.textLabel!.text = rawHit?["name"] as? String

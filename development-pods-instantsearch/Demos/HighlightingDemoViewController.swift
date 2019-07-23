@@ -19,17 +19,17 @@ class HighlightingDemoViewController: UIViewController {
 
   let searcher: SingleIndexSearcher
 
-  let queryInputViewModel: QueryInputViewModel
+  let queryInputInteractor: QueryInputInteractor
   let searchBarController: SearchBarController
   
-  let hitsViewModel: HitsViewModel<HitType>
+  let hitsInteractor: HitsInteractor<HitType>
   let hitsTableViewController: HitsTableViewController<HitType>
   
   override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
     self.searcher = SingleIndexSearcher(index: .demo(withName: "mobile_demo_movies"))
-    self.queryInputViewModel = .init()
+    self.queryInputInteractor = .init()
     self.searchBarController = .init(searchBar: .init())
-    self.hitsViewModel = .init()
+    self.hitsInteractor = .init()
     self.hitsTableViewController = HitsTableViewController()
     super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
     setup()
@@ -48,11 +48,11 @@ class HighlightingDemoViewController: UIViewController {
     
     hitsTableViewController.tableView.register(MovieTableViewCell.self, forCellReuseIdentifier: hitsTableViewController.cellIdentifier)
     
-    queryInputViewModel.connectSearcher(searcher, searchTriggeringMode: .searchAsYouType)
-    queryInputViewModel.connectController(searchBarController)
+    queryInputInteractor.connectSearcher(searcher, searchTriggeringMode: .searchAsYouType)
+    queryInputInteractor.connectController(searchBarController)
         
-    hitsViewModel.connectSearcher(searcher)
-    hitsViewModel.connectController(hitsTableViewController)
+    hitsInteractor.connectSearcher(searcher)
+    hitsInteractor.connectController(hitsTableViewController)
     
     searcher.search()
   }

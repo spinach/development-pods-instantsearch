@@ -15,11 +15,11 @@ class IndexSegmentDemoViewController: UIViewController {
   typealias HitType = Movie
 
   let searcher: SingleIndexSearcher
-  let queryInputViewModel: QueryInputViewModel
+  let queryInputInteractor: QueryInputInteractor
   let searchBarController: SearchBarController
-  let hitsViewModel: HitsViewModel<HitType>
+  let hitsInteractor: HitsInteractor<HitType>
   let hitsTableViewController: HitsTableViewController<HitType>
-  let indexSegmentViewModel: IndexSegmentViewModel
+  let indexSegmentInteractor: IndexSegmentInteractor
 
   let indexTitle: Index = .demo(withName: "mobile_demo_movies")
   let indexYearAsc: Index = .demo(withName: "mobile_demo_movies_year_asc")
@@ -34,15 +34,15 @@ class IndexSegmentDemoViewController: UIViewController {
   override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
     self.searcher = SingleIndexSearcher(index: .demo(withName: "mobile_demo_movies"))
     self.searchBarController = SearchBarController(searchBar: .init())
-    self.hitsViewModel = .init()
+    self.hitsInteractor = .init()
     self.hitsTableViewController = .init()
-    self.queryInputViewModel = .init()
+    self.queryInputInteractor = .init()
     indexes = [
       0 : indexTitle,
       1 : indexYearAsc,
       2 : indexYearDesc
     ]
-    indexSegmentViewModel = IndexSegmentViewModel(items: indexes)
+    indexSegmentInteractor = IndexSegmentInteractor(items: indexes)
     super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
     setup()
   }
@@ -60,14 +60,14 @@ class IndexSegmentDemoViewController: UIViewController {
     searcher.search()
     searcher.isDisjunctiveFacetingEnabled = false
 
-    hitsViewModel.connectSearcher(searcher)
-    hitsViewModel.connectController(hitsTableViewController)
+    hitsInteractor.connectSearcher(searcher)
+    hitsInteractor.connectController(hitsTableViewController)
 
-    queryInputViewModel.connectController(searchBarController)
-    queryInputViewModel.connectSearcher(searcher, searchTriggeringMode: .searchAsYouType)
+    queryInputInteractor.connectController(searchBarController)
+    queryInputInteractor.connectSearcher(searcher, searchTriggeringMode: .searchAsYouType)
 
-    indexSegmentViewModel.connectSearcher(searcher: searcher)
-    indexSegmentViewModel.connectController(SelectIndexController(alertController: alert)) { (index) -> String in
+    indexSegmentInteractor.connectSearcher(searcher: searcher)
+    indexSegmentInteractor.connectController(SelectIndexController(alertController: alert)) { (index) -> String in
       switch index {
       case self.indexTitle: return "Default"
       case self.indexYearAsc: return "Year Asc"

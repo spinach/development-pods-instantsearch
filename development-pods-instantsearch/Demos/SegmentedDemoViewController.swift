@@ -17,7 +17,7 @@ class SegmentedDemoViewController: UIViewController {
   let searcher: SingleIndexSearcher
   let filterState: FilterState
 
-  let genderViewModel: SelectableSegmentViewModel<Int, Filter.Facet>
+  let genderInteractor: SelectableSegmentInteractor<Int, Filter.Facet>
   let segmentedController: SegmentedController<Filter.Facet>
   let searchStateViewController: SearchStateViewController
 
@@ -33,7 +33,7 @@ class SegmentedDemoViewController: UIViewController {
       1: female
     ]
     self.filterState = FilterState()
-    self.genderViewModel = SelectableSegmentViewModel(items: items)
+    self.genderInteractor = SelectableSegmentInteractor(items: items)
     self.searchStateViewController = SearchStateViewController()
     segmentedController = SegmentedController<Filter.Facet>(segmentedControl: .init())
     super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
@@ -59,9 +59,9 @@ private extension SegmentedDemoViewController {
     searcher.search()
     searcher.connectFilterState(filterState)
 
-    genderViewModel.connectSearcher(searcher, attribute: genderAttribute)
-    genderViewModel.connectFilterState(filterState, attribute: genderAttribute, operator: .or)
-    genderViewModel.connectController(segmentedController)
+    genderInteractor.connectSearcher(searcher, attribute: genderAttribute)
+    genderInteractor.connectFilterState(filterState, attribute: genderAttribute, operator: .or)
+    genderInteractor.connectController(segmentedController)
     
     searchStateViewController.connectSearcher(searcher)
     searchStateViewController.connectFilterState(filterState)

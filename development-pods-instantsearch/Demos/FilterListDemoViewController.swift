@@ -51,14 +51,14 @@ class FilterListDemoViewController<F: FilterType & Hashable>: UIViewController {
   
   let searcher: SingleIndexSearcher
   let filterState: FilterState
-  let filterListViewModel: FilterListViewModel<F>
+  let filterListInteractor: FilterListInteractor<F>
   let filterListController: FilterListTableViewController<F>
   let searchStateViewController: SearchStateViewController
   
   init(items: [F], selectionMode: SelectionMode) {
     searcher = SingleIndexSearcher(index: .demo(withName: "mobile_demo_filter_list"))
     filterState = .init()
-    filterListViewModel = FilterListViewModel(items: items, selectionMode: selectionMode)
+    filterListInteractor = FilterListInteractor(items: items, selectionMode: selectionMode)
     filterListController = FilterListTableViewController(tableView: .init())
     searchStateViewController = SearchStateViewController()
     super.init(nibName: nil, bundle: nil)
@@ -82,8 +82,8 @@ private extension FilterListDemoViewController {
   func setup() {
     searcher.search()
     searcher.connectFilterState(filterState)
-    filterListViewModel.connect(to: filterListController)
-    filterListViewModel.connectFilterState(filterState, operator: .or)
+    filterListInteractor.connect(to: filterListController)
+    filterListInteractor.connectFilterState(filterState, operator: .or)
     searchStateViewController.connectFilterState(filterState)
     searchStateViewController.connectSearcher(searcher)
   }

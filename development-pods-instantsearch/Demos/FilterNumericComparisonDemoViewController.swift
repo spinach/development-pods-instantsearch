@@ -19,9 +19,9 @@ class FilterNumericComparisonDemoViewController: UIViewController {
   let searcher: SingleIndexSearcher
   let filterState: FilterState
 
-  let numberViewModel: NumberViewModel<Int>
-  let numberViewModel2: NumberViewModel<Int>
-  let numberViewModel3: NumberViewModel<Double>
+  let numberInteractor: NumberInteractor<Int>
+  let numberInteractor2: NumberInteractor<Int>
+  let numberInteractor3: NumberInteractor<Double>
 
   let searchStateViewController: SearchStateViewController
 
@@ -36,9 +36,9 @@ class FilterNumericComparisonDemoViewController: UIViewController {
   override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
     self.searcher = SingleIndexSearcher(index: .demo(withName:"mobile_demo_filter_numeric_comparison"))
     self.filterState = .init()
-    numberViewModel = .init()
-    numberViewModel2 = .init()
-    numberViewModel3 = .init()
+    numberInteractor = .init()
+    numberInteractor2 = .init()
+    numberInteractor3 = .init()
 
     let stepper = UIStepper()
     let textField = UITextField()
@@ -73,17 +73,17 @@ private extension FilterNumericComparisonDemoViewController {
     
     searcher.connectFilterState(filterState)
     
-    numberViewModel.connectFilterState(filterState, attribute: yearAttribute, numericOperator: .greaterThanOrEqual)
-    numberViewModel.connectController(numericTextFieldController1)
-    numberViewModel.connectSearcher(searcher, attribute: yearAttribute)
+    numberInteractor.connectFilterState(filterState, attribute: yearAttribute, numericOperator: .greaterThanOrEqual)
+    numberInteractor.connectController(numericTextFieldController1)
+    numberInteractor.connectSearcher(searcher, attribute: yearAttribute)
 
-    numberViewModel2.connectFilterState(filterState, attribute: yearAttribute, numericOperator: .greaterThanOrEqual)
-    numberViewModel2.connectController(numericTextFieldController2)
-    numberViewModel2.connectSearcher(searcher, attribute: yearAttribute)
+    numberInteractor2.connectFilterState(filterState, attribute: yearAttribute, numericOperator: .greaterThanOrEqual)
+    numberInteractor2.connectController(numericTextFieldController2)
+    numberInteractor2.connectSearcher(searcher, attribute: yearAttribute)
 
-    numberViewModel3.connectFilterState(filterState, attribute: priceAttribute, numericOperator: .greaterThanOrEqual)
-    numberViewModel3.connectController(numericStepperController)
-    numberViewModel3.connectSearcher(searcher, attribute: priceAttribute)
+    numberInteractor3.connectFilterState(filterState, attribute: priceAttribute, numericOperator: .greaterThanOrEqual)
+    numberInteractor3.connectController(numericStepperController)
+    numberInteractor3.connectSearcher(searcher, attribute: priceAttribute)
 
     searchStateViewController.connectSearcher(searcher)
     searchStateViewController.connectFilterState(filterState)
