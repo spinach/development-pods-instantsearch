@@ -15,7 +15,6 @@ class IndexSegmentDemoViewController: UIViewController {
   typealias HitType = Movie
 
   let searcher: SingleIndexSearcher
-  let filterState: FilterState
   let queryInputViewModel: QueryInputViewModel
   let searchBarController: SearchBarController
   let hitsViewModel: HitsViewModel<HitType>
@@ -34,7 +33,6 @@ class IndexSegmentDemoViewController: UIViewController {
 
   override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
     self.searcher = SingleIndexSearcher(index: .demo(withName: "mobile_demo_movies"))
-    self.filterState = .init()
     self.searchBarController = SearchBarController(searchBar: .init())
     self.hitsViewModel = .init()
     self.hitsTableViewController = .init()
@@ -60,10 +58,9 @@ class IndexSegmentDemoViewController: UIViewController {
 
   private func setup() {
     searcher.search()
-    searcher.connectFilterState(filterState)
+    searcher.isDisjunctiveFacetingEnabled = false
 
     hitsViewModel.connectSearcher(searcher)
-    hitsViewModel.connectFilterState(filterState)
     hitsViewModel.connectController(hitsTableViewController)
 
     queryInputViewModel.connectController(searchBarController)
@@ -120,7 +117,7 @@ extension IndexSegmentDemoViewController {
   }
 
   @objc func editButtonTapped(sender: UIBarButtonItem) {
-    self.present(alert, animated: true, completion: nil)
+    present(alert, animated: true, completion: nil)
   }
 
 }
