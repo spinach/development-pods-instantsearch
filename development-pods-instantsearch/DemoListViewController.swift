@@ -105,7 +105,7 @@ class DemoListViewController: UIViewController {
     
     switch index {
     case .singleIndex:
-      viewController = SingleIndexSnippetViewController()
+      viewController = SingleIndexDemoViewController()
       
     case .sffv:
       viewController = FacetSearchDemoViewController()
@@ -136,11 +136,12 @@ class DemoListViewController: UIViewController {
 
     case .currentFilters:
       viewController = CurrentFiltersDemoViewController()
+      
     case .clearFilters:
       viewController = ClearFiltersDemoViewController()
       
     case .multiIndex:
-      viewController = MultiIndexSnippetViewController()
+      viewController = MultiIndexDemoViewController()
       
     case .facetFilterList:
       viewController = FilterListDemo.facet()
