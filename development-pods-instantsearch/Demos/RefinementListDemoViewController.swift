@@ -8,7 +8,7 @@
 
 import Foundation
 import UIKit
-import InstantSearchCore
+import InstantSearch
 
 extension UIColor {
   static let swBackground = UIColor(hexString: "#f7f8fa")

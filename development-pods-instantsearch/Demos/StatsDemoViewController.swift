@@ -10,7 +10,6 @@ import Foundation
 
 import Foundation
 import UIKit
-import InstantSearchCore
 import InstantSearch
 
 class StatsDemoViewController: UIViewController {
@@ -23,7 +22,7 @@ class StatsDemoViewController: UIViewController {
   let searchBarController: SearchBarController
   
   let statsInteractor: StatsInteractor
-  let labelStatsControllerMS: LabelStatsController
+  let labelStatsController: LabelStatsController
   let attributedLabelStatsController: AttributedLabelStatsController
   
   init() {
@@ -32,7 +31,7 @@ class StatsDemoViewController: UIViewController {
     self.queryInputInteractor = .init()
     self.statsInteractor = .init()
     self.attributedLabelStatsController = AttributedLabelStatsController(label: .init())
-    self.labelStatsControllerMS = LabelStatsController(label: .init())
+    self.labelStatsController = LabelStatsController(label: .init())
     super.init(nibName: .none, bundle: .none)
     setup()
   }
@@ -49,10 +48,10 @@ class StatsDemoViewController: UIViewController {
   private func setup() {
     
     queryInputInteractor.connectController(searchBarController)
-    queryInputInteractor.connectSearcher(searcher, searchTriggeringMode: .searchAsYouType)
+    queryInputInteractor.connectSearcher(searcher)
     
     statsInteractor.connectSearcher(searcher)
-    statsInteractor.connectController(labelStatsControllerMS) { stats -> String? in
+    statsInteractor.connectController(labelStatsController) { stats -> String? in
       guard let stats = stats else {
         return nil
       }
@@ -105,9 +104,9 @@ private extension StatsDemoViewController {
     statsMSContainer.heightAnchor.constraint(equalToConstant: 44).isActive = true
     statsMSContainer.translatesAutoresizingMaskIntoConstraints = false
     statsMSContainer.layoutMargins = UIEdgeInsets(top: 4, left: 20, bottom: 4, right: 20)
-    labelStatsControllerMS.label.translatesAutoresizingMaskIntoConstraints = false
-    statsMSContainer.addSubview(labelStatsControllerMS.label)
-    labelStatsControllerMS.label.pin(to: statsMSContainer.layoutMarginsGuide)
+    labelStatsController.label.translatesAutoresizingMaskIntoConstraints = false
+    statsMSContainer.addSubview(labelStatsController.label)
+    labelStatsController.label.pin(to: statsMSContainer.layoutMarginsGuide)
     stackView.addArrangedSubview(statsMSContainer)
     
     let attributedStatsContainer = UIView()

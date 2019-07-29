@@ -7,9 +7,7 @@
 //
 
 import Foundation
-
 import UIKit
-import InstantSearchCore
 import InstantSearch
 import SDWebImage
 
@@ -58,7 +56,7 @@ class LoadingDemoViewController: UIViewController {
     
     hitsTableViewController.tableView.register(MovieTableViewCell.self, forCellReuseIdentifier: hitsTableViewController.cellIdentifier)
     
-    queryInputInteractor.connectSearcher(searcher, searchTriggeringMode: .searchAsYouType)
+    queryInputInteractor.connectSearcher(searcher)
     queryInputInteractor.connectController(searchBarController)
     
     statsInteractor.connectSearcher(searcher)
@@ -67,11 +65,11 @@ class LoadingDemoViewController: UIViewController {
     hitsInteractor.connectSearcher(searcher)
     hitsInteractor.connectController(hitsTableViewController)
     
-    searcher.isLoading.subscribe(with: self) { isLoading in
+    searcher.isLoading.subscribe(with: self) { viewController, isLoading in
       if isLoading {
-        self.activityIndicator.startAnimating()
+        viewController.activityIndicator.startAnimating()
       } else {
-        self.activityIndicator.stopAnimating()
+        viewController.activityIndicator.stopAnimating()
       }
     }.onQueue(.main)
     

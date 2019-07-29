@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import InstantSearchCore
 import InstantSearch
 
 class IndexSegmentDemoViewController: UIViewController {
@@ -64,7 +63,7 @@ class IndexSegmentDemoViewController: UIViewController {
     hitsInteractor.connectController(hitsTableViewController)
 
     queryInputInteractor.connectController(searchBarController)
-    queryInputInteractor.connectSearcher(searcher, searchTriggeringMode: .searchAsYouType)
+    queryInputInteractor.connectSearcher(searcher)
 
     indexSegmentInteractor.connectSearcher(searcher: searcher)
     indexSegmentInteractor.connectController(SelectIndexController(alertController: alert)) { (index) -> String in

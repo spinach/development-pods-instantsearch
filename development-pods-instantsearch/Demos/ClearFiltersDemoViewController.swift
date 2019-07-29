@@ -8,7 +8,6 @@
 
 import Foundation
 import InstantSearch
-import InstantSearchCore
 import UIKit
 
 class ClearFiltersDemoViewController: UIViewController {
@@ -52,18 +51,15 @@ class ClearFiltersDemoViewController: UIViewController {
 
   func setup() {
 
-
-    let groupColor = FilterGroup.ID.or(name: "color", filterType: .facet)
-    let groupCategory = FilterGroup.ID.and(name: "category")
-
-
     let categoryFacet = Filter.Facet(attribute: "category", value: "shoe")
     let redFacet = Filter.Facet(attribute: "color", value: "red")
     let greenFacet = Filter.Facet(attribute: "color", value: "green")
-
-    filterState.addAll(filters: [categoryFacet], toGroupWithID: groupCategory)
-    filterState.addAll(filters: [redFacet, greenFacet], toGroupWithID: groupColor)
+    
+    filterState[and: "category"].add(categoryFacet)
+    filterState[or: "color"].add(redFacet, greenFacet)
     filterState.notifyChange()
+    
+    let groupColor = FilterGroup.ID.or(name: "color", filterType: .facet)
 
     clearColorsInteractor.connectFilterState(filterState, filterGroupIDs: [groupColor], clearMode: .specified)
     clearExceptColorsInteractor.connectFilterState(filterState, filterGroupIDs: [groupColor], clearMode: .except)

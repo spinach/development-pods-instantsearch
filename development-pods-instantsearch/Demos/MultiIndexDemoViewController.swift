@@ -7,7 +7,6 @@
 //
 
 import Foundation
-import InstantSearchCore
 import InstantSearch
 import UIKit
 
@@ -90,7 +89,7 @@ private extension MultiIndexDemoViewController {
   }
   
   func setup() {
-    queryInputInteractor.connectSearcher(multiIndexSearcher, searchTriggeringMode: .searchAsYouType)
+    queryInputInteractor.connectSearcher(multiIndexSearcher)
     queryInputInteractor.connectController(searchBarController)
 
     multiIndexHitsInteractor.connectSearcher(multiIndexSearcher)

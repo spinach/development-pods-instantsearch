@@ -81,9 +81,9 @@ class DemoListViewController: UIViewController {
     tableView.register(UITableViewCell.self, forCellReuseIdentifier: cellIdentifier)
     tableView.delegate = self
     tableView.dataSource = self
-    hitsInteractor.onResultsUpdated.subscribe(with: self) { results in
+    hitsInteractor.onResultsUpdated.subscribe(with: self) { viewController, results in
       let demos = (try? results.deserializeHits() as [DemoHit]) ?? []
-      self.updateDemos(demos.map { $0.object })
+      viewController.updateDemos(demos.map { $0.object })
     }
   }
   
@@ -105,7 +105,7 @@ class DemoListViewController: UIViewController {
     
     switch index {
     case .singleIndex:
-      viewController = SingleIndexDemoViewController()
+      viewController = SingleIndexSnippetViewController()
       
     case .sffv:
       viewController = FacetSearchDemoViewController()
@@ -140,7 +140,7 @@ class DemoListViewController: UIViewController {
       viewController = ClearFiltersDemoViewController()
       
     case .multiIndex:
-      viewController = MultiIndexDemoViewController()
+      viewController = MultiIndexSnippetViewController()
       
     case .facetFilterList:
       viewController = FilterListDemo.facet()

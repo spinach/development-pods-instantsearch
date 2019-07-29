@@ -7,7 +7,6 @@
 //
 
 import Foundation
-import InstantSearchCore
 import InstantSearch
 
 struct FilterListDemo {

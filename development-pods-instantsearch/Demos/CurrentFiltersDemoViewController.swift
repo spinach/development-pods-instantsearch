@@ -8,7 +8,6 @@
 
 import Foundation
 import InstantSearch
-import InstantSearchCore
 import UIKit
 import TagListView
 
@@ -77,17 +76,16 @@ private extension CurrentFiltersDemoViewController {
     let filterFacet3 = Filter.Facet(attribute: "category", value: "clothes")
     let filterFacet4 = Filter.Facet(attribute: "category", value: "kitchen")
 
-    filterState.add(filterFacet1, toGroupWithID: groupFacets)
-    filterState.add(filterFacet2, toGroupWithID: groupFacets)
-    filterState.add(filterFacet3, toGroupWithID: groupFacets)
-    filterState.add(filterFacet4, toGroupWithID: groupFacets)
-
+    filterState[or: "filterFacets"].add(filterFacet1,
+                                        filterFacet2,
+                                        filterFacet3,
+                                        filterFacet4)
+    
     let filterNumeric1 = Filter.Numeric(attribute: "price", operator: .greaterThan, value: 10)
     let filterNumeric2 = Filter.Numeric(attribute: "price", operator: .lessThan, value: 20)
 
-
-    filterState.add(filterNumeric1, toGroupWithID: groupNumerics)
-    filterState.add(filterNumeric2, toGroupWithID: groupNumerics)
+    filterState[and: "filterNumerics"].add(filterNumeric1,
+                                           filterNumeric2)
 
     filterState.notifyChange()
   }

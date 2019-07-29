@@ -9,7 +9,6 @@
 import Foundation
 import UIKit
 import InstantSearch
-import InstantSearchCore
 
 class FilterNumericComparisonDemoViewController: UIViewController {
 
@@ -39,7 +38,7 @@ class FilterNumericComparisonDemoViewController: UIViewController {
     numberInteractor = .init()
     numberInteractor2 = .init()
     numberInteractor3 = .init()
-
+  
     let stepper = UIStepper()
     let textField = UITextField()
     let textField2 = UITextField()

@@ -8,7 +8,6 @@
 
 import Foundation
 import UIKit
-import InstantSearchCore
 import InstantSearch
 
 class HighlightingDemoViewController: UIViewController {
@@ -48,7 +47,7 @@ class HighlightingDemoViewController: UIViewController {
     
     hitsTableViewController.tableView.register(MovieTableViewCell.self, forCellReuseIdentifier: hitsTableViewController.cellIdentifier)
     
-    queryInputInteractor.connectSearcher(searcher, searchTriggeringMode: .searchAsYouType)
+    queryInputInteractor.connectSearcher(searcher)
     queryInputInteractor.connectController(searchBarController)
         
     hitsInteractor.connectSearcher(searcher)

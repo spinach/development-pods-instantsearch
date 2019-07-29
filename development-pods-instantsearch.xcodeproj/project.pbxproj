@@ -3,12 +3,14 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 51;
+	objectVersion = 50;
 	objects = {
 
 /* Begin PBXBuildFile section */
 		9BE878203D48991B58641B3C /* Pods_development_pods_instantsearchTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A3124C071D3F19C1B835884C /* Pods_development_pods_instantsearchTests.framework */; };
 		A174DB7FFFE740D94F373ED6 /* Pods_development_pods_instantsearch.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BE4725361587DFDC81F01BCB /* Pods_development_pods_instantsearch.framework */; };
+		AF06184522E9EF2D00FDBAAE /* MultiIndexSnippet.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF06184422E9EF2D00FDBAAE /* MultiIndexSnippet.swift */; };
+		AF06184C22E9F94200FDBAAE /* SingleIndexSnippet.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF06184B22E9F94200FDBAAE /* SingleIndexSnippet.swift */; };
 		AF21EE9E22B26187004A0542 /* StatsDemoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF21EE9D22B26187004A0542 /* StatsDemoViewController.swift */; };
 		AF21EEC122B78F89004A0542 /* HighlightingDemoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF21EEC022B78F89004A0542 /* HighlightingDemoViewController.swift */; };
 		AF21EEC322B94F40004A0542 /* MovieCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF21EEC222B94F40004A0542 /* MovieCollectionViewCell.swift */; };
@@ -40,7 +42,6 @@
 		E2146BEE22B2A18E00927350 /* ClearFiltersDemoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2146BED22B2A18E00927350 /* ClearFiltersDemoViewController.swift */; };
 		E2146C1022B3DADE00927350 /* FilterNumericRangeDemoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2146C0F22B3DADE00927350 /* FilterNumericRangeDemoViewController.swift */; };
 		E2146C1222B3DE4400927350 /* NumericRangeController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2146C1122B3DE4400927350 /* NumericRangeController.swift */; };
-		E24233DF223AAD1D008F24FB /* PotentialInstantSearch.swift in Sources */ = {isa = PBXBuildFile; fileRef = E24233DE223AAD1D008F24FB /* PotentialInstantSearch.swift */; };
 		E24DC9D1222EB72B006F1EED /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E24DC9D0222EB72B006F1EED /* AppDelegate.swift */; };
 		E24DC9D3222EB72B006F1EED /* SingleIndexDemoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E24DC9D2222EB72B006F1EED /* SingleIndexDemoViewController.swift */; };
 		E24DC9D8222EB72B006F1EED /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E24DC9D6222EB72B006F1EED /* Main.storyboard */; };
@@ -69,6 +70,8 @@
 		38057E60EE4A921AB878A260 /* Pods-development-pods-instantsearch.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-development-pods-instantsearch.release.xcconfig"; path = "Target Support Files/Pods-development-pods-instantsearch/Pods-development-pods-instantsearch.release.xcconfig"; sourceTree = "<group>"; };
 		6CF06BA2662866DC7F8CA6D5 /* Pods-development-pods-instantsearchTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-development-pods-instantsearchTests.release.xcconfig"; path = "Target Support Files/Pods-development-pods-instantsearchTests/Pods-development-pods-instantsearchTests.release.xcconfig"; sourceTree = "<group>"; };
 		A3124C071D3F19C1B835884C /* Pods_development_pods_instantsearchTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_development_pods_instantsearchTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		AF06184422E9EF2D00FDBAAE /* MultiIndexSnippet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultiIndexSnippet.swift; sourceTree = "<group>"; };
+		AF06184B22E9F94200FDBAAE /* SingleIndexSnippet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SingleIndexSnippet.swift; sourceTree = "<group>"; };
 		AF21EE9D22B26187004A0542 /* StatsDemoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatsDemoViewController.swift; sourceTree = "<group>"; };
 		AF21EEC022B78F89004A0542 /* HighlightingDemoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HighlightingDemoViewController.swift; sourceTree = "<group>"; };
 		AF21EEC222B94F40004A0542 /* MovieCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieCollectionViewCell.swift; sourceTree = "<group>"; };
@@ -102,7 +105,6 @@
 		E2146BED22B2A18E00927350 /* ClearFiltersDemoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClearFiltersDemoViewController.swift; sourceTree = "<group>"; };
 		E2146C0F22B3DADE00927350 /* FilterNumericRangeDemoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterNumericRangeDemoViewController.swift; sourceTree = "<group>"; };
 		E2146C1122B3DE4400927350 /* NumericRangeController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NumericRangeController.swift; sourceTree = "<group>"; };
-		E24233DE223AAD1D008F24FB /* PotentialInstantSearch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PotentialInstantSearch.swift; sourceTree = "<group>"; };
 		E24DC9CD222EB72B006F1EED /* development-pods-instantsearch.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "development-pods-instantsearch.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		E24DC9D0222EB72B006F1EED /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		E24DC9D2222EB72B006F1EED /* SingleIndexDemoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SingleIndexDemoViewController.swift; sourceTree = "<group>"; };
@@ -158,6 +160,8 @@
 			isa = PBXGroup;
 			children = (
 				E24DC9D2222EB72B006F1EED /* SingleIndexDemoViewController.swift */,
+				AF06184B22E9F94200FDBAAE /* SingleIndexSnippet.swift */,
+				AF06184422E9EF2D00FDBAAE /* MultiIndexSnippet.swift */,
 				AFE6E3D422ACF585005BA44D /* MultiIndexDemoViewController.swift */,
 				AF536C36227C7C79006DAE84 /* RefinementListDemoViewController.swift */,
 				AF21EECC22BA3B83004A0542 /* RefinementPersistentListDemoViewController.swift */,
@@ -230,7 +234,6 @@
 				E265DBED2273341D002DC989 /* FacetListTableController.swift */,
 				AF2B261822836430006DE798 /* SegmentedController.swift */,
 				E2E09E3C223276C800F3056D /* Helpers.swift */,
-				E24233DE223AAD1D008F24FB /* PotentialInstantSearch.swift */,
 				E24DC9D6222EB72B006F1EED /* Main.storyboard */,
 				E24DC9D9222EB72C006F1EED /* Assets.xcassets */,
 				E24DC9DB222EB72C006F1EED /* LaunchScreen.storyboard */,
@@ -466,9 +469,9 @@
 				AFDF274C22B13E9300BA08CB /* CellConfigurator.swift in Sources */,
 				E2146BEE22B2A18E00927350 /* ClearFiltersDemoViewController.swift in Sources */,
 				AF21EEC322B94F40004A0542 /* MovieCollectionViewCell.swift in Sources */,
-				E24233DF223AAD1D008F24FB /* PotentialInstantSearch.swift in Sources */,
 				E2EBE74222B15B0A00B91B23 /* CurrentFiltersDemoViewController.swift in Sources */,
 				AF939694229848B700757257 /* SearchStateViewController.swift in Sources */,
+				AF06184522E9EF2D00FDBAAE /* MultiIndexSnippet.swift in Sources */,
 				E25D634E22D37144008CD0FD /* HierarchicalDemoViewController.swift in Sources */,
 				E2146BE222B251B900927350 /* TagListViewController.swift in Sources */,
 				E24DC9D3222EB72B006F1EED /* SingleIndexDemoViewController.swift in Sources */,
@@ -480,6 +483,7 @@
 				AFE6E3D522ACF585005BA44D /* MultiIndexDemoViewController.swift in Sources */,
 				E2146C1222B3DE4400927350 /* NumericRangeController.swift in Sources */,
 				AF536C35227C78AD006DAE84 /* ToggleDemoViewController.swift in Sources */,
+				AF06184C22E9F94200FDBAAE /* SingleIndexSnippet.swift in Sources */,
 				AFDF275222B23EB100BA08CB /* SearchInputDemoViewController.swift in Sources */,
 				E2E09E3D223276C800F3056D /* Helpers.swift in Sources */,
 				AF21EECB22B9574E004A0542 /* UIView+Layout.swift in Sources */,

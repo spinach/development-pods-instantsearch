@@ -31,13 +31,12 @@ class FilterStateViewController: UIViewController {
     stateLabel.numberOfLines = 0
   }
   
-  func refreshStateLabel(with filterState: ReadOnlyFiltersContainer) {
-    stateLabel.attributedText = (filterState as! ReadOnlyFiltersContainer).toFilterGroups().sqlFormWithSyntaxHighlighting(colorMap: colorMap)
-    view.layoutIfNeeded()
-  }
-  
   func connectTo(_ filterState: FilterState) {
-    filterState.onChange.subscribePast(with: self, callback: refreshStateLabel)
+    filterState.onChange.subscribePast(with: self) { viewController, filterState in
+      let filtersText = filterState.toFilterGroups().sqlFormWithSyntaxHighlighting(colorMap: viewController.colorMap)
+      viewController.stateLabel.attributedText = filtersText
+      viewController.view.layoutIfNeeded()
+    }
   }
   
 }

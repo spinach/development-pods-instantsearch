@@ -7,7 +7,6 @@
 //
 
 import Foundation
-import InstantSearchCore
 import InstantSearch
 
 class FacetSearchDemoViewController: UIViewController {
@@ -70,7 +69,7 @@ private extension FacetSearchDemoViewController {
     searchStateViewController.connectFacetSearcher(facetSearcher)
 
     queryInputInteractor.connectController(searchBarController)
-    queryInputInteractor.connectSearcher(facetSearcher, searchTriggeringMode: .searchAsYouType)
+    queryInputInteractor.connectSearcher(facetSearcher)
     
     categoryListInteractor.connectFacetSearcher(facetSearcher)
     categoryListInteractor.connectFilterState(filterState, with: Attribute("brand"), operator: .or)

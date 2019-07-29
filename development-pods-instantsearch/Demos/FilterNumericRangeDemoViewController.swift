@@ -9,7 +9,6 @@
 import Foundation
 import UIKit
 import InstantSearch
-import InstantSearchCore
 import WARangeSlider
 
 class FilterNumericRangeDemoViewController: UIViewController {
@@ -111,10 +110,10 @@ private extension FilterNumericRangeDemoViewController {
     sliderStackView1.addArrangedSubview(sliderLower1)
     sliderStackView1.addArrangedSubview(numericRangeController1.rangerSlider)
     sliderStackView1.addArrangedSubview(sliderUpper1)
-    sliderInteractor1.onItemChanged.subscribePast(with: self) { (range) in
+    sliderInteractor1.onItemChanged.subscribePast(with: self) { viewController, range in
       guard let range = range else { return }
-      self.sliderLower1.text = "\(range.lowerBound.rounded(toPlaces: 2))"
-      self.sliderUpper1.text = "\(range.upperBound.rounded(toPlaces: 2))"
+      viewController.sliderLower1.text = "\(range.lowerBound.rounded(toPlaces: 2))"
+      viewController.sliderUpper1.text = "\(range.upperBound.rounded(toPlaces: 2))"
     }
 
     sliderStackView1.heightAnchor.constraint(equalToConstant: 50).isActive = true
@@ -125,10 +124,10 @@ private extension FilterNumericRangeDemoViewController {
     sliderStackView2.addArrangedSubview(sliderLower2)
     sliderStackView2.addArrangedSubview(numericRangeController2.rangerSlider)
     sliderStackView2.addArrangedSubview(sliderUpper2)
-    sliderInteractor2.onItemChanged.subscribePast(with: self) { (range) in
+    sliderInteractor2.onItemChanged.subscribePast(with: self) { viewController, range in
       guard let range = range else { return }
-      self.sliderLower2.text = "\(range.lowerBound.rounded(toPlaces: 2))"
-      self.sliderUpper2.text = "\(range.upperBound.rounded(toPlaces: 2))"
+      viewController.sliderLower2.text = "\(range.lowerBound.rounded(toPlaces: 2))"
+      viewController.sliderUpper2.text = "\(range.upperBound.rounded(toPlaces: 2))"
     }
     mainStackView.addArrangedSubview(sliderStackView2)
 

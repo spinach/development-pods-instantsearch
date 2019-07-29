@@ -8,7 +8,7 @@
 
 import Foundation
 import UIKit
-import InstantSearchCore
+import InstantSearch
 
 class SegmentedDemoViewController: UIViewController {
 
