@@ -34,7 +34,7 @@ struct Demo: Codable {
     case numericFilterList = "filter_list_numeric"
     case tagFilterList = "filter_list_tag"
     case filterNumericComparison = "filter_numeric_comparison"
-    case sortBy = "index_segment"
+    case sortBy = "sort_by"
     case currentFilters = "filter_current"
     case searchAsYouType = "search_as_you_type"
     case searchOnSubmit = "search_on_submit"
