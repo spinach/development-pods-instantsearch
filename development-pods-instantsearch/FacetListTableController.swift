@@ -23,6 +23,7 @@ class FacetListTableController: NSObject, FacetListController {
 
   var selectableItems: [RefinementFacet] = []
   let titleDescriptor: TitleDescriptor?
+  private let cellID = "cellID"
 
   public init(tableView: UITableView, titleDescriptor: TitleDescriptor? = nil) {
     self.tableView = tableView
@@ -30,6 +31,7 @@ class FacetListTableController: NSObject, FacetListController {
     super.init()
     tableView.dataSource = self
     tableView.delegate = self
+    tableView.register(UITableViewCell.self, forCellReuseIdentifier: cellID)
   }
 
   // MARK: RefinementFacetsViewController protocol
@@ -51,13 +53,11 @@ extension FacetListTableController: UITableViewDataSource {
   }
   
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-    //TODO: Move CellId to a variable.
-    let cell = tableView.dequeueReusableCell(withIdentifier: "CellId", for: indexPath)
-    
-    let selectableRefinement: RefinementFacet = selectableItems[indexPath.row]
-    
+    let cell = tableView.dequeueReusableCell(withIdentifier: cellID, for: indexPath)
+    let selectableRefinement = selectableItems[indexPath.row]
     let facetAttributedString = NSMutableAttributedString(string: selectableRefinement.item.value)
-    let facetCountStringColor = [NSAttributedString.Key.foregroundColor: UIColor.gray, .font: UIFont.systemFont(ofSize: 14)]
+    let facetCountStringColor: [NSAttributedString.Key: Any] = [.foregroundColor: UIColor.gray,
+                                                                .font: UIFont.systemFont(ofSize: 14)]
     let facetCountString = NSAttributedString(string: " (\(selectableRefinement.item.count))", attributes: facetCountStringColor)
     facetAttributedString.append(facetCountString)
     
