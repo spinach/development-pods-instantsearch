@@ -11,43 +11,32 @@ import InstantSearch
 
 class SingleIndexSnippetViewController: UIViewController {
   
-  let searcher: SingleIndexSearcher
+  let searcher: SingleIndexSearcher = .init(appID: "latency", apiKey: "1f6fd3a6fb973cb08419fe7d288fa4db", indexName: "mobile_demo_movies")
   
-  let queryInputInteractor: QueryInputInteractor
-  let searchBarController: SearchBarController
+  let queryInputInteractor: QueryInputInteractor = .init()
+  let searchBarController: SearchBarController = .init(searchBar: UISearchBar())
   
-  let statsInteractor: StatsInteractor
-  let statsController: LabelStatsController
+  let statsInteractor: StatsInteractor = .init()
+  let statsController: LabelStatsController = .init(label: UILabel())
   
-  let hitsInteractor: HitsInteractor<JSON>
-  let hitsTableController: HitsTableController<HitsInteractor<JSON>>
+  let hitsInteractor: HitsInteractor<JSON> = .init()
+  let hitsTableController: HitsTableController<HitsInteractor<JSON>> = .init(tableView: UITableView())
   
-  override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
-    
-    searcher = SingleIndexSearcher(appID: "latency",
-                                   apiKey: "1f6fd3a6fb973cb08419fe7d288fa4db",
-                                   indexName: "mobile_demo_movies")
-    
-    queryInputInteractor = .init()
-    searchBarController = .init(searchBar: UISearchBar())
-    
-    statsInteractor = .init()
-    statsController = .init(label: UILabel())
-    
-    hitsInteractor = .init()
-    hitsTableController = .init(tableView: UITableView())
-    
-    super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
-  }
+  let genreAttribute: Attribute = "genre"
+  let filterState: FilterState = .init()
   
-  required init?(coder aDecoder: NSCoder) {
-    fatalError("init(coder:) has not been implemented")
-  }
+  let genreInteractor: SelectableFacetsInteractor = .init(selectionMode: .multiple)
+  let genreTableViewController: UITableViewController = .init()
+  lazy var genreListController: FacetListTableController = {
+    return .init(tableView: genreTableViewController.tableView, titleDescriptor: .none)
+  }()
+  
   
   override func viewDidLoad() {
     super.viewDidLoad()
     setup()
     configureUI()
+    navigationController?.setNavigationBarHidden(true, animated: false)
   }
   
 }
@@ -55,6 +44,8 @@ class SingleIndexSnippetViewController: UIViewController {
 private extension SingleIndexSnippetViewController {
   
   func setup() {
+    
+    searcher.connectFilterState(filterState)
     
     queryInputInteractor.connectSearcher(searcher)
     queryInputInteractor.connectController(searchBarController)
@@ -64,7 +55,8 @@ private extension SingleIndexSnippetViewController {
     
     hitsInteractor.connectSearcher(searcher)
     hitsInteractor.connectController(hitsTableController)
-    
+    hitsInteractor.connectFilterState(filterState)
+
     hitsTableController.tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cellID")
     hitsTableController.dataSource = .init(cellConfigurator: { tableView, hit, indexPath in
       let cell = tableView.dequeueReusableCell(withIdentifier: "cellID", for: indexPath)
@@ -76,11 +68,15 @@ private extension SingleIndexSnippetViewController {
       
     })
     
+    genreInteractor.connectSearcher(searcher, with: genreAttribute)
+    genreInteractor.connectFilterState(filterState, with: genreAttribute, operator: .or)
+    genreInteractor.connectController(genreListController)
+    
     searcher.search()
   }
   
   func configureUI() {
-    
+  
     view.backgroundColor = .white
     
     let stackView = UIStackView()
@@ -94,13 +90,29 @@ private extension SingleIndexSnippetViewController {
     searchBar.translatesAutoresizingMaskIntoConstraints = false
     searchBar.heightAnchor.constraint(equalToConstant: 40).isActive = true
     searchBar.searchBarStyle = .minimal
-    stackView.addArrangedSubview(searchBar)
+    
+    let filterButton = UIButton()
+    filterButton.setTitleColor(.black, for: .normal)
+    filterButton.setTitle("Filter", for: .normal)
+    filterButton.addTarget(self, action: #selector(showFilters), for: .touchUpInside)
+    
+    let searchBarFilterButtonStackView = UIStackView()
+    searchBarFilterButtonStackView.translatesAutoresizingMaskIntoConstraints = false
+    searchBarFilterButtonStackView.spacing = 4
+    searchBarFilterButtonStackView.axis = .horizontal
+    searchBarFilterButtonStackView.addArrangedSubview(searchBar)
+    searchBarFilterButtonStackView.addArrangedSubview(filterButton)
+    let spacer = UIView()
+    spacer.widthAnchor.constraint(equalToConstant: 4).isActive = true
+    searchBarFilterButtonStackView.addArrangedSubview(spacer)
+    
+    stackView.addArrangedSubview(searchBarFilterButtonStackView)
     
     let statsLabel = statsController.label
     statsLabel.translatesAutoresizingMaskIntoConstraints = false
     statsLabel.heightAnchor.constraint(equalToConstant: 16).isActive = true
     stackView.addArrangedSubview(statsLabel)
-    
+
     stackView.addArrangedSubview(hitsTableController.tableView)
     
     view.addSubview(stackView)
@@ -112,6 +124,19 @@ private extension SingleIndexSnippetViewController {
       stackView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
       ])
     
+    genreTableViewController.title = "Genre"
+    genreTableViewController.view.backgroundColor = .white
+    
+  }
+  
+  @objc func showFilters() {
+    let navigationController = UINavigationController(rootViewController: genreTableViewController)
+    genreTableViewController.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(dismissFilters))
+    present(navigationController, animated: true, completion: .none)
+  }
+  
+  @objc func dismissFilters() {
+    dismiss(animated: true, completion: .none)
   }
   
 }
