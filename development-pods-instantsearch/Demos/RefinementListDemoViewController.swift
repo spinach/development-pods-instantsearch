@@ -22,9 +22,9 @@ class RefinementListDemoViewController: UIViewController {
   
   let searcher: SingleIndexSearcher
   let filterState: FilterState
-  let colorInteractor: SelectableFacetsInteractor
-  let categoryInteractor: SelectableFacetsInteractor
-  let promotionInteractor: SelectableFacetsInteractor
+  let colorInteractor: FacetListInteractor
+  let categoryInteractor: FacetListInteractor
+  let promotionInteractor: FacetListInteractor
 
   let searchStateViewController: SearchStateViewController
   let colorController: FacetListTableController

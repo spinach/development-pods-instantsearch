@@ -25,7 +25,7 @@ class SingleIndexSnippetViewController: UIViewController {
   let genreAttribute: Attribute = "genre"
   let filterState: FilterState = .init()
   
-  let genreInteractor: SelectableFacetsInteractor = .init(selectionMode: .multiple)
+  let genreInteractor: FacetListInteractor = .init(selectionMode: .multiple)
   let genreTableViewController: UITableViewController = .init()
   lazy var genreListController: FacetListTableController = {
     return .init(tableView: genreTableViewController.tableView, titleDescriptor: .none)

@@ -21,8 +21,8 @@ struct Demo: Codable {
   let index: String
   
   enum ID: String {
-    case singleIndex = "paging_single_searcher"
-    case multiIndex = "nested_list"
+    case singleIndex = "paging_single_index"
+    case multiIndex = "paging_multiple_index"
     case sffv = "facet_list_search"
     case toggle = "filter_toggle"
     case toggleDefault = "filter_toggle_default"

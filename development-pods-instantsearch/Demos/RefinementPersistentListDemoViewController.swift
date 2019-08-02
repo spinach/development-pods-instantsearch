@@ -15,8 +15,8 @@ class RefinementPersistentListDemoViewController: UIViewController {
   let searcher: SingleIndexSearcher
   let filterState: FilterState
   
-  let colorInteractor: SelectableFacetsInteractor
-  let categoryInteractor: SelectableFacetsInteractor
+  let colorInteractor: FacetListInteractor
+  let categoryInteractor: FacetListInteractor
 
   let searchStateViewController: SearchStateViewController
   let colorListController: FacetListTableController

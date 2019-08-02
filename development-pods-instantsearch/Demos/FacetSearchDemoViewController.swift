@@ -16,7 +16,7 @@ class FacetSearchDemoViewController: UIViewController {
   let facetSearcher: FacetSearcher
   let searchBarController: SearchBarController
   let categoryController: FacetListTableController
-  let categoryListInteractor: SelectableFacetsInteractor
+  let categoryListInteractor: FacetListInteractor
   let searchStateViewController: SearchStateViewController
   
   let queryInputInteractor: QueryInputInteractor

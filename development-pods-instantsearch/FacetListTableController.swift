@@ -21,7 +21,7 @@ class FacetListTableController: NSObject, FacetListController {
 
   var tableView: UITableView
 
-  var selectableItems: [RefinementFacet] = []
+  var selectableItems: [SelectableItem<Facet>] = []
   let titleDescriptor: TitleDescriptor?
   private let cellID = "cellID"
 
@@ -36,7 +36,7 @@ class FacetListTableController: NSObject, FacetListController {
 
   // MARK: RefinementFacetsViewController protocol
 
-  func setSelectableItems(selectableItems: [RefinementFacet]) {
+  func setSelectableItems(selectableItems: [SelectableItem<Facet>]) {
     self.selectableItems = selectableItems
   }
 
