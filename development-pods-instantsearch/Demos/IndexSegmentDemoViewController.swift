@@ -26,7 +26,12 @@ class IndexSegmentDemoViewController: UIViewController {
 
   let indexes: [Int: Index]
 
-  let alert = UIAlertController(title: "Change Index", message: "Please select a new index", preferredStyle: .actionSheet)
+  let selectIndexAlertController: SelectIndexController = {
+    let alert = UIAlertController(title: "Change Index",
+                                  message: "Please select a new index",
+                                  preferredStyle: .actionSheet)
+    return .init(alertController: alert)
+  }()
 
   private let cellIdentifier = "CellID"
 
@@ -66,7 +71,8 @@ class IndexSegmentDemoViewController: UIViewController {
     queryInputInteractor.connectSearcher(searcher)
 
     indexSegmentInteractor.connectSearcher(searcher: searcher)
-    indexSegmentInteractor.connectController(SelectIndexController(alertController: alert)) { (index) -> String in
+
+    indexSegmentInteractor.connectController(selectIndexAlertController) { (index) -> String in
       switch index {
       case self.indexTitle: return "Default"
       case self.indexYearAsc: return "Year Asc"
@@ -116,7 +122,7 @@ extension IndexSegmentDemoViewController {
   }
 
   @objc func editButtonTapped(sender: UIBarButtonItem) {
-    present(alert, animated: true, completion: nil)
+    present(selectIndexAlertController.alertController, animated: true, completion: nil)
   }
 
 }
