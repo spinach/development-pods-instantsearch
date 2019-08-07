@@ -20,12 +20,11 @@
 		AF21EECB22B9574E004A0542 /* UIView+Layout.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF21EECA22B9574E004A0542 /* UIView+Layout.swift */; };
 		AF21EECD22BA3B83004A0542 /* RefinementPersistentListDemoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF21EECC22BA3B83004A0542 /* RefinementPersistentListDemoViewController.swift */; };
 		AF21EED922C21788004A0542 /* LoadingDemoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF21EED822C21788004A0542 /* LoadingDemoViewController.swift */; };
-		AF2B261922836430006DE798 /* SegmentedController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF2B261822836430006DE798 /* SegmentedController.swift */; };
 		AF536C35227C78AD006DAE84 /* ToggleDemoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF536C34227C78AD006DAE84 /* ToggleDemoViewController.swift */; };
 		AF536C37227C7C79006DAE84 /* RefinementListDemoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF536C36227C7C79006DAE84 /* RefinementListDemoViewController.swift */; };
 		AF536C392280671B006DAE84 /* DemoHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF536C382280671B006DAE84 /* DemoHelper.swift */; };
-		AF5D103722F476CF00DE13AA /* FacetListTableController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E265DBED2273341D002DC989 /* FacetListTableController.swift */; };
 		AF5D103822F476DC00DE13AA /* HitsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFDF275322B243B200BA08CB /* HitsTableViewController.swift */; };
+		AF6778B622FB27FE00850ACC /* FacetListTableController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E265DBED2273341D002DC989 /* FacetListTableController.swift */; };
 		AF939675229700D500757257 /* FilterStateViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF939674229700D500757257 /* FilterStateViewController.swift */; };
 		AF939694229848B700757257 /* SearchStateViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF939693229848B700757257 /* SearchStateViewController.swift */; };
 		AF939696229A917B00757257 /* DemoListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF939695229A917B00757257 /* DemoListViewController.swift */; };
@@ -81,7 +80,6 @@
 		AF21EECA22B9574E004A0542 /* UIView+Layout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Layout.swift"; sourceTree = "<group>"; };
 		AF21EECC22BA3B83004A0542 /* RefinementPersistentListDemoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RefinementPersistentListDemoViewController.swift; sourceTree = "<group>"; };
 		AF21EED822C21788004A0542 /* LoadingDemoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingDemoViewController.swift; sourceTree = "<group>"; };
-		AF2B261822836430006DE798 /* SegmentedController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SegmentedController.swift; sourceTree = "<group>"; };
 		AF536C34227C78AD006DAE84 /* ToggleDemoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToggleDemoViewController.swift; sourceTree = "<group>"; };
 		AF536C36227C7C79006DAE84 /* RefinementListDemoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RefinementListDemoViewController.swift; sourceTree = "<group>"; };
 		AF536C382280671B006DAE84 /* DemoHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DemoHelper.swift; sourceTree = "<group>"; };
@@ -117,7 +115,6 @@
 		E24DC9E9222EB72C006F1EED /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		E25D634D22D37144008CD0FD /* HierarchicalDemoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HierarchicalDemoViewController.swift; sourceTree = "<group>"; };
 		E265DBED2273341D002DC989 /* FacetListTableController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FacetListTableController.swift; sourceTree = "<group>"; };
-		E29E45712243FAAE005B358D /* SingleIndex.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = SingleIndex.playground; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		E2B03F66229541F500DBE6D3 /* FacetSearchDemoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FacetSearchDemoViewController.swift; sourceTree = "<group>"; };
 		E2E09E3C223276C800F3056D /* Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Helpers.swift; sourceTree = "<group>"; };
 		E2EBE74122B15B0A00B91B23 /* CurrentFiltersDemoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentFiltersDemoViewController.swift; sourceTree = "<group>"; };
@@ -163,6 +160,22 @@
 				AFDF274922B13E3A00BA08CB /* Actor.swift */,
 			);
 			path = Models;
+			sourceTree = "<group>";
+		};
+		AF6778B722FB282400850ACC /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				AF536C382280671B006DAE84 /* DemoHelper.swift */,
+				AFDF275322B243B200BA08CB /* HitsTableViewController.swift */,
+				AFDF274B22B13E9300BA08CB /* CellConfigurator.swift */,
+				AFDF274D22B1493700BA08CB /* UITableView+Convenience.swift */,
+				E2E09E3C223276C800F3056D /* Helpers.swift */,
+				E265DBED2273341D002DC989 /* FacetListTableController.swift */,
+				AF939674229700D500757257 /* FilterStateViewController.swift */,
+				AF939693229848B700757257 /* SearchStateViewController.swift */,
+				E2146C1122B3DE4400927350 /* NumericRangeController.swift */,
+			);
+			path = Helpers;
 			sourceTree = "<group>";
 		};
 		AF939699229AD21C00757257 /* Demos */ = {
@@ -232,23 +245,13 @@
 				AF5D103122F45F4C00DE13AA /* Models */,
 				E2146BE022B251AC00927350 /* Views */,
 				AF939699229AD21C00757257 /* Demos */,
-				E29E45712243FAAE005B358D /* SingleIndex.playground */,
+				AF6778B722FB282400850ACC /* Helpers */,
 				E24DC9D0222EB72B006F1EED /* AppDelegate.swift */,
-				AF536C382280671B006DAE84 /* DemoHelper.swift */,
 				AF939695229A917B00757257 /* DemoListViewController.swift */,
-				AFDF275322B243B200BA08CB /* HitsTableViewController.swift */,
-				AFDF274B22B13E9300BA08CB /* CellConfigurator.swift */,
-				AFDF274D22B1493700BA08CB /* UITableView+Convenience.swift */,
-				E265DBED2273341D002DC989 /* FacetListTableController.swift */,
-				AF2B261822836430006DE798 /* SegmentedController.swift */,
-				E2E09E3C223276C800F3056D /* Helpers.swift */,
 				E24DC9D6222EB72B006F1EED /* Main.storyboard */,
 				E24DC9D9222EB72C006F1EED /* Assets.xcassets */,
 				E24DC9DB222EB72C006F1EED /* LaunchScreen.storyboard */,
 				E24DC9DE222EB72C006F1EED /* Info.plist */,
-				AF939674229700D500757257 /* FilterStateViewController.swift */,
-				AF939693229848B700757257 /* SearchStateViewController.swift */,
-				E2146C1122B3DE4400927350 /* NumericRangeController.swift */,
 			);
 			path = "development-pods-instantsearch";
 			sourceTree = "<group>";
@@ -476,14 +479,13 @@
 				AF5D103822F476DC00DE13AA /* HitsTableViewController.swift in Sources */,
 				E2146BEE22B2A18E00927350 /* ClearFiltersDemoViewController.swift in Sources */,
 				AF21EEC322B94F40004A0542 /* MovieCollectionViewCell.swift in Sources */,
+				AF6778B622FB27FE00850ACC /* FacetListTableController.swift in Sources */,
 				E2EBE74222B15B0A00B91B23 /* CurrentFiltersDemoViewController.swift in Sources */,
-				AF5D103722F476CF00DE13AA /* FacetListTableController.swift in Sources */,
 				AF939694229848B700757257 /* SearchStateViewController.swift in Sources */,
 				AF06184522E9EF2D00FDBAAE /* MultiIndexSnippetViewController.swift in Sources */,
 				E25D634E22D37144008CD0FD /* HierarchicalDemoViewController.swift in Sources */,
 				E2146BE222B251B900927350 /* TagListViewController.swift in Sources */,
 				E24DC9D3222EB72B006F1EED /* SingleIndexDemoViewController.swift in Sources */,
-				AF2B261922836430006DE798 /* SegmentedController.swift in Sources */,
 				AF939696229A917B00757257 /* DemoListViewController.swift in Sources */,
 				AF536C392280671B006DAE84 /* DemoHelper.swift in Sources */,
 				E24DC9D1222EB72B006F1EED /* AppDelegate.swift in Sources */,
