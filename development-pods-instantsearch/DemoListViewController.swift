@@ -11,8 +11,6 @@ import UIKit
 import InstantSearchCore
 import InstantSearch
 
-typealias DemoHit = Hit<Demo>
-
 struct Demo: Codable {
   
   let objectID: String
@@ -53,7 +51,7 @@ class DemoListViewController: UIViewController {
   
   let searcher: SingleIndexSearcher
   let filterState: FilterState
-  let hitsInteractor: HitsInteractor<DemoHit>
+  let hitsInteractor: HitsInteractor<Demo>
   let searchBarController: SearchBarController
   
   let tableView: UITableView
@@ -68,6 +66,7 @@ class DemoListViewController: UIViewController {
     searchBarController = SearchBarController(searchBar: .init())
     groupedDemos = []
     
+    searcher.indexQueryState.query.hitsPerPage = 40
     searcher.connectFilterState(filterState)
     hitsInteractor.connectSearcher(searcher)
     hitsInteractor.connectFilterState(filterState)
@@ -82,8 +81,8 @@ class DemoListViewController: UIViewController {
     tableView.delegate = self
     tableView.dataSource = self
     hitsInteractor.onResultsUpdated.subscribe(with: self) { viewController, results in
-      let demos = (try? results.deserializeHits() as [DemoHit]) ?? []
-      viewController.updateDemos(demos.map { $0.object })
+      let demos = (try? results.deserializeHits() as [Demo]) ?? []
+      viewController.updateDemos(demos)
     }
   }
   
