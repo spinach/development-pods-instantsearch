@@ -11,7 +11,9 @@ import InstantSearch
 
 class SingleIndexSnippetViewController: UIViewController {
   
-  let searcher: SingleIndexSearcher = .init(appID: "latency", apiKey: "1f6fd3a6fb973cb08419fe7d288fa4db", indexName: "mobile_demo_movies")
+  let searcher: SingleIndexSearcher = .init(appID: "latency",
+                                            apiKey: "1f6fd3a6fb973cb08419fe7d288fa4db",
+                                            indexName: "bestbuy")
   
   let queryInputInteractor: QueryInputInteractor = .init()
   let searchBarController: SearchBarController = .init(searchBar: UISearchBar())
@@ -22,15 +24,14 @@ class SingleIndexSnippetViewController: UIViewController {
   let hitsInteractor: HitsInteractor<JSON> = .init()
   let hitsTableController: HitsTableController<HitsInteractor<JSON>> = .init(tableView: UITableView())
   
-  let genreAttribute: Attribute = "genre"
+  let categoryAttribute: Attribute = "category"
   let filterState: FilterState = .init()
   
-  let genreInteractor: FacetListInteractor = .init(selectionMode: .multiple)
-  let genreTableViewController: UITableViewController = .init()
-  lazy var genreListController: FacetListTableController = {
-    return .init(tableView: genreTableViewController.tableView, titleDescriptor: .none)
+  let categoryInteractor: FacetListInteractor = .init(selectionMode: .single)
+  let categoryTableViewController: UITableViewController = .init()
+  lazy var categoryListController: FacetListTableController = {
+    return .init(tableView: categoryTableViewController.tableView, titleDescriptor: .none)
   }()
-  
   
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -38,10 +39,6 @@ class SingleIndexSnippetViewController: UIViewController {
     configureUI()
     navigationController?.setNavigationBarHidden(true, animated: false)
   }
-  
-}
-
-private extension SingleIndexSnippetViewController {
   
   func setup() {
     
@@ -60,17 +57,13 @@ private extension SingleIndexSnippetViewController {
     hitsTableController.tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cellID")
     hitsTableController.dataSource = .init(cellConfigurator: { tableView, hit, indexPath in
       let cell = tableView.dequeueReusableCell(withIdentifier: "cellID", for: indexPath)
-      cell.textLabel?.text = [String: Any](hit)?["title"] as? String
+      cell.textLabel?.text = [String: Any](hit)?["name"] as? String
       return cell
     })
     
-    hitsTableController.delegate = .init(clickHandler: { tableView, hit, indexPath in
-      
-    })
-    
-    genreInteractor.connectSearcher(searcher, with: genreAttribute)
-    genreInteractor.connectFilterState(filterState, with: genreAttribute, operator: .or)
-    genreInteractor.connectController(genreListController)
+    categoryInteractor.connectSearcher(searcher, with: categoryAttribute)
+    categoryInteractor.connectFilterState(filterState, with: categoryAttribute, operator: .and)
+    categoryInteractor.connectController(categoryListController, with: FacetListPresenter(sortBy: [.isRefined]))
     
     searcher.search()
   }
@@ -124,14 +117,14 @@ private extension SingleIndexSnippetViewController {
       stackView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
       ])
     
-    genreTableViewController.title = "Genre"
-    genreTableViewController.view.backgroundColor = .white
+    categoryTableViewController.title = "Category"
+    categoryTableViewController.view.backgroundColor = .white
     
   }
   
   @objc func showFilters() {
-    let navigationController = UINavigationController(rootViewController: genreTableViewController)
-    genreTableViewController.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(dismissFilters))
+    let navigationController = UINavigationController(rootViewController: categoryTableViewController)
+    categoryTableViewController.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(dismissFilters))
     present(navigationController, animated: true, completion: .none)
   }
   
