@@ -60,6 +60,7 @@ class HierarchicalDemoViewController: UIViewController {
   }
 
   func setupUI() {
+    view.backgroundColor = . white
     addChild(tableViewController)
     tableViewController.didMove(toParent: self)
     tableViewController.view.translatesAutoresizingMaskIntoConstraints = false
